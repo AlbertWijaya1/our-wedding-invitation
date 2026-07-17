@@ -1,4 +1,30 @@
   const app = document.getElementById("app");
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, character => {
+      const entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      };
+
+      return entities[character];
+    });
+  }
+
+  function getInvitedGuestName() {
+    const params = new URLSearchParams(window.location.search);
+    const guestName = params.get("to");
+
+    if (!guestName) return "";
+
+    return escapeHtml(
+      guestName
+        .trim()
+        .slice(0, 80)
+    );
+  }
 
   let currentScene = "arrival";
   let parallaxStarted = false;
@@ -49,10 +75,20 @@
   }
 
   function renderWeddingHeroScene(scene) {
+    const invitedGuestName = getInvitedGuestName();
     app.innerHTML = `
       <section class="scene wedding-hero-scene">
         <div class="wedding-hero">
-
+        ${
+          invitedGuestName
+            ? `
+              <div class="wedding-guest-introduction">
+                <span>Especially for</span>
+                <strong>${invitedGuestName}</strong>
+              </div>
+            `
+            : ""
+        }
           <div class="wedding-names" aria-label="${scene.groomName} and ${scene.brideName}">
             <span class="wedding-name wedding-name-groom">
               ${scene.groomName}
@@ -186,9 +222,10 @@
     "chapterIntro",
     "weddingDetails",
     "ourJourney",
-    "futurePromise"
+    "guestDetails",
+    "futurePromise",
+    "closingInvitation"
   ];
-
     storyOrder.forEach(sceneName => {
 
       const scene = scenes[sceneName];
@@ -329,8 +366,274 @@
 
         </div>
       `;
+        } else if (scene.type === "guestDetails") {
 
-    } else if (scene.type === "holdHand") {
+      const invitedGuestName = getInvitedGuestName();
+
+      const hasRsvpLink =
+        scene.rsvp.formLink ||
+        scene.rsvp.acceptLink ||
+        scene.rsvp.declineLink ||
+        scene.rsvp.whatsappNumber;
+
+      const whatsappHref = scene.rsvp.whatsappNumber
+        ? `https://wa.me/${scene.rsvp.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(
+            scene.rsvp.whatsappMessage
+          )}`
+        : "";
+
+      section.innerHTML = `
+        <div class="guest-details-card">
+
+          <p class="small-text reveal-child delay-1">
+            ${scene.smallText}
+          </p>
+
+          <h1 class="reveal-child delay-2">
+            ${scene.title}
+          </h1>
+
+          ${
+            invitedGuestName
+              ? `
+                <p class="guest-details-personal reveal-child delay-3">
+                  Dear ${invitedGuestName},
+                </p>
+              `
+              : ""
+          }
+
+          <div class="guest-detail-grid">
+
+            <article class="guest-detail-panel reveal">
+              <div class="guest-detail-symbol" aria-hidden="true">
+                ◇
+              </div>
+
+              <p class="guest-detail-label">
+                ${scene.dressCode.title}
+              </p>
+
+              ${
+                scene.isConcept
+                  ? `
+                    <h2>Details to Follow</h2>
+
+                    <p>
+                      ${scene.dressCode.note}
+                    </p>
+                  `
+                  : `
+                    <h2>${scene.dressCode.description}</h2>
+
+                    ${
+                      scene.dressCode.note
+                        ? `<p>${scene.dressCode.note}</p>`
+                        : ""
+                    }
+                  `
+              }
+            </article>
+
+            <article class="guest-detail-panel reveal">
+              <div class="guest-detail-symbol" aria-hidden="true">
+                ✦
+              </div>
+
+              <p class="guest-detail-label">
+                RSVP
+              </p>
+
+              ${
+                scene.isConcept
+                  ? `
+                    <h2>Opening Later</h2>
+
+                    <p>
+                      RSVP will become available once our wedding date and venue have been confirmed.
+                    </p>
+                  `
+                  : `
+                    <h2>Will You Join Us?</h2>
+
+                    ${
+                      scene.rsvp.deadline
+                        ? `
+                          <p class="guest-rsvp-deadline">
+                            Kindly respond by ${scene.rsvp.deadline}.
+                          </p>
+                        `
+                        : ""
+                    }
+
+                    <div class="guest-rsvp-actions">
+
+                      ${
+                        scene.rsvp.formLink
+                          ? `
+                            <a
+                              class="guest-action-button"
+                              href="${scene.rsvp.formLink}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              RSVP
+                            </a>
+                          `
+                          : ""
+                      }
+
+                      ${
+                        scene.rsvp.acceptLink
+                          ? `
+                            <a
+                              class="guest-action-button"
+                              href="${scene.rsvp.acceptLink}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Joyfully Accept
+                            </a>
+                          `
+                          : ""
+                      }
+
+                      ${
+                        scene.rsvp.declineLink
+                          ? `
+                            <a
+                              class="guest-action-button guest-action-secondary"
+                              href="${scene.rsvp.declineLink}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Unable to Attend
+                            </a>
+                          `
+                          : ""
+                      }
+
+                      ${
+                        whatsappHref
+                          ? `
+                            <a
+                              class="guest-action-button"
+                              href="${whatsappHref}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              RSVP via WhatsApp
+                            </a>
+                          `
+                          : ""
+                      }
+
+                      ${
+                        !hasRsvpLink
+                          ? `
+                            <p class="guest-detail-unavailable">
+                              RSVP information will be added soon.
+                            </p>
+                          `
+                          : ""
+                      }
+
+                    </div>
+                  `
+              }
+            </article>
+
+          </div>
+
+          ${
+            !scene.isConcept && scene.gift.enabled
+              ? `
+                <article class="wedding-gift-panel reveal">
+
+                  <p class="guest-detail-label">
+                    Wedding Gift
+                  </p>
+
+                  <h2>Your Presence Is Our Gift</h2>
+
+                  <p class="wedding-gift-introduction">
+                    ${scene.gift.introduction}
+                  </p>
+
+                  ${
+                    scene.gift.bankName &&
+                    scene.gift.accountName &&
+                    scene.gift.accountNumber
+                      ? `
+                        <div class="wedding-bank-details">
+                          <span>${scene.gift.bankName}</span>
+
+                          <strong>${scene.gift.accountNumber}</strong>
+
+                          <p>${scene.gift.accountName}</p>
+
+                          <button
+                            class="guest-action-button"
+                            type="button"
+                            data-copy-account="${scene.gift.accountNumber}"
+                          >
+                            Copy Account Number
+                          </button>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${
+                    scene.gift.qrisImage
+                      ? `
+                        <div class="wedding-qris">
+                          <img
+                            src="${scene.gift.qrisImage}"
+                            alt="Wedding gift QRIS"
+                          >
+                        </div>
+                      `
+                      : ""
+                  }
+
+                </article>
+              `
+              : ""
+          }
+
+        </div>
+      `;
+
+    } else if (scene.type === "weddingClosing") {
+
+      section.innerHTML = `
+        <div class="wedding-closing-card">
+
+          <p class="wedding-closing-small reveal-child delay-1">
+            ${scene.smallText}
+          </p>
+
+          <div class="wedding-closing-symbol reveal-child delay-2">
+            ✦
+          </div>
+
+          <h1 class="reveal-child delay-2">
+            ${scene.title}
+          </h1>
+
+          <p class="wedding-closing-body reveal-child delay-3">
+            ${scene.body}
+          </p>
+
+          <p class="wedding-closing-signature reveal-child delay-3">
+            ${scene.signature}
+          </p>
+
+        </div>
+      `;
+
+    } else if (scene.type === "holdHand") {  
         section.innerHTML = `
           <div class="hold-hand-card">
             <p class="small-text reveal-child delay-1">${scene.smallText}</p>
@@ -575,7 +878,27 @@
       }
 
 app.appendChild(section);
+  const copyAccountButton = section.querySelector("[data-copy-account]");
 
+  if (copyAccountButton) {
+    copyAccountButton.addEventListener("click", async () => {
+      const accountNumber =
+        copyAccountButton.dataset.copyAccount;
+
+      try {
+        await navigator.clipboard.writeText(accountNumber);
+
+        const originalText = copyAccountButton.textContent;
+        copyAccountButton.textContent = "Copied";
+
+        setTimeout(() => {
+          copyAccountButton.textContent = originalText;
+        }, 1800);
+      } catch (error) {
+        console.warn("Unable to copy account number:", error);
+      }
+    });
+  }
     if (scene.type === "mahjong") {
       setupMahjongGame(section);
     }
@@ -787,11 +1110,25 @@ app.appendChild(section);
         vignette: 0.74
       },
       {
+        scene: "guestDetails",
+        base: [10, 8, 7],
+        glow: [212, 175, 55, 0.055],
+        glowPos: [50, 38],
+        vignette: 0.76
+      },
+      {
         scene: "futurePromise",
         base: [4, 4, 4],
         glow: [212, 175, 55, 0.035],
         glowPos: [50, 48],
         vignette: 0.86
+      },
+      {
+        scene: "closingInvitation",
+        base: [2, 2, 2],
+        glow: [212, 175, 55, 0.04],
+        glowPos: [50, 45],
+        vignette: 0.9
       }
     ];
     function lerp(a, b, t) {

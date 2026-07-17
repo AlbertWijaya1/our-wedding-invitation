@@ -43,19 +43,32 @@ const wedding = {
     mapsLink: ""
   },
 
+
   dressCode: {
     title: "Dress Code",
-    description: "To Be Announced"
+    description: "To Be Announced",
+
+    note:
+      "Dress-code guidance will be shared together with the confirmed wedding details."
   },
 
   rsvp: {
     deadline: "To Be Announced",
+
     formLink: "",
-    whatsappNumber: ""
+    acceptLink: "",
+    declineLink: "",
+
+    whatsappNumber: "",
+    whatsappMessage:
+      "Hello Albert and Novia, I would like to confirm my attendance for your wedding."
   },
 
   gift: {
     enabled: false,
+
+    introduction:
+      "Your presence and prayers are already the greatest gift to us.",
 
     bankName: "",
     accountName: "",
@@ -116,7 +129,7 @@ const scenes = {
     ceremony: wedding.ceremony,
     reception: wedding.reception,
 
-    next: "futurePromise"
+    next: "ourJourney"
   },
 
 
@@ -146,8 +159,40 @@ const scenes = {
   finalText:
     "And someday, we hope to take the next step surrounded by the people who have been part of our lives.",
 
-  next: "futurePromise"
+  next: "guestDetails"
 },
+
+  guestDetails: {
+    type: "guestDetails",
+
+    smallText: "A few thoughtful details",
+    title: "For Our Guests",
+
+    isConcept: wedding.projectStatus === "concept",
+
+    dressCode: wedding.dressCode,
+    rsvp: wedding.rsvp,
+    gift: wedding.gift,
+
+    next: "futurePromise"
+  },
+
+  closingInvitation: {
+    type: "weddingClosing",
+
+    smallText: "Until the day arrives",
+
+    title: "With Love",
+
+    body:
+      "When the date is chosen and the place is ready, we hope this little glimpse of our future will become a real invitation to celebrate with us.",
+
+    signature:
+      `${wedding.couple.groomFirstName} & ${wedding.couple.brideFirstName}`,
+
+    next: null
+  },
+
 
   futurePromise: {
     type: "breath",
@@ -159,7 +204,7 @@ const scenes = {
       "already feels like ours."
     ],
 
-    next: null
+    next: "closingInvitation"
   },
   everydayUs: {
     type: "chapter",
