@@ -1,4 +1,23 @@
   const app = document.getElementById("app");
+  const supportedWeddingThemes = [
+    "dark-luxury",
+    "chinese-luxury",
+    "ivory-gold"
+  ];
+
+  function applyWeddingTheme() {
+    const requestedTheme = wedding?.theme || "dark-luxury";
+
+    const activeTheme = supportedWeddingThemes.includes(requestedTheme)
+      ? requestedTheme
+      : "dark-luxury";
+
+    document.documentElement.dataset.weddingTheme = activeTheme;
+  }
+
+  applyWeddingTheme();
+
+
   function escapeHtml(value) {
     return value.replace(/[&<>"']/g, character => {
       const entities = {

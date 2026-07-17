@@ -4,7 +4,10 @@
 
 const wedding = {
   projectStatus: "concept",
-
+  theme: "chinese-luxury",
+  //"chinese-luxury"
+  //"ivory-gold"
+  //"dark-luxury"
   couple: {
     groomFirstName: "Albert",
     groomFullName: "Albert",
