@@ -2818,3 +2818,409 @@ button {
     animation: none;
   }
 }
+
+/* =========================================
+   FORMAL WEDDING INVITATION
+========================================= */
+
+.story-section[data-scene="chapterIntro"] {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.formal-invitation-card {
+  position: relative;
+
+  width: min(92vw, 520px);
+  min-height: min(78vh, 720px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 72px 34px;
+
+  text-align: center;
+
+  border: 1px solid rgba(212, 175, 55, 0.16);
+  border-radius: 3px;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(212, 175, 55, 0.055),
+      transparent 44%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.022),
+      rgba(255, 255, 255, 0.006)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 35px 100px rgba(0, 0, 0, 0.42);
+}
+
+.formal-invitation-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 12px;
+
+  border: 1px solid rgba(212, 175, 55, 0.055);
+
+  pointer-events: none;
+}
+
+.formal-invitation-family {
+  margin: 0;
+
+  color: rgba(245, 241, 232, 0.58);
+
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+.formal-invitation-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  width: 150px;
+
+  margin: 32px auto 30px;
+}
+
+.formal-invitation-ornament span:not(.formal-invitation-symbol) {
+  flex: 1;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.5)
+    );
+}
+
+.formal-invitation-ornament span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(212, 175, 55, 0.5),
+      transparent
+    );
+}
+
+.formal-invitation-symbol {
+  color: rgba(212, 175, 55, 0.72);
+  font-size: 0.7rem;
+}
+
+.formal-invitation-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formal-invitation-names span {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(4rem, 16vw, 6.8rem);
+  font-weight: 500;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+
+  color: #f5f1e8;
+}
+
+.formal-invitation-names em {
+  margin: 14px 0 16px;
+
+  color: var(--gold);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.formal-invitation-request {
+  max-width: 310px;
+
+  margin: 42px auto 0;
+
+  color: rgba(245, 241, 232, 0.76);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.35rem, 5vw, 1.8rem);
+  line-height: 1.35;
+}
+
+.formal-invitation-celebration {
+  max-width: 300px;
+
+  margin: 12px auto 0;
+
+  color: rgba(245, 241, 232, 0.52);
+
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* =========================================
+   WEDDING DETAILS
+========================================= */
+
+.story-section[data-scene="weddingDetails"] {
+  min-height: 100vh;
+  padding-top: 90px;
+  padding-bottom: 110px;
+}
+
+.wedding-details-card {
+  width: min(100%, 900px);
+  text-align: center;
+}
+
+.wedding-details-card > h1 {
+  font-size: clamp(3.4rem, 12vw, 6rem);
+}
+
+.wedding-details-notice {
+  max-width: 510px;
+
+  margin: 0 auto 54px;
+
+  color: rgba(245, 241, 232, 0.58);
+
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.wedding-event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+
+  width: 100%;
+}
+
+.wedding-event-card {
+  position: relative;
+
+  min-height: 420px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 46px 30px;
+
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(212, 175, 55, 0.055),
+      transparent 42%
+    ),
+    rgba(255, 255, 255, 0.012);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 24px 70px rgba(0, 0, 0, 0.3);
+}
+
+.wedding-event-label {
+  margin: 0 0 30px;
+
+  color: rgba(212, 175, 55, 0.82);
+
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.wedding-event-card h2 {
+  margin: 0;
+
+  color: #f5f1e8;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.3rem, 7vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.wedding-event-date {
+  margin: 11px 0 0;
+
+  color: rgba(245, 241, 232, 0.7);
+
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+}
+
+.wedding-event-divider {
+  width: 38px;
+  height: 1px;
+
+  margin: 28px auto;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.65),
+      transparent
+    );
+}
+
+.wedding-event-time {
+  margin: 0;
+
+  color: #f5f1e8;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+}
+
+.wedding-event-venue {
+  margin: 27px 0 0;
+
+  color: rgba(245, 241, 232, 0.74);
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.wedding-event-address {
+  max-width: 250px;
+
+  margin: 8px 0 0;
+
+  color: rgba(245, 241, 232, 0.42);
+
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+  .formal-invitation-card {
+    width: calc(100vw - 32px);
+    min-height: 76vh;
+    padding: 62px 24px;
+  }
+
+  .formal-invitation-names span {
+    font-size: clamp(3.9rem, 18vw, 5.5rem);
+  }
+
+  .wedding-event-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wedding-event-card {
+    min-height: 390px;
+  }
+
+  .wedding-details-notice {
+    margin-bottom: 38px;
+  }
+}
+
+/* =========================================
+   TENTATIVE WEDDING DETAILS
+========================================= */
+
+.wedding-event-card-concept {
+  min-height: 390px;
+  padding: 54px 38px;
+}
+
+.wedding-event-concept-symbol {
+  margin: 22px auto 28px;
+
+  color: rgba(212, 175, 55, 0.72);
+  font-size: 0.8rem;
+
+  animation: weddingConceptSymbolBreath 5s ease-in-out infinite;
+}
+
+.wedding-event-concept-title {
+  max-width: 280px;
+
+  margin: 0 auto;
+
+  color: #f5f1e8;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.7rem, 7vw, 4rem);
+  font-weight: 500;
+  line-height: 0.95;
+}
+
+.wedding-event-concept-copy {
+  max-width: 270px;
+
+  margin: 28px auto 0;
+
+  color: rgba(245, 241, 232, 0.5);
+
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+
+.wedding-maps-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 28px;
+  padding: 12px 22px;
+
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  border-radius: 999px;
+
+  color: rgba(245, 241, 232, 0.82);
+  text-decoration: none;
+
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wedding-maps-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(212, 175, 55, 0.82);
+    box-shadow: 0 0 24px rgba(212, 175, 55, 0.09);
+  }
+}
+
+@keyframes weddingConceptSymbolBreath {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}

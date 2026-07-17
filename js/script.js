@@ -182,20 +182,12 @@
 
     app.innerHTML = "";
 
-    const storyOrder = [
-      "chapterIntro",
-      "everydayUs",
-      "adventures",
-      "mahjongMemory",
-      "afterMahjongBreath",
-      "funnyUs",
-      "littleThings",
-      "reflection",
-      "holdHand",
-      "beforeLetterBreath",
-      "finalLetter",
-      "ending"
-    ];
+  const storyOrder = [
+    "chapterIntro",
+    "weddingDetails",
+    "ourJourney",
+    "futurePromise"
+  ];
 
     storyOrder.forEach(sceneName => {
 
@@ -205,8 +197,140 @@
 
       section.className = "story-section reveal";
       section.dataset.scene = sceneName;
-      if (scene.type === "holdHand") {
+    if (scene.type === "formalInvitation") {
 
+      section.innerHTML = `
+        <div class="formal-invitation-card">
+
+          <p class="formal-invitation-family reveal-child delay-1">
+            ${scene.smallText}
+          </p>
+
+          <div class="formal-invitation-ornament reveal-child delay-2">
+            <span></span>
+            <span class="formal-invitation-symbol">✦</span>
+            <span></span>
+          </div>
+
+          <div class="formal-invitation-names reveal-child delay-2">
+            <span>${scene.groomName}</span>
+            <em>&amp;</em>
+            <span>${scene.brideName}</span>
+          </div>
+
+          <p class="formal-invitation-request reveal-child delay-3">
+            ${scene.invitationLine}
+          </p>
+
+          <p class="formal-invitation-celebration reveal-child delay-3">
+            ${scene.celebrationLine}
+          </p>
+
+        </div>
+      `;
+
+    } else if (scene.type === "weddingDetails") {
+
+      const ceremony = scene.ceremony;
+      const reception = scene.reception;
+      const isConcept = wedding.projectStatus === "concept";
+
+      function renderWeddingEvent(event) {
+        if (isConcept) {
+          return `
+            <article class="wedding-event-card wedding-event-card-concept reveal">
+
+              <p class="wedding-event-label">
+                ${event.label}
+              </p>
+
+              <div class="wedding-event-concept-symbol" aria-hidden="true">
+                ✦
+              </div>
+
+              <h2 class="wedding-event-concept-title">
+                Details to Follow
+              </h2>
+
+              <p class="wedding-event-concept-copy">
+                The date, time and venue will be announced
+                when everything is ready.
+              </p>
+
+            </article>
+          `;
+        }
+
+        return `
+          <article class="wedding-event-card reveal">
+
+            <p class="wedding-event-label">
+              ${event.label}
+            </p>
+
+            <h2>${event.day}</h2>
+
+            <p class="wedding-event-date">
+              ${event.date}
+            </p>
+
+            <div class="wedding-event-divider"></div>
+
+            <p class="wedding-event-time">
+              ${event.time}
+            </p>
+
+            <p class="wedding-event-venue">
+              ${event.venueName}
+            </p>
+
+            <p class="wedding-event-address">
+              ${event.venueAddress}
+            </p>
+
+            ${
+              event.mapsLink
+                ? `
+                  <a
+                    class="wedding-maps-button"
+                    href="${event.mapsLink}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open in Maps
+                  </a>
+                `
+                : ""
+            }
+
+          </article>
+        `;
+      }
+
+      section.innerHTML = `
+        <div class="wedding-details-card">
+
+          <p class="small-text reveal-child delay-1">
+            ${scene.smallText}
+          </p>
+
+          <h1 class="reveal-child delay-2">
+            ${scene.title}
+          </h1>
+
+          <p class="wedding-details-notice reveal-child delay-3">
+            ${scene.notice}
+          </p>
+
+          <div class="wedding-event-grid">
+            ${renderWeddingEvent(ceremony)}
+            ${renderWeddingEvent(reception)}
+          </div>
+
+        </div>
+      `;
+
+    } else if (scene.type === "holdHand") {
         section.innerHTML = `
           <div class="hold-hand-card">
             <p class="small-text reveal-child delay-1">${scene.smallText}</p>
@@ -450,24 +574,23 @@
       
       }
 
-      app.appendChild(section);
+app.appendChild(section);
 
-      if (scene.type === "mahjong") {
-        setupMahjongGame(section);
-      }
-      
-      if (scene.type === "adventureCarousel") {
-        setupAdventureCarousel(section);
-      }
+    if (scene.type === "mahjong") {
+      setupMahjongGame(section);
+    }
 
-      if (scene.type === "holdHand") {
-        setupHoldHand(section);
-      }
+    if (scene.type === "adventureCarousel") {
+      setupAdventureCarousel(section);
+    }
 
-      if (scene.type === "letter") {
-        setupLetter(section);
-      }
+    if (scene.type === "holdHand") {
+      setupHoldHand(section);
+    }
 
+    if (scene.type === "letter") {
+      setupLetter(section);
+    }
     });
 
     setupRevealAnimation();
@@ -642,20 +765,35 @@
 
   function setupAtmosphereEngine() {
     const atmospheres = [
-      { scene: "chapterIntro", base: [8,8,8], glow: [212,175,55,0.035], glowPos: [50,38], vignette: 0.78 },
-      { scene: "everydayUs", base: [13,11,9], glow: [212,175,55,0.06], glowPos: [48,36], vignette: 0.68 },
-      { scene: "adventures", base: [11,13,18], glow: [120,150,190,0.055], glowPos: [54,34], vignette: 0.7 },
-      { scene: "mahjongMemory", base: [18,13,8], glow: [212,120,55,0.08], glowPos: [50,42], vignette: 0.66 },
-      { scene: "afterMahjongBreath", base: [10,9,8], glow: [212,175,55,0.035], glowPos: [50,40], vignette: 0.74 },
-      { scene: "funnyUs", base: [20,14,9], glow: [212,120,55,0.065], glowPos: [46,36], vignette: 0.68 },
-      { scene: "littleThings", base: [13,12,11], glow: [212,175,55,0.045], glowPos: [52,38], vignette: 0.7 },
-      { scene: "reflection", base: [9,11,19], glow: [120,140,210,0.055], glowPos: [50,30], vignette: 0.76 },
-      { scene: "holdHand", base: [7,6,5], glow: [212,175,55,0.055], glowPos: [50,44], vignette: 0.78 },
-      { scene: "beforeLetterBreath", base: [6,5,4], glow: [212,175,55,0.05], glowPos: [50,46], vignette: 0.8 },
-      { scene: "finalLetter", base: [3,3,3], glow: [212,175,55,0.05], glowPos: [50,48], vignette: 0.86 },
-      { scene: "ending", base: [0,0,0], glow: [0,0,0,0], glowPos: [50,50], vignette: 0.92 }
+      {
+        scene: "chapterIntro",
+        base: [7, 6, 5],
+        glow: [212, 175, 55, 0.055],
+        glowPos: [50, 40],
+        vignette: 0.8
+      },
+      {
+        scene: "weddingDetails",
+        base: [11, 9, 7],
+        glow: [212, 175, 55, 0.065],
+        glowPos: [50, 36],
+        vignette: 0.72
+      },
+      {
+        scene: "ourJourney",
+        base: [10, 11, 14],
+        glow: [135, 150, 190, 0.05],
+        glowPos: [52, 34],
+        vignette: 0.74
+      },
+      {
+        scene: "futurePromise",
+        base: [4, 4, 4],
+        glow: [212, 175, 55, 0.035],
+        glowPos: [50, 48],
+        vignette: 0.86
+      }
     ];
-
     function lerp(a, b, t) {
       return a + (b - a) * t;
     }

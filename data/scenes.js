@@ -1,13 +1,85 @@
+/* =========================================
+   WEDDING DETAILS — EDIT EVERYTHING HERE
+========================================= */
+
+const wedding = {
+  projectStatus: "concept",
+
+  couple: {
+    groomFirstName: "Albert",
+    groomFullName: "Albert",
+
+    brideFirstName: "Novia",
+    brideFullName: "Novia"
+  },
+
+  invitation: {
+    familyLine: "Together with our families",
+    invitationLine: "we invite you to celebrate",
+    promiseLine: "the beginning of our forever."
+  },
+
+  ceremony: {
+    label: "Holy Matrimony",
+    date: "To Be Announced",
+    day: "To Be Announced",
+    time: "To Be Announced",
+
+    venueName: "To Be Announced",
+    venueAddress: "To Be Announced",
+
+    mapsLink: ""
+  },
+
+  reception: {
+    label: "Wedding Reception",
+    date: "To Be Announced",
+    day: "To Be Announced",
+    time: "To Be Announced",
+
+    venueName: "To Be Announced",
+    venueAddress: "To Be Announced",
+
+    mapsLink: ""
+  },
+
+  dressCode: {
+    title: "Dress Code",
+    description: "To Be Announced"
+  },
+
+  rsvp: {
+    deadline: "To Be Announced",
+    formLink: "",
+    whatsappNumber: ""
+  },
+
+  gift: {
+    enabled: false,
+
+    bankName: "",
+    accountName: "",
+    accountNumber: "",
+
+    qrisImage: ""
+  },
+
+  contact: {
+    groomPhone: "",
+    bridePhone: ""
+  }
+};
+
 const scenes = {
   arrival: {
     type: "weddingHero",
 
-    groomName: "Albert",
-    brideName: "Novia",
+    groomName: wedding.couple.groomFirstName,
+    brideName: wedding.couple.brideFirstName,
 
-    familyText: "Together with our families",
-    invitationText: "we invite you to celebrate",
-    futureText: "the beginning of our forever.",
+    familyText: wedding.invitation.familyLine,
+    invitationText: wedding.invitation.invitationLine,
+    futureText: wedding.invitation.promiseLine,
 
     button: "Open Invitation",
     next: "memoryBox"
@@ -15,19 +87,80 @@ const scenes = {
   memoryBox: {
     type: "box",
     smallText: "Something for our future",
-    title: "A Wedding Invitation",
-    body: "Tap the box to open it.",
+    title: `${wedding.couple.groomFirstName} & ${wedding.couple.brideFirstName}`,
+    body: "Tap the invitation case to open it.",
     next: "chapterIntro"
   },
   chapterIntro: {
-  type: "text",
-  smallText: "Looking through our memories...",
-  title: "Chapter Three",
-  body: "There were too many beautiful moments. So I chose the ones that made me smile the most.",
-  button: null,
-  next: "everydayUs"
+    type: "formalInvitation",
+
+    smallText: wedding.invitation.familyLine,
+
+    groomName: wedding.couple.groomFirstName,
+    brideName: wedding.couple.brideFirstName,
+
+    invitationLine: "request the honour of your presence",
+    celebrationLine: "at the celebration of their marriage.",
+
+    next: "weddingDetails"
   },
-  
+  weddingDetails: {
+    type: "weddingDetails",
+
+    smallText: "The Wedding Day",
+    title: "Save the Moment",
+
+    notice:
+      "Our date and venue are still being lovingly prepared. The confirmed details will appear here when the time is right.",
+
+    ceremony: wedding.ceremony,
+    reception: wedding.reception,
+
+    next: "futurePromise"
+  },
+
+
+  ourJourney: {
+  type: "adventureCarousel",
+
+  smallText: "A little about us",
+  title: "Our Journey",
+
+  intro:
+    "Before this invitation became a possibility, there were ordinary days, unexpected adventures, and countless moments that slowly became ours.",
+
+  images: [
+    "images/adventures/01.jpg",
+    "images/adventures/02.jpg",
+    "images/adventures/03.jpg",
+    "images/adventures/04.jpg",
+    "images/adventures/05.jpg",
+    "images/adventures/06.jpg",
+    "images/adventures/07.jpg",
+    "images/adventures/08.jpg"
+  ],
+
+  reflection:
+    "We did not arrive here through one perfect moment. We arrived through all the small moments in which we continued choosing each other.",
+
+  finalText:
+    "And someday, we hope to take the next step surrounded by the people who have been part of our lives.",
+
+  next: "futurePromise"
+},
+
+  futurePromise: {
+    type: "breath",
+
+    lines: [
+      "The date is still unwritten.",
+      "The place is still waiting.",
+      "But the future...",
+      "already feels like ours."
+    ],
+
+    next: null
+  },
   everydayUs: {
     type: "chapter",
     smallText: "01",
