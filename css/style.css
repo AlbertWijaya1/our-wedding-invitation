@@ -1,0 +1,2418 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0b0b0b;
+  --text: #f5f5f5;
+  --muted: #a8a8a8;
+  --gold: #d4af37;
+  --atmosphere-base: #080808;
+  --atmosphere-glow: rgba(212,175,55,0.05);
+  --atmosphere-vignette: rgba(0,0,0,0.72);
+  --atmosphere-glow-x: 50%;
+  --atmosphere-glow-y: 38%;
+}
+
+
+.dust-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.dust-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.75);
+  opacity: 0;
+  animation: dustFloat linear infinite;
+  box-shadow: 0 0 8px rgba(255,255,255,0.55);
+}
+
+@keyframes dustFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  18% {
+    opacity: 0.28;
+  }
+
+  82% {
+    opacity: 0.18;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(18px, -120px, 0);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at var(--atmosphere-glow-x) var(--atmosphere-glow-y),
+      var(--atmosphere-glow),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at center,
+      transparent 48%,
+      var(--atmosphere-vignette) 100%
+    ),
+    var(--atmosphere-base);
+
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: none;
+}
+
+.scene {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.scene-content {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 1.4s ease forwards;
+}
+
+.small-text {
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 15vw, 5.6rem);
+  font-weight: 600;
+  margin: 0 0 20px;
+  line-height: 0.9;
+}
+
+.intro-text {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin: 0 auto 36px;
+  max-width: 340px;
+}
+
+button {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 24px rgba(212, 175, 55, 0.18);
+    transform: translateY(-2px);
+  }
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(16px) scale(0.99);
+  filter: blur(6px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   MEMORY BOX — LUXURY KEEPSAKE BOX
+========================================= */
+
+.memory-box {
+  position: relative;
+
+  width: 190px;
+  height: 132px;
+
+  margin: 28px auto 0;
+  padding: 0;
+
+  border: none;
+  border-radius: 0;
+  background: transparent;
+
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+  perspective: 700px;
+
+  isolation: isolate;
+
+  transition:
+    transform 0.45s cubic-bezier(.22, .61, .36, 1),
+    filter 0.45s ease;
+}
+
+/* Soft shadow beneath the entire box */
+.memory-box::before {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+
+  width: 145px;
+  height: 34px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.68);
+  filter: blur(18px);
+
+  opacity: 0.9;
+
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Very subtle resting atmosphere */
+.memory-box::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+
+  width: 170px;
+  height: 80px;
+
+  transform: translateX(-50%) scale(0.88);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(212, 175, 55, 0.11) 0%,
+      rgba(212, 175, 55, 0.035) 48%,
+      transparent 74%
+    );
+
+  filter: blur(22px);
+  opacity: 0.58;
+
+  pointer-events: none;
+  z-index: -1;
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.box-body {
+  position: absolute;
+  left: 22px;
+  bottom: 10px;
+
+  width: 146px;
+  height: 77px;
+
+  border-radius: 7px 7px 19px 19px;
+
+  background:
+    /* Fine vertical wood grain */
+    repeating-linear-gradient(
+      88deg,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+
+    /* Soft reflected highlight */
+    radial-gradient(
+      ellipse at 50% 5%,
+      rgba(255, 202, 132, 0.13),
+      transparent 48%
+    ),
+
+    /* Walnut body */
+    linear-gradient(
+      90deg,
+      #24110b 0%,
+      #3a1f14 16%,
+      #50301f 50%,
+      #3a1f14 84%,
+      #24110b 100%
+    );
+  border: 1px solid rgba(201, 151, 58, 0.52);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 205, 0.1),
+    inset 0 -20px 30px rgba(0, 0, 0, 0.28),
+    inset 9px 0 18px rgba(255, 255, 255, 0.018),
+    inset -9px 0 18px rgba(0, 0, 0, 0.14),
+
+    0 2px 0 rgba(255, 205, 108, 0.06),
+    0 20px 36px rgba(0, 0, 0, 0.55),
+    0 36px 60px rgba(0, 0, 0, 0.32);
+
+  overflow: visible;
+  z-index: 2;
+}
+
+/* Fine brass detail on the body */
+/* Fine brass inlay */
+.box-body::before {
+  content: "";
+
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 11px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(235, 196, 104, 0.2) 15%,
+      rgba(235, 196, 104, 0.62) 50%,
+      rgba(235, 196, 104, 0.2) 85%,
+      transparent
+    );
+
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.32);
+
+  opacity: 0.8;
+}
+
+/* Luxury brass clasp */
+.box-body::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  top: 23px;
+  width: 17px;
+  height: 10px;
+  
+  transform: translateX(-50%);
+
+  border-radius: 2px 2px 6px 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #76531b 0%,
+      #d8b45d 24%,
+      #f0d486 48%,
+      #ae7f2d 75%,
+      #5e4217 100%
+    );
+
+  border: 1px solid rgba(255, 222, 139, 0.24);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 249, 217, 0.48),
+    inset 0 -3px 4px rgba(73, 44, 8, 0.38),
+    0 3px 7px rgba(0, 0, 0, 0.42);
+
+  z-index: 6;
+}
+
+.box-lid {
+  position: absolute;
+
+  left: 15px;
+  top: 40px;
+
+  width: 160px;
+  height: 36px;
+
+  border-radius: 14px 14px 5px 5px;
+
+  background:
+    repeating-linear-gradient(
+      88deg,
+      rgba(255, 255, 255, 0.014) 0px,
+      rgba(255, 255, 255, 0.014) 1px,
+      transparent 1px,
+      transparent 8px
+    ),
+
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(255, 211, 150, 0.13),
+      transparent 54%
+    ),
+
+    linear-gradient(
+      90deg,
+      #2b160e 0%,
+      #472819 17%,
+      #684126 50%,
+      #472819 83%,
+      #2b160e 100%
+    );
+
+  border: 1px solid rgba(205, 155, 62, 0.58);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 239, 210, 0.14),
+    inset 0 -13px 19px rgba(0, 0, 0, 0.22),
+    inset 7px 0 14px rgba(255, 255, 255, 0.02),
+    inset -8px 0 14px rgba(0, 0, 0, 0.13),
+
+    0 2px 0 rgba(252, 203, 111, 0.05),
+    0 9px 18px rgba(0, 0, 0, 0.34);
+
+  transform-origin: 50% 100%;
+  transform: rotateX(0deg) translateY(0);
+
+  transition:
+    transform 1.15s cubic-bezier(.22, .75, .2, 1),
+    box-shadow 0.75s ease,
+    filter 0.75s ease;
+
+  backface-visibility: hidden;
+  z-index: 5;
+}
+
+/* Subtle top highlight */
+/* Satin highlight across the lid */
+.box-lid::before {
+  content: "";
+
+  position: absolute;
+  left: 17px;
+  right: 17px;
+  top: 8px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 225, 171, 0.18),
+      rgba(255, 225, 171, 0.5),
+      rgba(255, 225, 171, 0.18),
+      transparent
+    );
+
+  opacity: 0.68;
+}
+
+/* Fine brass rim at the lid seam */
+.box-lid::after {
+  content: "";
+
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: 3px;
+
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(85, 52, 12, 0.3),
+      rgba(224, 183, 83, 0.65),
+      rgba(252, 218, 133, 0.72),
+      rgba(224, 183, 83, 0.65),
+      rgba(85, 52, 12, 0.3)
+    );
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45);
+
+  opacity: 0.74;
+}
+
+.box-glow {
+  position: absolute;
+
+  left: 50%;
+  top: 72px;
+
+  width: 116px;
+  height: 10px;
+
+  transform:
+    translateX(-50%)
+    scaleX(0.35)
+    scaleY(0.2);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 231, 166, 0.88) 0%,
+      rgba(226, 175, 73, 0.44) 34%,
+      rgba(212, 175, 55, 0.11) 62%,
+      transparent 80%
+    );
+
+  filter: blur(5px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    transform 1.05s cubic-bezier(.22, .75, .2, 1),
+    opacity 0.75s ease,
+    filter 0.85s ease;
+
+  z-index: 4;
+}
+
+@keyframes memoryBoxBreath {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: translateX(-50%) scale(0.86);
+  }
+
+  50% {
+    opacity: 0.68;
+    transform: translateX(-50%) scale(0.94);
+  }
+}
+
+.memory-box:not(.open)::after {
+  animation: memoryBoxBreath 7s ease-in-out infinite;
+}
+
+.memory-box.open::after {
+  animation: none;
+}
+
+/* Desktop hover only */
+@media (hover: hover) and (pointer: fine) {
+  .memory-box:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.06);
+    box-shadow: none;
+  }
+
+  .memory-box:hover .box-lid {
+    filter: brightness(1.04);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 239, 210, 0.16),
+      inset 0 -13px 19px rgba(0, 0, 0, 0.2),
+      0 11px 22px rgba(0, 0, 0, 0.38),
+      0 0 20px rgba(212, 175, 55, 0.045);
+  }
+
+  .memory-box:hover::after {
+    opacity: 0.82;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* Open state */
+.memory-box.open {
+  transform: translateY(-2px);
+  pointer-events: none;
+}
+
+.memory-box.open .box-lid {
+  transform:
+    translateY(-13px)
+    rotateX(-68deg);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -11px 18px rgba(0, 0, 0, 0.12),
+    0 16px 28px rgba(0, 0, 0, 0.2);
+}
+
+.memory-box.open .box-glow {
+  opacity: 0.92;
+
+  transform:
+    translateX(-50%)
+    translateY(-10px)
+    scaleX(1.45)
+    scaleY(1.1);
+
+  filter: blur(9px);
+}
+
+.memory-box.open .box-body::after {
+  animation: claspRelease 0.32s ease forwards;
+}
+
+@keyframes claspRelease {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    filter: brightness(1);
+  }
+
+  45% {
+    transform: translateX(-50%) translateY(2px);
+    filter: brightness(1.35);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(1px);
+    filter: brightness(1.08);
+  }
+}
+
+.memory-box.open::after {
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    scale(1.22);
+}
+
+  .photo-card {
+    width: 100%;
+    max-width: 420px;
+  }
+  
+  .photo-placeholder {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 28px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+    
+  .photo-text h1 {
+    font-size: clamp(2.4rem, 12vw, 4.6rem);
+  }
+
+  .story-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 36px 24px;
+  }
+
+  .memory-frame {
+  position: relative;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+/* =========================================
+   PAIRED MEMORY — TWO-PHOTO EDITORIAL SPREAD
+========================================= */
+
+.memory-pair {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  gap: 12px;
+
+  width: min(760px, 88vw);
+  height: min(68vh, 600px);
+
+  margin: 0 50%;
+  transform: translateX(-50%);
+
+  overflow: visible;
+}
+
+.memory-pair-photo {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+
+  border-radius: 26px;
+  overflow: hidden;
+
+  border: 1px solid rgba(212, 175, 55, 0.22);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.07),
+      rgba(255, 255, 255, 0.015)
+    );
+
+  box-shadow:
+    0 22px 70px rgba(0, 0, 0, 0.44),
+    0 0 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.memory-pair-photo img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transform: scale(1.04);
+  filter: brightness(0.9);
+
+  transition:
+    transform 2.8s ease,
+    filter 2.8s ease;
+}
+
+/* Slight editorial offset */
+.memory-pair-photo:first-child {
+  transform: translateY(-10px);
+}
+
+.memory-pair-photo:last-child {
+  transform: translateY(10px);
+}
+
+.reveal.active .memory-pair-photo img {
+  transform: scale(1);
+  filter: brightness(1);
+}
+
+.memory-light {
+  position: absolute;
+  inset: -18% -20% -16%;
+  border-radius: 44px;
+  background:
+    radial-gradient(
+      ellipse at 50% 48%,
+      rgba(212,175,55,0.24),
+      rgba(212,175,55,0.11) 34%,
+      rgba(212,175,55,0.04) 56%,
+      transparent 78%
+    );
+  filter: blur(34px);
+  opacity: 0.72;
+  transform: scale(0.92);
+  animation: memoryLightBreath 9s ease-in-out infinite;
+  z-index: 0;
+}
+
+.memory-frame .photo-placeholder {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0;
+  box-shadow:
+    0 22px 70px rgba(0,0,0,0.42),
+    0 0 0 1px rgba(255,255,255,0.04);
+  transform: translateZ(0);
+  animation: memoryFrameBreath 8s ease-in-out infinite;
+}
+
+@keyframes memoryLightBreath {
+  0%, 100% {
+    opacity: 0.52;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes memoryFrameBreath {
+  0%, 100% {
+    box-shadow:
+      0 24px 80px rgba(0,0,0,0.46),
+      0 0 0 1px rgba(255,255,255,0.045);
+  }
+
+  50% {
+    box-shadow:
+      0 34px 110px rgba(0,0,0,0.58),
+      0 0 0 1px rgba(255,255,255,0.07);
+  }
+}
+
+
+/* ===========================
+   Scroll Reveal Animation
+=========================== */
+
+.reveal {
+
+    opacity:0;
+
+    transform:translateY(60px) scale(.96);
+
+    filter:blur(8px);
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s cubic-bezier(.22,.61,.36,1),
+        filter 1.2s ease;
+
+}
+
+.reveal.active{
+
+    opacity:1;
+
+    transform:translateY(0) scale(1);
+
+    filter:blur(0);
+
+}
+
+.chapter-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.chapter-moment {
+  margin-top: 44px;
+}
+
+.chapter-moment .intro-text {
+  margin-top: 18px;
+}
+
+.chapter-card h1 {
+  margin-bottom: 32px;
+}
+
+.chapter-moment {
+  margin-top: 36px;
+}
+
+.chapter-moment:first-of-type {
+  margin-top: 0;
+}
+
+.reveal-child {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.reveal.active .reveal-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal.active .delay-1 {
+  transition-delay: 0.12s;
+}
+
+.reveal.active .delay-2 {
+  transition-delay: 0.24s;
+}
+
+.reveal.active .delay-3 {
+  transition-delay: 0.36s;
+}
+
+.photo-placeholder img {
+  position: absolute;
+  left: 0;
+  top: -6%;
+
+  width: 100%;
+  height: 112%;
+
+  object-fit: cover;
+
+  transform: translateY(0) scale(1.1);
+
+  transition:
+    transform 2.8s ease,
+    filter 2.8s ease;
+
+  filter: brightness(.82);
+
+  will-change: transform;
+}
+
+
+
+.chapter-moment:first-of-type .photo-placeholder {
+
+    aspect-ratio: 4 / 5;
+
+    min-height: 72vh;
+
+}
+
+.chapter-moment:first-of-type img{
+
+    object-fit: cover;
+
+}
+
+.music-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  z-index: 999;
+  background: rgba(11, 11, 11, 0.75);
+  backdrop-filter: blur(10px);
+}
+
+.music-toggle.playing {
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.2);
+}
+
+.music-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+
+/* =========================================
+   MAHJONG GAME — CLEAN CONSOLIDATED STYLES
+========================================= */
+
+.story-section[data-scene="mahjongMemory"] {
+  width: 100%;
+}
+
+.mahjong-card {
+  position: relative;
+  width: min(94vw, 760px);
+  max-width: 760px;
+  padding: 54px 34px 48px;
+  text-align: center;
+  border-radius: 34px;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 38%,
+      rgba(212, 175, 55, 0.09),
+      transparent 44%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(31, 56, 43, 0.82),
+      rgba(11, 24, 18, 0.97) 68%,
+      rgba(5, 12, 9, 0.99) 100%
+    );
+
+  border: 1px solid rgba(212, 175, 55, 0.2);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 -60px 120px rgba(0, 0, 0, 0.38),
+    0 32px 90px rgba(0, 0, 0, 0.5),
+    0 0 70px rgba(212, 175, 55, 0.035);
+
+  overflow: hidden;
+}
+
+.mahjong-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      35deg,
+      rgba(255, 255, 255, 0.022) 0,
+      rgba(255, 255, 255, 0.022) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.mahjong-card::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 26px;
+  border: 1px solid rgba(212, 175, 55, 0.075);
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+.mahjong-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mahjong-card .small-text {
+  color: rgba(225, 222, 210, 0.62);
+}
+
+.mahjong-card h1 {
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.36);
+}
+
+.mahjong-card > .intro-text {
+  color: rgba(225, 222, 210, 0.7);
+}
+
+/* Shared physical tile material */
+
+.mahjong-tile,
+.table-tile,
+.mahjong-discarded-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fffdf4 0%,
+      #f3ead7 58%,
+      #d8c8a9 100%
+    );
+
+  border: 1px solid rgba(255, 248, 220, 0.75);
+
+  box-shadow:
+    inset 2px 2px 3px rgba(255, 255, 255, 0.95),
+    inset -3px -4px 5px rgba(88, 66, 38, 0.2),
+    0 5px 0 #61725b,
+    0 9px 18px rgba(0, 0, 0, 0.42);
+
+  overflow: hidden;
+}
+
+.mahjong-tile-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  transform: none;
+  animation: none;
+  filter: none;
+}
+
+.mahjong-tile-back-image {
+  object-fit: cover;
+}
+
+/* Main table tile */
+
+.table-tile {
+  width: 82px;
+  height: 106px;
+  margin: 34px auto 30px;
+  padding: 10px;
+  border-radius: 13px;
+
+  transition:
+    transform 0.65s cubic-bezier(.22, .61, .36, 1),
+    opacity 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.table-tile.glow {
+  box-shadow:
+    inset 2px 2px 3px rgba(255, 255, 255, 0.95),
+    inset -3px -4px 5px rgba(88, 66, 38, 0.2),
+    0 5px 0 #61725b,
+    0 14px 28px rgba(0, 0, 0, 0.42),
+    0 0 34px rgba(212, 175, 55, 0.35);
+}
+
+.table-tile.fly-away {
+  transform: translateY(120px) scale(0.72);
+  opacity: 0;
+}
+
+.table-tile.reveal-winning {
+  animation: revealWinningTile 0.75s ease forwards;
+}
+
+/* Player hand */
+
+.mahjong-hand {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 7px;
+  width: 100%;
+  max-width: 100%;
+  margin: 24px auto 18px;
+  transition: all 0.45s ease;
+}
+
+.mahjong-tile {
+  width: 42px;
+  height: 58px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.mahjong-tile.discard-choice {
+  cursor: pointer;
+}
+
+/* Every tile behaves identically, so there is no visual clue. */
+.mahjong-tile.discard-choice:hover {
+  border-color: rgba(255, 248, 220, 0.75);
+}
+
+.mahjong-tile.wrong-discard {
+  animation: wrongDiscardShake 0.5s ease;
+}
+
+@keyframes wrongDiscardShake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+
+  20% {
+    transform: translateX(-5px) rotate(-1deg);
+  }
+
+  40% {
+    transform: translateX(5px) rotate(1deg);
+  }
+
+  60% {
+    transform: translateX(-4px) rotate(-0.7deg);
+  }
+
+  80% {
+    transform: translateX(3px) rotate(0.5deg);
+  }
+}
+
+.mahjong-tile.dealt {
+  animation: tileDealt 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Discard area */
+
+.mahjong-discard-area {
+  height: 58px;
+  margin: 8px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mahjong-discarded-tile {
+  width: 42px;
+  height: 58px;
+  border-radius: 8px;
+  opacity: 0.72;
+  animation: discardLand 0.45s ease forwards;
+}
+
+.mahjong-choice-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.mahjong-choice-row .mahjong-action {
+  margin-top: 0;
+}
+
+.mahjong-pass {
+  color: rgba(225, 222, 210, 0.7);
+  border-color: rgba(225, 222, 210, 0.28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25, 30, 27, 0.78),
+      rgba(8, 12, 10, 0.9)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 20px rgba(0, 0, 0, 0.34);
+}
+
+.pass-shake {
+  animation: mahjongPassShake 0.48s ease;
+}
+
+@keyframes mahjongPassShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+
+/* Game actions */
+
+.mahjong-action {
+  position: relative;
+  min-width: 112px;
+  margin-top: 22px;
+  padding: 15px 30px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(212, 175, 55, 0.68);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(212, 175, 55, 0.16),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(31, 38, 29, 0.94),
+      rgba(9, 15, 11, 0.98)
+    );
+
+  color: #f5edd8;
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 22px rgba(0, 0, 0, 0.4),
+    0 0 22px rgba(212, 175, 55, 0.08);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    color 0.35s ease;
+}
+
+.mahjong-action::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 245, 215, 0.18),
+      transparent
+    );
+
+  transform: skewX(-22deg);
+  transition: left 0.7s ease;
+}
+
+/* Hover animation only on devices with a real mouse */
+@media (hover: hover) and (pointer: fine) {
+  .mahjong-action:hover::before {
+    left: 150%;
+  }
+
+  .mahjong-action:hover {
+    transform: translateY(-3px);
+    color: #fff8e7;
+    border-color: rgba(212, 175, 55, 0.95);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 11px 28px rgba(0, 0, 0, 0.46),
+      0 0 32px rgba(212, 175, 55, 0.18);
+  }
+
+  .mahjong-pass:hover {
+    color: rgba(245, 237, 216, 0.9);
+    border-color: rgba(212, 175, 55, 0.48);
+  }
+}
+
+.mahjong-action:active {
+  transform: translateY(0) scale(0.97);
+}
+
+#huBtn {
+  min-width: 124px;
+  border-color: rgba(212, 175, 55, 0.82);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(212, 175, 55, 0.18),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(42, 32, 18, 0.98),
+      rgba(17, 12, 7, 0.99)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 10px 28px rgba(0, 0, 0, 0.48),
+    0 0 28px rgba(212, 175, 55, 0.13);
+
+  animation: huButtonBreath 2.3s ease-in-out infinite;
+}
+
+#huBtn:hover {
+  animation-play-state: paused;
+}
+
+.mahjong-instruction {
+  color: rgba(225, 222, 210, 0.62);
+  line-height: 1.8;
+  letter-spacing: 0.015em;
+  max-width: 340px;
+  margin: 26px auto 0;
+  min-height: 1.8em;
+}
+
+.mahjong-instruction strong {
+  color: var(--text);
+  letter-spacing: 0.08em;
+}
+
+.mahjong-replay {
+  margin-top: 10px;
+  padding: 12px 24px;
+  font-size: 0.85rem;
+}
+
+.winning-hand .mahjong-tile {
+  animation: winPulse 0.7s ease;
+  border-color: rgba(212, 175, 55, 0.65);
+  box-shadow:
+    inset 2px 2px 3px rgba(255, 255, 255, 0.95),
+    inset -3px -4px 5px rgba(88, 66, 38, 0.2),
+    0 5px 0 #61725b,
+    0 9px 18px rgba(0, 0, 0, 0.42),
+    0 0 22px rgba(212, 175, 55, 0.16);
+}
+
+/* Mahjong animations */
+
+@keyframes revealWinningTile {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes discardLand {
+  from {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.9);
+  }
+
+  to {
+    opacity: 0.72;
+    transform: translateY(0) scale(0.94);
+  }
+}
+
+@keyframes tileDealt {
+  0% {
+    opacity: 0;
+    transform: translateY(-90px) scale(0.96);
+    filter: blur(2px);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateY(5px) scale(1.02);
+    filter: blur(0);
+  }
+
+  82% {
+    transform: translateY(-2px) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes winPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.07);
+  }
+}
+
+@keyframes huButtonBreath {
+  0%,
+  100% {
+    transform: translateY(0);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.09),
+      0 10px 28px rgba(0, 0, 0, 0.48),
+      0 0 22px rgba(212, 175, 55, 0.1);
+  }
+
+  50% {
+    transform: translateY(-2px);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 13px 32px rgba(0, 0, 0, 0.52),
+      0 0 38px rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* Mobile Mahjong */
+
+@media (max-width: 600px) {
+
+  .memory-box {
+    width: 176px;
+    height: 124px;
+    margin-top: 26px;
+    transform: scale(0.94);
+  }
+
+  .memory-box.open {
+    transform: translateY(-2px) scale(0.94);
+  }
+
+  .story-section[data-scene="mahjongMemory"] {
+    width: 100%;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .mahjong-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 38px 8px 34px;
+    border-radius: 26px;
+
+    background:
+      radial-gradient(
+        ellipse at 50% 38%,
+        rgba(212, 175, 55, 0.12),
+        transparent 43%
+      ),
+      radial-gradient(
+        ellipse at center,
+        rgba(29, 60, 44, 0.96),
+        rgba(10, 29, 20, 0.99) 70%,
+        rgba(4, 14, 9, 1) 100%
+      );
+
+    overflow: hidden;
+  }
+
+  .mahjong-card::after {
+    inset: 7px;
+    border-radius: 20px;
+  }
+
+  .mahjong-card h1 {
+    font-size: clamp(3.1rem, 16vw, 4.3rem);
+    line-height: 0.9;
+    margin-bottom: 24px;
+  }
+
+  .mahjong-card > .small-text {
+    padding: 0 8px;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .mahjong-card > .intro-text {
+    max-width: 340px;
+    padding: 0 10px;
+    margin-bottom: 28px;
+    font-size: 0.94rem;
+    line-height: 1.7;
+  }
+
+  .table-tile {
+    width: 68px;
+    height: 88px;
+    margin: 28px auto 30px;
+    padding: 7px;
+    border-radius: 11px;
+  }
+
+  /*
+    Flexbox keeps both 13-tile and 14-tile hands centered.
+    Each tile keeps the width it would use in a 14-tile hand.
+  */
+  .mahjong-hand {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 100%;
+    gap: 2px;
+    margin: 22px auto 18px;
+    padding: 8px 1px 10px;
+    overflow: hidden;
+  }
+
+  .mahjong-tile {
+    width: calc((100% - 26px) / 14);
+    height: auto;
+    min-width: 0;
+    flex: 0 0 calc((100% - 26px) / 14);
+    aspect-ratio: 42 / 58;
+    padding: 1px;
+    border-radius: 5px;
+
+    box-shadow:
+      inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+      inset -1px -2px 3px rgba(88, 66, 38, 0.18),
+      0 3px 0 #61725b,
+      0 5px 8px rgba(0, 0, 0, 0.34);
+  }
+
+  .mahjong-discard-area {
+    height: 56px;
+    margin: 10px auto 16px;
+  }
+
+  .mahjong-discarded-tile {
+    width: 34px;
+    height: 47px;
+    padding: 2px;
+    border-radius: 6px;
+  }
+  .mahjong-choice-row {
+    gap: 10px;
+  }
+
+  .mahjong-choice-row .mahjong-action {
+    min-width: 100px;
+    padding: 13px 18px;
+  }
+
+  .mahjong-action {
+    min-width: 108px;
+    margin-top: 20px;
+    padding: 13px 23px;
+    font-size: 0.8rem;
+    letter-spacing: 0.13em;
+  }
+
+  #huBtn {
+    min-width: 116px;
+    padding: 14px 26px;
+    font-size: 0.84rem;
+  }
+
+  .mahjong-instruction {
+    max-width: 310px;
+    padding: 0 12px;
+    margin-top: 24px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .mahjong-replay {
+    margin-top: 12px;
+    padding: 12px 22px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (hover: none) {
+  .mahjong-action:hover {
+    transform: none;
+  }
+
+  .mahjong-action:hover::before {
+    left: -120%;
+  }
+}
+
+.hold-hand-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.hold-hand-button {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  padding: 0;
+  margin-top: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,175,55,0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hold-hand-button:hover {
+  transform: translateY(0);
+}
+
+.hold-hand-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 2.6rem;
+  color: var(--text);
+  transition:
+    transform 0.5s ease,
+    color 0.5s ease;
+}
+
+.hold-hand-progress {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    rgba(212,175,55,0.75) 0deg,
+    rgba(212,175,55,0.75) 0deg,
+    transparent 0deg
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hold-hand-button.holding .hold-hand-progress {
+  opacity: 1;
+  animation: holdProgress 2.2s linear forwards;
+}
+
+.hold-hand-button.holding .hold-hand-icon {
+  transform: scale(0.92);
+  color: var(--gold);
+}
+
+.hold-hand-button.completed {
+  border-color: rgba(212,175,55,0.85);
+  box-shadow: 0 0 42px rgba(212,175,55,0.22);
+}
+
+.hold-hand-button.completed .hold-hand-icon {
+  color: var(--gold);
+  transform: scale(1.08);
+}
+
+.hold-hand-instruction {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 320px;
+  margin: 24px auto 0;
+}
+
+@keyframes holdProgress {
+  from {
+    background: conic-gradient(
+      rgba(212,175,55,0.75) 0deg,
+      transparent 0deg
+    );
+  }
+
+  to {
+    background: conic-gradient(
+      rgba(212,175,55,0.75) 360deg,
+      transparent 360deg
+    );
+  }
+}
+
+.letter-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.envelope {
+  position: relative;
+  width: 260px;
+  height: 170px;
+  margin: 10px auto 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  transform-style: preserve-3d;
+}
+
+.envelope:hover {
+  transform: translateY(-3px);
+  box-shadow: none;
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #efe6d5, #cdbf9d);
+  border: 1px solid rgba(212,175,55,0.35);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.42);
+}
+
+.envelope-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(255,255,255,0.22) 50%, transparent 51%),
+    linear-gradient(225deg, transparent 49%, rgba(0,0,0,0.08) 50%, transparent 51%),
+    linear-gradient(145deg, #dfd2b8, #bcae8f);
+  z-index: 4;
+}
+
+.envelope-flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 96px;
+  background: linear-gradient(145deg, #f1e7d2, #c8b894);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
+}
+
+.letter-paper {
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  width: 216px;
+  min-height: 138px;
+  padding: 24px 20px;
+  border-radius: 8px;
+  background: #f7f0e4;
+  color: #2b2118;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  line-height: 1.45;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(42px) scale(0.96);
+  transition:
+    opacity 0.65s ease,
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.8s ease,
+    min-height 0.8s ease;
+  z-index: 3;
+  box-shadow: 0 14px 35px rgba(0,0,0,0.25);
+}
+
+.letter-paper p {
+  margin: 0;
+}
+
+.envelope.opened .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+.envelope.opened .letter-paper {
+  opacity: 1;
+  transform: translateY(-74px) scale(1);
+}
+
+.envelope.unfolded {
+  width: 300px;
+  height: 360px;
+}
+
+.envelope.unfolded .envelope-back,
+.envelope.unfolded .envelope-front,
+.envelope.unfolded .envelope-flap {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope.unfolded .letter-paper {
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  min-height: 360px;
+  padding: 34px 28px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  font-size: 1.25rem;
+}
+
+.letter-instruction {
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 28px auto 0;
+}
+
+.letter-next {
+  margin-top: 22px;
+}
+
+@media (max-width: 430px) {
+  .envelope {
+    width: 240px;
+    height: 158px;
+  }
+
+  .envelope-flap {
+    width: 240px;
+    height: 90px;
+  }
+
+  .letter-paper {
+    left: 20px;
+    width: 200px;
+  }
+
+  .envelope.unfolded {
+    width: 300px;
+    height: 380px;
+  }
+
+  .envelope.unfolded .letter-paper {
+    width: 300px;
+    min-height: 380px;
+  }
+}
+
+.ending-card {
+  width: 100%;
+  max-width: 460px;
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 0;
+}
+
+.ending-line,
+.ending-body,
+.ending-final {
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.ending-line {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.ending-title {
+  margin: 42px 0 26px;
+}
+
+.ending-body {
+  font-size: 1rem;
+  max-width: 320px;
+}
+
+.ending-final {
+  margin-top: 72px;
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+}
+
+.reveal.active .ending-delay-1 {
+  animation: endingFadeUp 1.2s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.reveal.active .ending-delay-2 {
+  animation: endingFadeUp 1.2s ease forwards;
+  animation-delay: 1.5s;
+}
+
+.reveal.active .ending-delay-3 {
+  animation: endingFadeUp 1.4s ease forwards;
+  animation-delay: 2.8s;
+}
+
+.reveal.active .ending-delay-4 {
+  animation: endingFadeUp 1.2s ease forwards;
+  animation-delay: 4.1s;
+}
+
+.reveal.active .ending-delay-5 {
+  animation: endingFinalGlow 1.8s ease forwards;
+  animation-delay: 5.6s;
+}
+
+.ending-line,
+.ending-title,
+.ending-body,
+.ending-final {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@keyframes endingFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes endingFinalGlow {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+    filter: blur(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    text-shadow: 0 0 28px rgba(212,175,55,0.22);
+  }
+}
+
+.breath-card {
+  width: 100%;
+  max-width: 420px;
+  min-height: 58vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.breath-line {
+  color: var(--muted);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.9rem, 8vw, 3.2rem);
+  line-height: 1.1;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal.active .breath-delay-1 {
+  animation: breathFadeUp 1.2s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.reveal.active .breath-delay-2 {
+  animation: breathFadeUp 1.2s ease forwards;
+  animation-delay: 1.1s;
+}
+
+.reveal.active .breath-delay-3 {
+  animation: breathFadeUp 1.4s ease forwards;
+  animation-delay: 2s;
+  color: var(--text);
+}
+
+.reveal.active .breath-delay-4 {
+  animation: breathFadeUp 1.4s ease forwards;
+  animation-delay: 2.9s;
+  color: var(--text);
+}
+
+@keyframes breathFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-placeholder img {
+    will-change: auto;
+    transform: scale(1.06);
+    transition:
+      transform 2.2s ease,
+      filter 2.2s ease;
+  }
+
+  .memory-light {
+    filter: blur(22px);
+    animation-duration: 12s;
+  }
+
+  .memory-frame .photo-placeholder {
+    animation: none;
+    box-shadow:
+      0 18px 48px rgba(0,0,0,0.42),
+      0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .memory-pair {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+
+    width: calc(100vw - 28px);
+    height: min(56vh, 440px);
+  }
+
+  .memory-pair-photo {
+    border-radius: 18px;
+  }
+
+  .memory-pair-photo:first-child {
+    transform: translateY(-6px);
+  }
+
+  .memory-pair-photo:last-child {
+    transform: translateY(6px);
+  }
+
+  .memory-pair-photo img {
+    animation: none;
+    transform: scale(1.03);
+  }
+
+  .dust-particle:nth-child(n + 19) {
+    display: none;
+  }
+
+  .reveal {
+    filter: blur(4px);
+    transition:
+      opacity 0.85s ease,
+      transform 0.85s ease,
+      filter 0.85s ease;
+  }
+}
+
+/* Mobile live-photo motion without JavaScript parallax */
+@media (max-width: 768px) {
+  .photo-placeholder img {
+    transform: scale(1.08) translateY(0);
+    animation: mobilePhotoDrift 8s ease-in-out infinite alternate;
+    filter: brightness(0.9);
+  }
+
+  .reveal.active .photo-placeholder img {
+    filter: brightness(1);
+  }
+
+  @keyframes mobilePhotoDrift {
+    from {
+      transform: scale(1.08) translateY(0);
+    }
+
+    to {
+      transform: scale(1.12) translateY(-8px);
+    }
+  }
+}
+
+/* ===========================
+   Cinematic Adventure Carousel
+=========================== */
+
+.adventure-carousel-card {
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+.adventure-carousel-card > h1 {
+  padding: 0 24px;
+}
+
+.adventure-carousel-card > .small-text,
+.adventure-carousel-card > .intro-text {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.adventure-carousel-shell {
+  position: relative;
+  width: 100%;
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.adventure-carousel {
+  --adventure-width: min(74vw, 360px);
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding-top: 30px;
+  padding-bottom: 38px;
+
+  padding-left:
+    calc((100vw - var(--adventure-width)) / 2);
+
+  padding-right:
+    calc((100vw - var(--adventure-width)) / 2);
+
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+
+  scrollbar-width: none;
+
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+
+.adventure-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.adventure-carousel.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.adventure-slide {
+  flex: 0 0 var(--adventure-width);
+
+  aspect-ratio: 4 / 5;
+
+
+  border-radius: 28px;
+  overflow: hidden;
+
+  contain: layout paint;
+  will-change: transform, opacity;
+
+  opacity: 0.48;
+
+  transform:
+    scale(0.86)
+    translateZ(0);
+
+  filter:
+    blur(1.5px)
+    brightness(0.7)
+    saturate(0.78);
+
+  border:
+    1px solid rgba(212, 175, 55, 0.12);
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.3);
+
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    border-color 0.8s ease,
+    box-shadow 0.8s ease;
+}
+
+.adventure-slide.is-active {
+  opacity: 1;
+
+  transform:
+    scale(1)
+    translateZ(0);
+
+  filter:
+    blur(0)
+    brightness(1)
+    saturate(1);
+
+  border-color:
+    rgba(212, 175, 55, 0.34);
+
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.52),
+    0 0 34px rgba(212, 175, 55, 0.08);
+}
+
+.adventure-slide img {
+  position: static;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transform: none;
+  animation: none;
+  filter: none;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.adventure-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: 12%;
+
+  pointer-events: none;
+  z-index: 4;
+}
+
+.adventure-edge-left {
+  left: 0;
+
+  background:
+    linear-gradient(
+      to right,
+      var(--atmosphere-base),
+      transparent
+    );
+}
+
+.adventure-edge-right {
+  right: 0;
+
+  background:
+    linear-gradient(
+      to left,
+      var(--atmosphere-base),
+      transparent
+    );
+}
+
+.adventure-swipe-hint {
+  margin: 2px auto 38px;
+
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+
+  opacity: 0.68;
+}
+
+.adventure-reflection {
+  margin-top: 46px;
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(4px);
+
+  transition:
+    opacity 1.1s ease,
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.1s ease;
+}
+
+.reveal.adventure-reflection.active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.adventure-final-text {
+  max-width: 390px;
+
+  margin:
+    100px auto 44px;
+
+  padding:
+    0 26px;
+
+  color: var(--text);
+
+  font-family:
+    'Cormorant Garamond',
+    serif;
+
+  font-size:
+    clamp(1.8rem, 7vw, 2.8rem);
+
+  line-height: 1.25;
+
+
+  opacity: 0;
+  transform: translateY(34px) scale(0.985);
+  filter: blur(6px);
+
+  transition:
+    opacity 1.35s ease,
+    transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.35s ease;
+}
+
+.reveal.adventure-final-text.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+
+@media (max-width: 600px) {
+  .adventure-carousel {
+    --adventure-width: 72vw;
+
+    gap: 14px;
+
+    padding-top: 20px;
+    padding-bottom: 28px;
+  }
+
+  .adventure-slide {
+    border-radius: 22px;
+
+    opacity: 0.38;
+
+    transform: scale(0.9) translateZ(0);
+
+    filter:
+      blur(2.5px)
+      brightness(0.72)
+      saturate(0.78);
+  }
+
+  .adventure-slide.is-active {
+    opacity: 1;
+
+    transform: scale(0.98) translateZ(0);
+
+    filter:
+      blur(0)
+      brightness(1)
+      saturate(1);
+  }
+
+  .adventure-edge {
+    width: 9%;
+  }
+
+  .adventure-reflection {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+}
+
+@media (min-width: 900px) {
+  .adventure-carousel {
+    --adventure-width: 380px;
+
+    padding-left:
+      calc((100vw - var(--adventure-width)) / 2);
+
+    padding-right:
+      calc((100vw - var(--adventure-width)) / 2);
+  }
+}
