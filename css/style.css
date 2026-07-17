@@ -2416,3 +2416,405 @@ button {
       calc((100vw - var(--adventure-width)) / 2);
   }
 }
+
+
+/* =========================================
+   WEDDING HERO — OPENING INVITATION
+========================================= */
+
+.wedding-hero-scene {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 100vh;
+  min-height: 100svh;
+
+  padding:
+    max(40px, env(safe-area-inset-top))
+    24px
+    max(40px, env(safe-area-inset-bottom));
+
+  isolation: isolate;
+}
+
+/* Quiet central glow */
+.wedding-hero-scene::before {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  top: 43%;
+
+  width: min(680px, 110vw);
+  aspect-ratio: 1;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(212, 175, 55, 0.075) 0%,
+      rgba(212, 175, 55, 0.025) 38%,
+      transparent 70%
+    );
+
+  filter: blur(24px);
+  pointer-events: none;
+  z-index: -1;
+
+  animation: weddingAtmosphereBreath 9s ease-in-out infinite;
+}
+
+/* Very restrained vignette */
+.wedding-hero-scene::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 34%,
+      rgba(0, 0, 0, 0.28) 72%,
+      rgba(0, 0, 0, 0.66) 100%
+    );
+
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wedding-hero {
+  width: 100%;
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  animation: weddingHeroArrival 2.2s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.wedding-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+}
+
+.wedding-name {
+  display: block;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(4rem, 17vw, 7.6rem);
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+
+  color: #f5f1e8;
+
+  text-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.42),
+    0 0 30px rgba(212, 175, 55, 0.025);
+}
+
+.wedding-name-groom {
+  animation: weddingTextBreathe 8s ease-in-out infinite;
+}
+
+.wedding-name-bride {
+  animation: weddingTextBreathe 8s ease-in-out 1.1s infinite;
+}
+
+.wedding-ampersand {
+  display: block;
+
+  margin: 10px 0 12px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.25rem, 8vw, 3.8rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+
+  color: rgba(212, 175, 55, 0.88);
+
+  animation: weddingAmpersandBreathe 7s ease-in-out infinite;
+}
+
+.wedding-hero-divider {
+  width: 46px;
+  height: 1px;
+
+  margin: 34px auto 30px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.72),
+      transparent
+    );
+
+  transform-origin: center;
+  animation: weddingDividerReveal 1.8s ease 0.65s both;
+}
+
+.wedding-invitation-copy {
+  width: 100%;
+}
+
+.wedding-family-text,
+.wedding-invitation-text,
+.wedding-future-text {
+  margin-left: auto;
+  margin-right: auto;
+
+  color: rgba(245, 241, 232, 0.72);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+}
+
+.wedding-family-text {
+  margin-top: 0;
+  margin-bottom: 12px;
+
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  line-height: 1.7;
+  text-transform: uppercase;
+
+  animation: weddingCopyReveal 1.6s ease 0.9s both;
+}
+
+.wedding-invitation-text {
+  margin-top: 0;
+  margin-bottom: 9px;
+
+  font-size: clamp(0.95rem, 3.4vw, 1.08rem);
+  letter-spacing: 0.035em;
+  line-height: 1.8;
+
+  animation: weddingCopyReveal 1.6s ease 1.15s both;
+}
+
+.wedding-future-text {
+  max-width: 340px;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  color: rgba(245, 241, 232, 0.9);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.55rem, 6vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1.15;
+
+  animation: weddingCopyReveal 1.7s ease 1.4s both;
+}
+
+.wedding-open-button {
+  min-width: 174px;
+
+  margin-top: 42px;
+  padding: 14px 26px;
+
+  border-color: rgba(212, 175, 55, 0.45);
+
+  color: rgba(245, 241, 232, 0.88);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.008)
+    );
+
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 12px 34px rgba(0, 0, 0, 0.24);
+
+  animation:
+    weddingButtonReveal 1.6s ease 1.8s both,
+    weddingButtonBreathe 5s ease-in-out 3.4s infinite;
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.wedding-open-button.is-opening {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wedding-open-button:hover {
+    border-color: rgba(212, 175, 55, 0.82);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 14px 38px rgba(0, 0, 0, 0.28),
+      0 0 25px rgba(212, 175, 55, 0.09);
+
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes weddingHeroArrival {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes weddingTextBreathe {
+  0%,
+  100% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.008);
+  }
+}
+
+@keyframes weddingAmpersandBreathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes weddingAtmosphereBreath {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes weddingDividerReveal {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes weddingCopyReveal {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes weddingButtonReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes weddingButtonBreathe {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.035),
+      0 12px 34px rgba(0, 0, 0, 0.24),
+      0 0 0 rgba(212, 175, 55, 0);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      0 14px 38px rgba(0, 0, 0, 0.28),
+      0 0 22px rgba(212, 175, 55, 0.07);
+  }
+}
+
+@media (max-width: 600px) {
+  .wedding-hero-scene {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .wedding-name {
+    font-size: clamp(3.8rem, 19vw, 5.5rem);
+  }
+
+  .wedding-ampersand {
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
+  .wedding-hero-divider {
+    margin-top: 28px;
+    margin-bottom: 25px;
+  }
+
+  .wedding-open-button {
+    margin-top: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wedding-hero,
+  .wedding-name,
+  .wedding-ampersand,
+  .wedding-hero-divider,
+  .wedding-family-text,
+  .wedding-invitation-text,
+  .wedding-future-text,
+  .wedding-open-button,
+  .wedding-hero-scene::before {
+    animation: none;
+  }
+}

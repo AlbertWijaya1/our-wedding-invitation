@@ -1,21 +1,24 @@
 const scenes = {
   arrival: {
-    type: "text",
-    smallText: "Before you continue...",
-    title: "I made something for you.",
-    body: "Take your time. Some memories deserve to be relived slowly.",
-    button: "Ready?",
+    type: "weddingHero",
+
+    groomName: "Albert",
+    brideName: "Novia",
+
+    familyText: "Together with our families",
+    invitationText: "we invite you to celebrate",
+    futureText: "the beginning of our forever.",
+
+    button: "Open Invitation",
     next: "memoryBox"
   },
-
   memoryBox: {
     type: "box",
-    smallText: "A little memory box",
-    title: "Our Story",
+    smallText: "Something for our future",
+    title: "A Wedding Invitation",
     body: "Tap the box to open it.",
     next: "chapterIntro"
   },
-
   chapterIntro: {
   type: "text",
   smallText: "Looking through our memories...",

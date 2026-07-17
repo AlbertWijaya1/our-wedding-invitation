@@ -9,14 +9,15 @@
     app.classList.add("fade-out");
 
     setTimeout(() => {
-      if (scene.type === "box") {
-        renderMemoryBoxScene(scene);
-      } else if (scene.type === "photo") {
-        renderPhotoScene(scene);
-      } else {
-        renderTextScene(scene);
-      }
-
+  if (scene.type === "weddingHero") {
+    renderWeddingHeroScene(scene);
+  } else if (scene.type === "box") {
+    renderMemoryBoxScene(scene);
+  } else if (scene.type === "photo") {
+    renderPhotoScene(scene);
+  } else {
+    renderTextScene(scene);
+  }
       app.classList.remove("fade-out");
     }, 450);
   }
@@ -46,6 +47,75 @@
       });
     }
   }
+
+  function renderWeddingHeroScene(scene) {
+    app.innerHTML = `
+      <section class="scene wedding-hero-scene">
+        <div class="wedding-hero">
+
+          <div class="wedding-names" aria-label="${scene.groomName} and ${scene.brideName}">
+            <span class="wedding-name wedding-name-groom">
+              ${scene.groomName}
+            </span>
+
+            <span class="wedding-ampersand" aria-hidden="true">
+              &amp;
+            </span>
+
+            <span class="wedding-name wedding-name-bride">
+              ${scene.brideName}
+            </span>
+          </div>
+
+          <div class="wedding-hero-divider" aria-hidden="true"></div>
+
+          <div class="wedding-invitation-copy">
+            <p class="wedding-family-text">
+              ${scene.familyText}
+            </p>
+
+            <p class="wedding-invitation-text">
+              ${scene.invitationText}
+            </p>
+
+            <p class="wedding-future-text">
+              ${scene.futureText}
+            </p>
+          </div>
+
+          <button
+            class="wedding-open-button"
+            id="weddingOpenBtn"
+            type="button"
+          >
+            ${scene.button}
+          </button>
+
+        </div>
+      </section>
+    `;
+
+    const openButton = document.getElementById("weddingOpenBtn");
+
+    if (!openButton || !scene.next) return;
+
+    openButton.addEventListener("click", () => {
+      openButton.disabled = true;
+      openButton.classList.add("is-opening");
+
+      /*
+        Browsers normally require a direct user interaction
+        before audio is allowed to play.
+      */
+      unlockExtraAudio();
+      startBackgroundMusic();
+
+      setTimeout(() => {
+        renderScene(scene.next);
+      }, 900);
+    });
+  }
+
 
   function renderMemoryBoxScene(scene) {
     app.innerHTML = `
