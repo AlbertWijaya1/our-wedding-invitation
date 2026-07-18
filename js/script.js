@@ -254,7 +254,7 @@
         document.body.classList.remove(
           "invitation-transition-active"
         );
-      }, 2450);
+      }, 2750);
     });
   }
   function renderPhotoScene(scene) {
