@@ -4286,3 +4286,33 @@ html[data-wedding-theme="chinese-luxury"] .music-toggle {
       0 8px 20px rgba(94, 50, 28, 0.045);
   }
 }
+
+/* Keep the invitation case free from generic button styling */
+html[data-wedding-theme="chinese-luxury"] .memory-box {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .memory-box:hover {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Reduce the large page-wide watermark */
+html[data-wedding-theme="chinese-luxury"] body::before {
+  color: rgba(133, 36, 34, 0.011);
+  text-shadow:
+    1px 1px 0 rgba(255, 255, 255, 0.1),
+    -1px -1px 0 rgba(111, 46, 33, 0.012);
+}
+
+/* Keep the formal invitation watermark visible, but restrained */
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  color: rgba(133, 36, 34, 0.021);
+}
+
+html[data-wedding-theme="chinese-luxury"] body:has(#memoryBoxBtn)::before {
+  opacity: 0.35;
+}
