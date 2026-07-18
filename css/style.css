@@ -4302,15 +4302,15 @@ html[data-wedding-theme="chinese-luxury"] .memory-box:hover {
 
 /* Reduce the large page-wide watermark */
 html[data-wedding-theme="chinese-luxury"] body::before {
-  color: rgba(133, 36, 34, 0.011);
-  text-shadow:
-    1px 1px 0 rgba(255, 255, 255, 0.1),
-    -1px -1px 0 rgba(111, 46, 33, 0.012);
-}
+  color: rgba(133, 36, 34, 0.018);
 
+  text-shadow:
+    1px 1px 0 rgba(255,255,255,0.12),
+    -1px -1px 0 rgba(111,46,33,0.016);
+}
 /* Keep the formal invitation watermark visible, but restrained */
 html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
-  color: rgba(133, 36, 34, 0.021);
+  color: rgba(133,36,34,0.045);
 }
 
 html[data-wedding-theme="chinese-luxury"] body:has(#memoryBoxBtn)::before {
@@ -4605,7 +4605,7 @@ html[data-wedding-theme="chinese-luxury"] body:has(#memoryBoxBtn)::before {
     scale(0.8);
 
   color:
-    rgba(124, 31, 30, 0.035);
+    rgba(124, 31, 30, 0.085);
 
   font-family:
     "Noto Serif SC",
@@ -4640,23 +4640,48 @@ html[data-wedding-theme="chinese-luxury"] body:has(#memoryBoxBtn)::before {
 }
 
 @keyframes invitationMarkAppear {
-  from {
+  0% {
     opacity: 0;
 
     transform:
       translate(-50%, -50%)
-      scale(0.8);
+      scale(0.82);
+
+    filter: blur(3px);
+
+    text-shadow:
+      0 0 0 rgba(255, 255, 255, 0),
+      0 0 0 rgba(105, 49, 31, 0);
   }
 
-  to {
+  45% {
+    opacity: 0.45;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.94);
+
+    filter: blur(1px);
+
+    text-shadow:
+      1px 1px 0 rgba(255, 255, 255, 0.16),
+      -1px -1px 0 rgba(105, 49, 31, 0.02);
+  }
+
+  100% {
     opacity: 1;
 
     transform:
       translate(-50%, -50%)
       scale(1);
+
+    filter: blur(0);
+
+    text-shadow:
+      1px 1px 0 rgba(255, 255, 255, 0.22),
+      -1px -1px 0 rgba(105, 49, 31, 0.045);
   }
 }
-
 
 /* =========================================================
    ANTIQUE GOLD ORNAMENT
@@ -4826,7 +4851,7 @@ html[data-wedding-theme="chinese-luxury"]
 
   .invitation-reveal-glow {
     left: 50%;
-    top: 67%;
+    top: 69%;
 
     width: 150px;
     height: 90px;
@@ -4849,7 +4874,12 @@ html[data-wedding-theme="chinese-luxury"]
 
   .invitation-paper {
     left: 50%;
-    top: 52%;
+
+    /*
+      The chest sits around the lower-middle portion
+      of the mobile scene. Start the paper there.
+    */
+    top: 68%;
 
     width: calc(100vw - 42px);
     height: min(76dvh, 660px);
@@ -4859,18 +4889,21 @@ html[data-wedding-theme="chinese-luxury"]
     opacity: 0;
 
     transform:
-      translate3d(-50%, 28%, 0)
-      scaleX(0.25)
+      translate3d(-50%, -50%, 0)
+      scaleX(0.24)
       scaleY(0.045);
 
-    transform-origin: center center;
+    /*
+      The paper expands upward from its lower edge,
+      making it feel as though it emerges from the chest.
+    */
+    transform-origin: 50% 86%;
 
     will-change: transform, opacity;
 
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
-
   .invitation-reveal.is-active
   .invitation-paper {
     animation:
@@ -4958,33 +4991,56 @@ html[data-wedding-theme="chinese-luxury"]
     opacity: 0;
 
     transform:
-      translate3d(-50%, 28%, 0)
-      scaleX(0.25)
+      translate3d(-50%, -50%, 0)
+      translateY(38px)
+      scaleX(0.22)
       scaleY(0.045);
 
     border-color:
       rgba(184, 137, 50, 0);
   }
 
-  18% {
+  16% {
     opacity: 1;
 
     transform:
-      translate3d(-50%, 14%, 0)
-      scaleX(0.68)
-      scaleY(0.07);
+      translate3d(-50%, -50%, 0)
+      translateY(14px)
+      scaleX(0.58)
+      scaleY(0.065);
   }
 
-  50% {
+  /*
+    First, the folded sheet widens while staying
+    close to the chest.
+  */
+  38% {
     opacity: 1;
 
     transform:
-      translate3d(-50%, -38%, 0)
-      scaleX(1)
-      scaleY(0.16);
+      translate3d(-50%, -50%, 0)
+      translateY(-6px)
+      scaleX(0.96)
+      scaleY(0.1);
 
     border-color:
-      rgba(184, 137, 50, 0.32);
+      rgba(184, 137, 50, 0.27);
+  }
+
+  /*
+    Then it begins rising and unfolding upward.
+  */
+  66% {
+    opacity: 1;
+
+    transform:
+      translate3d(-50%, -50%, 0)
+      translateY(-124px)
+      scaleX(1)
+      scaleY(0.48);
+
+    border-color:
+      rgba(184, 137, 50, 0.4);
   }
 
   100% {
@@ -4992,6 +5048,7 @@ html[data-wedding-theme="chinese-luxury"]
 
     transform:
       translate3d(-50%, -50%, 0)
+      translateY(-182px)
       scaleX(1)
       scaleY(1);
 
@@ -5010,25 +5067,49 @@ html[data-wedding-theme="chinese-luxury"]
   }
 }
 
-
 @keyframes invitationMarkAppearMobile {
-  from {
+  0% {
     opacity: 0;
 
     transform:
       translate3d(-50%, -50%, 0)
-      scale(0.88);
+      scale(0.82);
+
+    filter: blur(2.5px);
+
+    text-shadow:
+      0 0 0 rgba(255, 255, 255, 0),
+      0 0 0 rgba(105, 49, 31, 0);
   }
 
-  to {
+  50% {
+    opacity: 0.5;
+
+    transform:
+      translate3d(-50%, -50%, 0)
+      scale(0.95);
+
+    filter: blur(0.8px);
+
+    text-shadow:
+      1px 1px 0 rgba(255, 255, 255, 0.15),
+      -1px -1px 0 rgba(105, 49, 31, 0.022);
+  }
+
+  100% {
     opacity: 1;
 
     transform:
       translate3d(-50%, -50%, 0)
       scale(1);
+
+    filter: blur(0);
+
+    text-shadow:
+      1px 1px 0 rgba(255, 255, 255, 0.2),
+      -1px -1px 0 rgba(105, 49, 31, 0.042);
   }
 }
-
 
 @keyframes invitationOrnamentAppearMobile {
   from {
