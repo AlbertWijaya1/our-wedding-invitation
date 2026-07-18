@@ -5589,8 +5589,8 @@ html[data-wedding-theme="chinese-luxury"]
 /* Keep your current phone values for later testing */
 @media (max-width: 700px) {
   .invitation-envelope-stage {
-    --envelope-x: 25px;
-    --envelope-start-y: -220px;
+    --envelope-x: 15px;
+    --envelope-start-y: -210px;
   }
 }
 
