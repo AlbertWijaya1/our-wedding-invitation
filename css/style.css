@@ -5510,7 +5510,7 @@ html[data-wedding-theme="chinese-luxury"]
 
   animation:
     invitationEnvelopeIdleFloat
-    3.8s
+    2.6s
     ease-in-out
     infinite;
 
@@ -5528,18 +5528,18 @@ html[data-wedding-theme="chinese-luxury"]
         0
       )
       scale(1)
-      rotate(-0.5deg);
+      rotate(-0.7deg);
   }
 
   50% {
     transform:
       translate3d(
         var(--envelope-x),
-        calc(var(--envelope-start-y) - 18px),
+        calc(var(--envelope-start-y) - 26px),
         0
       )
-      scale(1.018)
-      rotate(0.5deg);
+      scale(1.025)
+      rotate(0.7deg);
   }
 }
 
