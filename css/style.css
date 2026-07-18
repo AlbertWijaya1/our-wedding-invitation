@@ -5201,25 +5201,6 @@ html[data-wedding-theme="chinese-luxury"]
 
 /* Remove the global button hover appearance */
 
-@media (hover: hover) and (pointer: fine) {
-  .invitation-envelope-stage:hover {
-    transform:
-      translateY(-5px)
-      scale(1.015);
-
-    border-color: transparent;
-
-    box-shadow: none;
-
-    filter:
-      brightness(1.025)
-      drop-shadow(
-        0 18px 28px
-        rgba(102, 64, 32, 0.1)
-      );
-  }
-}
-
 
 /* Every exported frame occupies the exact same canvas */
 
@@ -5359,29 +5340,6 @@ html[data-wedding-theme="chinese-luxury"]
 
 /* A subtle tactile reaction immediately after tapping */
 
-.invitation-envelope-stage.is-opening {
-  pointer-events: none;
-
-  animation:
-    invitationEnvelopeTap
-    0.42s
-    cubic-bezier(.22, .61, .36, 1)
-    both;
-}
-
-@keyframes invitationEnvelopeTap {
-  0% {
-    transform: scale(1);
-  }
-
-  45% {
-    transform: scale(0.975);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
 
 
 /* The final card begins approaching the viewer */
@@ -5527,4 +5485,62 @@ html[data-wedding-theme="chinese-luxury"]
       0 18px 28px
       rgba(100, 58, 26, 0.14)
     ) !important;
+}
+
+/* =========================================================
+   ENVELOPE POSITION — FINAL ALIGNMENT
+========================================================= */
+
+/* Desktop */
+.invitation-envelope-stage {
+  --envelope-x: -18px;
+  --envelope-start-y: -240px;
+
+  transform:
+    translate3d(
+      var(--envelope-x),
+      var(--envelope-start-y),
+      0
+    )
+    scale(1);
+}
+/* Move downward before the envelope-opening frames begin */
+.invitation-envelope-stage.is-opening {
+  pointer-events: none;
+
+  animation:
+    envelopeMoveIntoOpeningPosition
+    0.8s
+    cubic-bezier(.22, .72, .2, 1)
+    both;
+}
+
+@keyframes envelopeMoveIntoOpeningPosition {
+  from {
+    transform:
+      translate3d(
+        var(--envelope-x),
+        var(--envelope-start-y),
+        0
+      )
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(
+        var(--envelope-x),
+        0,
+        0
+      )
+      scale(1);
+  }
+}
+
+/* Phone-specific alignment */
+@media (max-width: 700px) {
+  .invitation-envelope-stage {
+    --envelope-x: 10px;
+    --envelope-start-y: -240px;
+  }
 }

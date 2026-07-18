@@ -349,35 +349,25 @@ preloadInvitationEnvelopeAssets();
       schedule(() => {
         showOnlyFrame("open");
         envelopeButton.classList.add("has-opened");
-      }, 380);
+      }, 850);
 
       schedule(() => {
         showOnlyFrame("peek");
-      }, 950);
+      }, 1400);
 
       schedule(() => {
         showOnlyFrame("half");
-      }, 1500);
+      }, 1950);
 
       schedule(() => {
         showOnlyFrame("full");
         envelopeButton.classList.add("card-is-full");
-      }, 2050);
-
-      /*
-        Fade the surrounding scene away as the full card
-        begins moving toward the viewer.
-      */
+      }, 2500);
 
       schedule(() => {
         sceneContent?.classList.add("is-opening");
         envelopeButton.classList.add("is-transitioning");
-      }, 2250);
-
-      /*
-        Keep your existing gold-light and unfolding-paper
-        transition as the bridge into the formal invitation.
-      */
+      }, 2700);
 
       schedule(() => {
         invitationReveal.classList.add("is-active");
@@ -385,8 +375,7 @@ preloadInvitationEnvelopeAssets();
           "aria-hidden",
           "false"
         );
-      }, 2450);
-
+      }, 2900);
       schedule(() => {
         renderStory();
 
@@ -403,7 +392,7 @@ preloadInvitationEnvelopeAssets();
         timers.forEach((timer) => {
           window.clearTimeout(timer);
         });
-      }, 4750);
+      }, 5050);
     });
   }
 
