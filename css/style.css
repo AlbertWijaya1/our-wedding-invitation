@@ -5497,7 +5497,7 @@ html[data-wedding-theme="chinese-luxury"]
 
 /* Desktop resting position */
 .invitation-envelope-stage {
-  --envelope-x: -10px;
+  --envelope-x: -40px;
   --envelope-start-y: -225px;
 
   transform:
@@ -5589,8 +5589,8 @@ html[data-wedding-theme="chinese-luxury"]
 /* Keep your current phone values for later testing */
 @media (max-width: 700px) {
   .invitation-envelope-stage {
-    --envelope-x: 10px;
-    --envelope-start-y: -240px;
+    --envelope-x: -40px;
+    --envelope-start-y: -265px;
   }
 }
 
