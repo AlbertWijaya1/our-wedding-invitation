@@ -174,33 +174,89 @@
 
   function renderMemoryBoxScene(scene) {
     app.innerHTML = `
-      <section class="scene">
-        <div class="scene-content">
+      <section class="scene memory-box-scene">
+        <div class="scene-content memory-box-scene-content">
           <p class="small-text">${scene.smallText}</p>
           <h1>${scene.title}</h1>
           <p class="intro-text">${scene.body}</p>
 
-          <button class="memory-box" id="memoryBoxBtn" aria-label="Open memory box">
+          <button
+            class="memory-box"
+            id="memoryBoxBtn"
+            type="button"
+            aria-label="Open invitation case"
+          >
             <div class="box-lid"></div>
             <div class="box-body"></div>
             <div class="box-glow"></div>
           </button>
         </div>
+
+        <div
+          class="invitation-reveal"
+          id="invitationReveal"
+          aria-hidden="true"
+        >
+          <div class="invitation-reveal-glow"></div>
+
+          <div class="invitation-paper">
+            <div class="invitation-paper-mark">囍</div>
+
+            <div class="invitation-paper-ornament">
+              <span></span>
+              <i>✦</i>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="invitation-reveal-wash"></div>
+        </div>
       </section>
     `;
 
     const memoryBoxBtn = document.getElementById("memoryBoxBtn");
+    const invitationReveal = document.getElementById("invitationReveal");
+    const sceneContent = document.querySelector(
+      ".memory-box-scene-content"
+    );
+
+    if (!memoryBoxBtn || !invitationReveal) return;
+
+    let isOpening = false;
 
     memoryBoxBtn.addEventListener("click", () => {
+      if (isOpening) return;
+
+      isOpening = true;
+
+      memoryBoxBtn.disabled = true;
       memoryBoxBtn.classList.add("open");
 
+      sceneContent?.classList.add("is-opening");
+      invitationReveal.classList.add("is-active");
+
+      document.body.classList.add(
+        "invitation-transition-active"
+      );
+
       unlockExtraAudio();
-      startBackgroundMusic();      setTimeout(() => {
+      startBackgroundMusic();
+
+      setTimeout(() => {
         renderStory();
-      }, 1650);
+
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "instant"
+        });
+
+        document.body.classList.remove(
+          "invitation-transition-active"
+        );
+      }, 2450);
     });
   }
-
   function renderPhotoScene(scene) {
     app.innerHTML = `
       <section class="scene photo-scene">

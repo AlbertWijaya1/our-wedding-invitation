@@ -4316,3 +4316,590 @@ html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
 html[data-wedding-theme="chinese-luxury"] body:has(#memoryBoxBtn)::before {
   opacity: 0.35;
 }
+
+/* =========================================================
+   INVITATION REVEAL TRANSITION
+   Chest → gold light → unfolding paper → invitation
+========================================================= */
+
+.memory-box-scene {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.memory-box-scene-content {
+  position: relative;
+  z-index: 2;
+
+  transition:
+    opacity 0.9s ease,
+    transform 1.1s cubic-bezier(.22, .61, .36, 1),
+    filter 0.9s ease;
+}
+
+.memory-box-scene-content.is-opening {
+  opacity: 0;
+
+  transform:
+    translateY(-14px)
+    scale(0.985);
+
+  filter: blur(5px);
+
+  transition-delay: 0.65s;
+}
+
+
+/* Full-screen transition layer */
+
+.invitation-reveal {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+
+  z-index: 10000;
+}
+
+.invitation-reveal.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* =========================================================
+   GOLD LIGHT BLOOM
+========================================================= */
+
+.invitation-reveal-glow {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+
+  width: 120px;
+  height: 70px;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.1);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 244, 196, 0.98) 0%,
+      rgba(235, 188, 92, 0.76) 18%,
+      rgba(210, 148, 47, 0.35) 42%,
+      rgba(198, 127, 32, 0.12) 63%,
+      transparent 78%
+    );
+
+  filter: blur(12px);
+
+  opacity: 0;
+
+  will-change: transform, opacity, filter;
+}
+
+.invitation-reveal.is-active
+.invitation-reveal-glow {
+  animation:
+    invitationGoldBloom
+    1.85s
+    cubic-bezier(.2, .7, .2, 1)
+    forwards;
+}
+
+@keyframes invitationGoldBloom {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.1);
+
+    filter: blur(8px);
+  }
+
+  20% {
+    opacity: 0.88;
+  }
+
+  58% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(7);
+
+    filter: blur(20px);
+  }
+
+  100% {
+    opacity: 0.3;
+
+    transform:
+      translate(-50%, -50%)
+      scale(13);
+
+    filter: blur(38px);
+  }
+}
+
+
+/* =========================================================
+   FOLDED IVORY PAPER
+========================================================= */
+
+.invitation-paper {
+  position: absolute;
+  left: 50%;
+  top: 61%;
+
+  width: min(78vw, 390px);
+  height: 38px;
+
+  transform:
+    translate(-50%, -50%)
+    translateY(48px)
+    scaleX(0.34)
+    scaleY(0.12);
+
+  transform-origin: center center;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(184, 137, 50, 0);
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(255, 253, 246, 0.99),
+      rgba(244, 226, 201, 0.99)
+    ),
+
+    repeating-linear-gradient(
+      10deg,
+      rgba(98, 57, 32, 0.018) 0,
+      rgba(98, 57, 32, 0.018) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+
+  box-shadow:
+    0 12px 34px rgba(105, 60, 29, 0);
+
+  opacity: 0;
+
+  will-change:
+    width,
+    height,
+    transform,
+    opacity,
+    box-shadow;
+}
+
+.invitation-reveal.is-active
+.invitation-paper {
+  animation:
+    invitationPaperUnfold
+    1.65s
+    cubic-bezier(.22, .72, .2, 1)
+    0.42s
+    forwards;
+}
+
+@keyframes invitationPaperUnfold {
+  0% {
+    height: 38px;
+
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      translateY(48px)
+      scaleX(0.34)
+      scaleY(0.12);
+
+    border-color:
+      rgba(184, 137, 50, 0);
+
+    box-shadow:
+      0 12px 34px rgba(105, 60, 29, 0);
+  }
+
+  18% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      translateY(12px)
+      scaleX(0.72)
+      scaleY(0.18);
+  }
+
+  48% {
+    height: 44px;
+
+    transform:
+      translate(-50%, -50%)
+      translateY(-18px)
+      scaleX(1)
+      scaleY(0.46);
+
+    border-color:
+      rgba(184, 137, 50, 0.34);
+  }
+
+  100% {
+    height: min(76vh, 650px);
+
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      translateY(0)
+      scaleX(1)
+      scaleY(1);
+
+    border-color:
+      rgba(184, 137, 50, 0.48);
+
+    box-shadow:
+      inset 0 0 0 8px
+        rgba(184, 137, 50, 0.025),
+
+      inset 0 0 0 9px
+        rgba(184, 137, 50, 0.12),
+
+      0 20px 55px
+        rgba(105, 60, 29, 0.12);
+  }
+}
+
+
+/* =========================================================
+   PAPER WATERMARK
+========================================================= */
+
+.invitation-paper-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.8);
+
+  color:
+    rgba(124, 31, 30, 0.035);
+
+  font-family:
+    "Noto Serif SC",
+    "Songti SC",
+    "SimSun",
+    serif;
+
+  font-size:
+    clamp(9rem, 38vw, 17rem);
+
+  font-weight: 700;
+  line-height: 1;
+
+  opacity: 0;
+
+  text-shadow:
+    1px 1px 0
+      rgba(255, 255, 255, 0.18),
+
+    -1px -1px 0
+      rgba(105, 49, 31, 0.018);
+}
+
+.invitation-reveal.is-active
+.invitation-paper-mark {
+  animation:
+    invitationMarkAppear
+    0.8s
+    ease
+    1.32s
+    forwards;
+}
+
+@keyframes invitationMarkAppear {
+  from {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   ANTIQUE GOLD ORNAMENT
+========================================================= */
+
+.invitation-paper-ornament {
+  position: absolute;
+  left: 50%;
+  top: 21%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 138px;
+
+  transform:
+    translateX(-50%)
+    translateY(10px);
+
+  opacity: 0;
+}
+
+.invitation-paper-ornament span {
+  width: 42px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(184, 137, 50, 0.72),
+      transparent
+    );
+}
+
+.invitation-paper-ornament i {
+  color: #b88932;
+
+  font-family: serif;
+  font-size: 0.72rem;
+  font-style: normal;
+}
+
+.invitation-reveal.is-active
+.invitation-paper-ornament {
+  animation:
+    invitationOrnamentAppear
+    0.7s
+    ease
+    1.5s
+    forwards;
+}
+
+@keyframes invitationOrnamentAppear {
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+}
+
+
+/* =========================================================
+   FINAL IVORY WASH
+========================================================= */
+
+.invitation-reveal-wash {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255, 250, 238, 0.98),
+      rgba(247, 234, 214, 0.99)
+    );
+
+  opacity: 0;
+
+  will-change: opacity;
+}
+
+.invitation-reveal.is-active
+.invitation-reveal-wash {
+  animation:
+    invitationIvoryWash
+    0.6s
+    ease
+    1.9s
+    forwards;
+}
+
+@keyframes invitationIvoryWash {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* Prevent accidental scrolling while it unfolds */
+
+body.invitation-transition-active {
+  overflow: hidden;
+  touch-action: none;
+}
+
+
+/* =========================================================
+   CHINESE LUXURY COLOUR REFINEMENTS
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"]
+.invitation-paper {
+  background:
+    linear-gradient(
+      150deg,
+      rgba(255, 253, 247, 0.99),
+      rgba(244, 225, 199, 0.99)
+    ),
+
+    repeating-linear-gradient(
+      10deg,
+      rgba(98, 57, 32, 0.017) 0,
+      rgba(98, 57, 32, 0.017) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+}
+
+
+/* =========================================================
+   MOBILE REFINEMENT
+========================================================= */
+
+@media (max-width: 700px) {
+  .invitation-reveal-glow {
+    top: 64%;
+  }
+
+  .invitation-paper {
+    top: 53%;
+
+    width:
+      calc(100vw - 42px);
+  }
+
+  @keyframes invitationPaperUnfold {
+    0% {
+      height: 34px;
+
+      opacity: 0;
+
+      transform:
+        translate(-50%, -50%)
+        translateY(110px)
+        scaleX(0.28)
+        scaleY(0.1);
+
+      border-color:
+        rgba(184, 137, 50, 0);
+
+      box-shadow:
+        0 12px 34px
+        rgba(105, 60, 29, 0);
+    }
+
+    18% {
+      opacity: 1;
+
+      transform:
+        translate(-50%, -50%)
+        translateY(54px)
+        scaleX(0.68)
+        scaleY(0.18);
+    }
+
+    48% {
+      height: 40px;
+
+      transform:
+        translate(-50%, -50%)
+        translateY(4px)
+        scaleX(1)
+        scaleY(0.46);
+
+      border-color:
+        rgba(184, 137, 50, 0.34);
+    }
+
+    100% {
+      height:
+        min(76svh, 660px);
+
+      opacity: 1;
+
+      transform:
+        translate(-50%, -50%)
+        translateY(0)
+        scaleX(1)
+        scaleY(1);
+
+      border-color:
+        rgba(184, 137, 50, 0.48);
+
+      box-shadow:
+        inset 0 0 0 7px
+          rgba(184, 137, 50, 0.025),
+
+        inset 0 0 0 8px
+          rgba(184, 137, 50, 0.12),
+
+        0 18px 44px
+          rgba(105, 60, 29, 0.1);
+    }
+  }
+}
+
+
+/* Respect reduced-motion accessibility preference */
+
+@media (prefers-reduced-motion: reduce) {
+  .invitation-reveal-glow,
+  .invitation-paper,
+  .invitation-paper-mark,
+  .invitation-paper-ornament,
+  .invitation-reveal-wash {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
