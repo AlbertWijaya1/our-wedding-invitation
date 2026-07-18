@@ -5395,7 +5395,7 @@ html[data-wedding-theme="chinese-luxury"]
 
 @media (max-width: 700px) {
   .invitation-envelope-stage {
-    width: min(410px, 94vw);
+    width: min(360px, 84vw);
 
     margin-top: 2px;
   }
@@ -5535,7 +5535,7 @@ html[data-wedding-theme="chinese-luxury"]
     transform:
       translate3d(
         var(--envelope-x),
-        calc(var(--envelope-start-y) - 26px),
+        calc(var(--envelope-start-y) - 22px),
         0
       )
       scale(1.025)
@@ -5589,8 +5589,8 @@ html[data-wedding-theme="chinese-luxury"]
 /* Keep your current phone values for later testing */
 @media (max-width: 700px) {
   .invitation-envelope-stage {
-    --envelope-x: -40px;
-    --envelope-start-y: -265px;
+    --envelope-x: -20px;
+    --envelope-start-y: -225px;
   }
 }
 
