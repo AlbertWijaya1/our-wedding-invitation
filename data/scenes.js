@@ -104,7 +104,7 @@ const scenes = {
     type: "box",
     smallText: "Something for our future",
     title: `${wedding.couple.groomFirstName} & ${wedding.couple.brideFirstName}`,
-    body: "Tap the invitation case to open it.",
+    body: "Tap the envelope to open your invitation.",
     next: "chapterIntro"
   },
   chapterIntro: {

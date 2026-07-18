@@ -18,6 +18,28 @@
   applyWeddingTheme();
 
 
+
+  /* =========================================
+   INVITATION ENVELOPE ASSETS
+========================================= */
+
+const invitationEnvelopeAssets = [
+  "images/envelope/envelope_closed.png",
+  "images/envelope/envelope_open.png",
+  "images/envelope/card_peek.png",
+  "images/envelope/card_half.png",
+  "images/envelope/card_full.png"
+];
+
+function preloadInvitationEnvelopeAssets() {
+  invitationEnvelopeAssets.forEach((src) => {
+    const image = new Image();
+    image.src = src;
+  });
+}
+
+preloadInvitationEnvelopeAssets();
+
   function escapeHtml(value) {
     return value.replace(/[&<>"']/g, character => {
       const entities = {
@@ -171,7 +193,6 @@
     });
   }
 
-
   function renderMemoryBoxScene(scene) {
     app.innerHTML = `
       <section class="scene memory-box-scene">
@@ -181,14 +202,55 @@
           <p class="intro-text">${scene.body}</p>
 
           <button
-            class="memory-box"
-            id="memoryBoxBtn"
+            class="invitation-envelope-stage"
+            id="invitationEnvelopeBtn"
             type="button"
-            aria-label="Open invitation case"
+            aria-label="Open wedding invitation"
           >
-            <div class="box-lid"></div>
-            <div class="box-body"></div>
-            <div class="box-glow"></div>
+            <img
+              class="invitation-envelope-frame envelope-frame-closed is-visible"
+              src="images/envelope/envelope_closed.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            >
+
+            <img
+              class="invitation-envelope-frame envelope-frame-open"
+              src="images/envelope/envelope_open.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            >
+
+            <img
+              class="invitation-envelope-frame envelope-frame-peek"
+              src="images/envelope/card_peek.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            >
+
+            <img
+              class="invitation-envelope-frame envelope-frame-half"
+              src="images/envelope/card_half.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            >
+
+            <img
+              class="invitation-envelope-frame envelope-frame-full"
+              src="images/envelope/card_full.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            >
+
+            <span
+              class="invitation-envelope-resting-glow"
+              aria-hidden="true"
+            ></span>
           </button>
         </div>
 
@@ -214,26 +276,63 @@
       </section>
     `;
 
-    const memoryBoxBtn = document.getElementById("memoryBoxBtn");
-    const invitationReveal = document.getElementById("invitationReveal");
-    const sceneContent = document.querySelector(
-      ".memory-box-scene-content"
-    );
+    const envelopeButton =
+      document.getElementById("invitationEnvelopeBtn");
 
-    if (!memoryBoxBtn || !invitationReveal) return;
+    const invitationReveal =
+      document.getElementById("invitationReveal");
+
+    const sceneContent =
+      document.querySelector(".memory-box-scene-content");
+
+    if (!envelopeButton || !invitationReveal) return;
+
+    const frames = {
+      closed: envelopeButton.querySelector(
+        ".envelope-frame-closed"
+      ),
+      open: envelopeButton.querySelector(
+        ".envelope-frame-open"
+      ),
+      peek: envelopeButton.querySelector(
+        ".envelope-frame-peek"
+      ),
+      half: envelopeButton.querySelector(
+        ".envelope-frame-half"
+      ),
+      full: envelopeButton.querySelector(
+        ".envelope-frame-full"
+      )
+    };
 
     let isOpening = false;
+    const timers = [];
 
-    memoryBoxBtn.addEventListener("click", () => {
+    function schedule(callback, delay) {
+      const timer = window.setTimeout(callback, delay);
+      timers.push(timer);
+    }
+
+    function showOnlyFrame(frameName) {
+      Object.entries(frames).forEach(([name, frame]) => {
+        if (!frame) return;
+
+        frame.classList.toggle(
+          "is-visible",
+          name === frameName
+        );
+      });
+
+      envelopeButton.dataset.envelopeFrame = frameName;
+    }
+
+    envelopeButton.addEventListener("click", () => {
       if (isOpening) return;
 
       isOpening = true;
 
-      memoryBoxBtn.disabled = true;
-      memoryBoxBtn.classList.add("open");
-
-      sceneContent?.classList.add("is-opening");
-      invitationReveal.classList.add("is-active");
+      envelopeButton.disabled = true;
+      envelopeButton.classList.add("is-opening");
 
       document.body.classList.add(
         "invitation-transition-active"
@@ -242,7 +341,53 @@
       unlockExtraAudio();
       startBackgroundMusic();
 
-      setTimeout(() => {
+      /*
+        Frame sequence:
+        closed → open → peek → half → full
+      */
+
+      schedule(() => {
+        showOnlyFrame("open");
+        envelopeButton.classList.add("has-opened");
+      }, 380);
+
+      schedule(() => {
+        showOnlyFrame("peek");
+      }, 950);
+
+      schedule(() => {
+        showOnlyFrame("half");
+      }, 1500);
+
+      schedule(() => {
+        showOnlyFrame("full");
+        envelopeButton.classList.add("card-is-full");
+      }, 2050);
+
+      /*
+        Fade the surrounding scene away as the full card
+        begins moving toward the viewer.
+      */
+
+      schedule(() => {
+        sceneContent?.classList.add("is-opening");
+        envelopeButton.classList.add("is-transitioning");
+      }, 2250);
+
+      /*
+        Keep your existing gold-light and unfolding-paper
+        transition as the bridge into the formal invitation.
+      */
+
+      schedule(() => {
+        invitationReveal.classList.add("is-active");
+        invitationReveal.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+      }, 2450);
+
+      schedule(() => {
         renderStory();
 
         window.scrollTo({
@@ -254,9 +399,14 @@
         document.body.classList.remove(
           "invitation-transition-active"
         );
-      }, 2750);
+
+        timers.forEach((timer) => {
+          window.clearTimeout(timer);
+        });
+      }, 4750);
     });
   }
+
   function renderPhotoScene(scene) {
     app.innerHTML = `
       <section class="scene photo-scene">
