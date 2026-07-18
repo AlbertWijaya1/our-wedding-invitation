@@ -197,10 +197,26 @@ preloadInvitationEnvelopeAssets();
     app.innerHTML = `
       <section class="scene memory-box-scene">
         <div class="scene-content memory-box-scene-content">
-          <p class="small-text">${scene.smallText}</p>
-          <h1>${scene.title}</h1>
-          <p class="intro-text">${scene.body}</p>
+        <p class="small-text">${scene.smallText}</p>
 
+        <div
+          class="invitation-couple-names"
+          aria-label="${wedding.couple.groomFirstName} and ${wedding.couple.brideFirstName}"
+        >
+          <span class="invitation-couple-name">
+            ${wedding.couple.groomFirstName}
+          </span>
+
+          <span class="invitation-couple-ampersand" aria-hidden="true">
+            &amp;
+          </span>
+
+          <span class="invitation-couple-name">
+            ${wedding.couple.brideFirstName}
+          </span>
+        </div>
+
+        <p class="intro-text">${scene.body}</p>
           <button
             class="invitation-envelope-stage"
             id="invitationEnvelopeBtn"
