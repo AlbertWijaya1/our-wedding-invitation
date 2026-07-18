@@ -1106,51 +1106,99 @@ app.appendChild(section);
   }
 
   function setupAtmosphereEngine() {
-    const atmospheres = [
-      {
-        scene: "chapterIntro",
-        base: [7, 6, 5],
-        glow: [212, 175, 55, 0.055],
-        glowPos: [50, 40],
-        vignette: 0.8
-      },
-      {
-        scene: "weddingDetails",
-        base: [11, 9, 7],
-        glow: [212, 175, 55, 0.065],
-        glowPos: [50, 36],
-        vignette: 0.72
-      },
-      {
-        scene: "ourJourney",
-        base: [10, 11, 14],
-        glow: [135, 150, 190, 0.05],
-        glowPos: [52, 34],
-        vignette: 0.74
-      },
-      {
-        scene: "guestDetails",
-        base: [10, 8, 7],
-        glow: [212, 175, 55, 0.055],
-        glowPos: [50, 38],
-        vignette: 0.76
-      },
-      {
-        scene: "futurePromise",
-        base: [4, 4, 4],
-        glow: [212, 175, 55, 0.035],
-        glowPos: [50, 48],
-        vignette: 0.86
-      },
-      {
-        scene: "closingInvitation",
-        base: [2, 2, 2],
-        glow: [212, 175, 55, 0.04],
-        glowPos: [50, 45],
-        vignette: 0.9
-      }
-    ];
-    function lerp(a, b, t) {
+    const isChineseLuxury =
+      document.documentElement.dataset.weddingTheme === "chinese-luxury";
+
+    const atmospheres = isChineseLuxury
+      ? [
+          {
+            scene: "chapterIntro",
+            base: [246, 235, 218],
+            glow: [221, 164, 82, 0.16],
+            glowPos: [50, 34],
+            vignette: 0.045
+          },
+          {
+            scene: "weddingDetails",
+            base: [248, 238, 223],
+            glow: [186, 53, 49, 0.075],
+            glowPos: [50, 32],
+            vignette: 0.04
+          },
+          {
+            scene: "ourJourney",
+            base: [244, 232, 213],
+            glow: [218, 159, 72, 0.13],
+            glowPos: [52, 35],
+            vignette: 0.05
+          },
+          {
+            scene: "guestDetails",
+            base: [247, 236, 220],
+            glow: [181, 45, 43, 0.065],
+            glowPos: [50, 37],
+            vignette: 0.04
+          },
+          {
+            scene: "futurePromise",
+            base: [242, 227, 207],
+            glow: [218, 157, 69, 0.12],
+            glowPos: [50, 43],
+            vignette: 0.055
+          },
+          {
+            scene: "closingInvitation",
+            base: [239, 220, 197],
+            glow: [174, 39, 38, 0.07],
+            glowPos: [50, 42],
+            vignette: 0.06
+          }
+        ]
+      : [
+          {
+            scene: "chapterIntro",
+            base: [7, 6, 5],
+            glow: [212, 175, 55, 0.055],
+            glowPos: [50, 40],
+            vignette: 0.8
+          },
+          {
+            scene: "weddingDetails",
+            base: [11, 9, 7],
+            glow: [212, 175, 55, 0.065],
+            glowPos: [50, 36],
+            vignette: 0.72
+          },
+          {
+            scene: "ourJourney",
+            base: [10, 11, 14],
+            glow: [135, 150, 190, 0.05],
+            glowPos: [52, 34],
+            vignette: 0.74
+          },
+          {
+            scene: "guestDetails",
+            base: [10, 8, 7],
+            glow: [212, 175, 55, 0.055],
+            glowPos: [50, 38],
+            vignette: 0.76
+          },
+          {
+            scene: "futurePromise",
+            base: [4, 4, 4],
+            glow: [212, 175, 55, 0.035],
+            glowPos: [50, 48],
+            vignette: 0.86
+          },
+          {
+            scene: "closingInvitation",
+            base: [2, 2, 2],
+            glow: [212, 175, 55, 0.04],
+            glowPos: [50, 45],
+            vignette: 0.9
+          }
+        ];
+  function lerp(a, b, t) {
       return a + (b - a) * t;
     }
 

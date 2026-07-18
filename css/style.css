@@ -3654,3 +3654,635 @@ button {
     padding-right: 20px;
   }
 }
+
+/* =========================================================
+   CHINESE LUXURY WEDDING THEME
+   Warm ivory paper · Chinese red · antique gold
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] {
+  color-scheme: light;
+
+  --bg: #f4e6d2;
+  --text: #762523;
+  --muted: #987365;
+  --gold: #b88932;
+
+  --chinese-red: #8f2928;
+  --chinese-red-deep: #691c1c;
+  --antique-gold: #b88932;
+  --antique-gold-light: #d9b865;
+  --paper: #f7ecdc;
+  --paper-deep: #eedbc3;
+  --ink: #69201f;
+}
+
+
+/* =========================================================
+   IVORY PAPER BACKGROUND
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"],
+html[data-wedding-theme="chinese-luxury"] body {
+  background-color: var(--paper);
+}
+
+html[data-wedding-theme="chinese-luxury"] body {
+  color: var(--ink);
+
+  background:
+    /* Soft lantern light */
+    radial-gradient(
+      ellipse at 50% 8%,
+      rgba(228, 174, 91, 0.19),
+      transparent 37%
+    ),
+
+    /* Very restrained red warmth */
+    radial-gradient(
+      ellipse at 14% 46%,
+      rgba(153, 42, 39, 0.045),
+      transparent 34%
+    ),
+
+    radial-gradient(
+      ellipse at 86% 68%,
+      rgba(153, 42, 39, 0.04),
+      transparent 34%
+    ),
+
+    /* Paper fibre texture */
+    repeating-linear-gradient(
+      8deg,
+      rgba(104, 63, 36, 0.018) 0,
+      rgba(104, 63, 36, 0.018) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+
+    repeating-linear-gradient(
+      94deg,
+      rgba(255, 255, 255, 0.09) 0,
+      rgba(255, 255, 255, 0.09) 1px,
+      transparent 1px,
+      transparent 11px
+    ),
+
+    var(--atmosphere-base);
+}
+
+
+/* =========================================================
+   EMBOSSED DOUBLE-HAPPINESS WATERMARK
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] body::before {
+  content: "囍";
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  color: rgba(133, 36, 34, 0.025);
+
+  font-family:
+    "Noto Serif SC",
+    "Songti SC",
+    "SimSun",
+    serif;
+
+  font-size: clamp(18rem, 46vw, 38rem);
+  font-weight: 700;
+  line-height: 1;
+
+  text-shadow:
+    1px 1px 0 rgba(255, 255, 255, 0.14),
+    -1px -1px 0 rgba(111, 46, 33, 0.025);
+
+  pointer-events: none;
+  user-select: none;
+
+  z-index: 0;
+}
+
+html[data-wedding-theme="chinese-luxury"] #app,
+html[data-wedding-theme="chinese-luxury"] .dust-layer,
+html[data-wedding-theme="chinese-luxury"] .music-toggle {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   PARTICLES — ANTIQUE GOLD DUST
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .dust-particle {
+  width: 3px;
+  height: 3px;
+
+  background: rgba(170, 118, 38, 0.38);
+
+  box-shadow:
+    0 0 5px rgba(194, 144, 60, 0.16);
+
+  opacity: 0;
+}
+
+
+/* =========================================================
+   GLOBAL TYPE COLOURS
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] h1 {
+  color: var(--chinese-red-deep);
+  text-shadow: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .small-text,
+html[data-wedding-theme="chinese-luxury"] .intro-text {
+  color: var(--muted);
+}
+
+html[data-wedding-theme="chinese-luxury"] button {
+  color: var(--chinese-red-deep);
+  border-color: rgba(184, 137, 50, 0.58);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 252, 244, 0.58),
+      rgba(243, 226, 201, 0.38)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 8px 20px rgba(100, 56, 31, 0.07);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-wedding-theme="chinese-luxury"] button:hover {
+    border-color: var(--antique-gold);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      0 10px 24px rgba(116, 67, 34, 0.1);
+
+    transform: translateY(-2px);
+  }
+}
+
+
+/* =========================================================
+   HERO — CHINESE LUXURY ARRIVAL
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 32%,
+      rgba(225, 171, 84, 0.19),
+      transparent 43%
+    );
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::before,
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::after {
+  content: "";
+
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(184, 137, 50, 0.28) 18%,
+      rgba(184, 137, 50, 0.28) 82%,
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::before {
+  left: clamp(18px, 6vw, 70px);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::after {
+  right: clamp(18px, 6vw, 70px);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-name {
+  color: var(--chinese-red-deep);
+  text-shadow: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-ampersand {
+  color: var(--antique-gold);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-hero-divider {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(184, 137, 50, 0.85),
+      transparent
+    );
+
+  box-shadow: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-family-text {
+  color: rgba(105, 32, 31, 0.7);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-invitation-text {
+  color: rgba(105, 32, 31, 0.62);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-future-text {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-guest-introduction span {
+  color: rgba(105, 32, 31, 0.55);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-guest-introduction strong {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-open-button {
+  color: var(--chinese-red-deep);
+  border-color: rgba(184, 137, 50, 0.7);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 253, 247, 0.7),
+      rgba(239, 219, 187, 0.46)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 10px 24px rgba(98, 50, 25, 0.08);
+}
+
+
+/* =========================================================
+   MEMORY BOX SCENE
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .scene-content h1 {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .memory-box::before {
+  background: rgba(73, 39, 20, 0.24);
+  filter: blur(14px);
+  opacity: 0.65;
+}
+
+html[data-wedding-theme="chinese-luxury"] .memory-box::after {
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(213, 163, 82, 0.19),
+      rgba(213, 163, 82, 0.06) 48%,
+      transparent 75%
+    );
+
+  filter: blur(18px);
+}
+
+
+/* =========================================================
+   FORMAL INVITATION — FOIL PAPER CARD
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .story-section[data-scene="chapterIntro"] {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(184, 137, 50, 0.5);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 253, 247, 0.76),
+      rgba(241, 222, 196, 0.52)
+    ),
+
+    repeating-linear-gradient(
+      12deg,
+      rgba(112, 65, 38, 0.018) 0,
+      rgba(112, 65, 38, 0.018) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+
+  box-shadow:
+    inset 0 0 0 10px rgba(184, 137, 50, 0.035),
+    inset 0 0 0 11px rgba(184, 137, 50, 0.16),
+    0 16px 42px rgba(91, 51, 28, 0.07);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  content: "囍";
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  color: rgba(133, 36, 34, 0.035);
+
+  font-family:
+    "Noto Serif SC",
+    "Songti SC",
+    "SimSun",
+    serif;
+
+  font-size: clamp(10rem, 30vw, 18rem);
+  font-weight: 700;
+
+  pointer-events: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-family {
+  color: rgba(105, 32, 31, 0.62);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-ornament span {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(184, 137, 50, 0.72),
+      transparent
+    );
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-symbol {
+  color: var(--antique-gold);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-names span {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-names em {
+  color: var(--antique-gold);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-request {
+  color: rgba(105, 32, 31, 0.85);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-celebration {
+  color: rgba(105, 32, 31, 0.58);
+}
+
+
+/* =========================================================
+   WEDDING DETAILS & GUEST CARDS
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .wedding-details-card > h1,
+html[data-wedding-theme="chinese-luxury"] .guest-details-card > h1 {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-details-notice,
+html[data-wedding-theme="chinese-luxury"] .guest-details-personal {
+  color: rgba(105, 32, 31, 0.63);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-card,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-panel {
+  border: 1px solid rgba(184, 137, 50, 0.34);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 253, 247, 0.7),
+      rgba(240, 218, 189, 0.38)
+    ),
+
+    repeating-linear-gradient(
+      14deg,
+      rgba(100, 56, 30, 0.015) 0,
+      rgba(100, 56, 30, 0.015) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 12px 30px rgba(94, 50, 28, 0.055);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-label,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-label {
+  color: var(--chinese-red);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-concept-symbol,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-symbol {
+  color: var(--antique-gold);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-card h2,
+html[data-wedding-theme="chinese-luxury"] .wedding-event-concept-title,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-panel h2,
+html[data-wedding-theme="chinese-luxury"] .wedding-gift-panel h2 {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-concept-copy,
+html[data-wedding-theme="chinese-luxury"] .wedding-event-address,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-panel > p:not(.guest-detail-label),
+html[data-wedding-theme="chinese-luxury"] .guest-rsvp-deadline,
+html[data-wedding-theme="chinese-luxury"] .guest-detail-unavailable {
+  color: rgba(105, 32, 31, 0.56);
+}
+
+
+/* =========================================================
+   MAP, RSVP & ACTION BUTTONS
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .wedding-maps-button,
+html[data-wedding-theme="chinese-luxury"] .guest-action-button {
+  color: var(--chinese-red-deep);
+
+  border-color: rgba(184, 137, 50, 0.62);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 253, 247, 0.82),
+      rgba(239, 216, 183, 0.45)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 7px 16px rgba(92, 48, 26, 0.06);
+}
+
+
+/* =========================================================
+   JOURNEY CAROUSEL
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .adventure-carousel-card > h1 {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-carousel-shell {
+  filter: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-slide {
+  border-color: rgba(184, 137, 50, 0.24);
+
+  box-shadow:
+    0 13px 32px rgba(75, 42, 24, 0.1);
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-edge-left {
+  background:
+    linear-gradient(
+      90deg,
+      var(--atmosphere-base),
+      transparent
+    );
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-edge-right {
+  background:
+    linear-gradient(
+      270deg,
+      var(--atmosphere-base),
+      transparent
+    );
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-swipe-hint,
+html[data-wedding-theme="chinese-luxury"] .adventure-reflection {
+  color: rgba(105, 32, 31, 0.54);
+}
+
+html[data-wedding-theme="chinese-luxury"] .adventure-final-text {
+  color: var(--chinese-red-deep);
+}
+
+
+/* =========================================================
+   FUTURE PROMISE
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .breath-line {
+  color: rgba(105, 32, 31, 0.72);
+  text-shadow: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .breath-line:last-child {
+  color: var(--chinese-red-deep);
+}
+
+
+/* =========================================================
+   FINAL CLOSING
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .wedding-closing-small {
+  color: rgba(105, 32, 31, 0.53);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-closing-symbol {
+  color: var(--antique-gold);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-closing-card h1 {
+  color: var(--chinese-red-deep);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-closing-body {
+  color: rgba(105, 32, 31, 0.6);
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-closing-signature {
+  color: var(--chinese-red-deep);
+}
+
+
+/* =========================================================
+   MUSIC BUTTON
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .music-toggle {
+  color: var(--chinese-red-deep);
+
+  background: rgba(248, 237, 220, 0.84);
+
+  border-color: rgba(184, 137, 50, 0.5);
+
+  box-shadow:
+    0 7px 20px rgba(83, 44, 24, 0.09);
+
+  backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   MOBILE REFINEMENT
+========================================================= */
+
+@media (max-width: 700px) {
+  html[data-wedding-theme="chinese-luxury"] body::before {
+    font-size: 78vw;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::before {
+    left: 14px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .wedding-hero-scene::after {
+    right: 14px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+    box-shadow:
+      inset 0 0 0 7px rgba(184, 137, 50, 0.03),
+      inset 0 0 0 8px rgba(184, 137, 50, 0.14),
+      0 12px 28px rgba(91, 51, 28, 0.06);
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .wedding-event-card,
+  html[data-wedding-theme="chinese-luxury"] .guest-detail-panel {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.62),
+      0 8px 20px rgba(94, 50, 28, 0.045);
+  }
+}
