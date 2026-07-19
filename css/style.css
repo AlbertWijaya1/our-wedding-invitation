@@ -5590,7 +5590,7 @@ html[data-wedding-theme="chinese-luxury"]
 @media (max-width: 700px) {
   .invitation-envelope-stage {
     --envelope-x: 10px;
-    --envelope-start-y: -180px;
+    --envelope-start-y: -170px;
   }
 }
 
