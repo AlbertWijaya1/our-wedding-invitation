@@ -970,10 +970,12 @@ preloadInvitationEnvelopeAssets();
                     >
                       <img
                         src="${image}"
-                        alt="Adventure memory ${index + 1}"
+                        alt="Journey memory ${index + 1}"
+                        loading="${index === 0 ? "eager" : "lazy"}"
+                        decoding="async"
+                        fetchpriority="${index === 0 ? "high" : "auto"}"
                         draggable="false"
-                      >
-                    </div>
+                      >                    </div>
                   `).join("")}
                 </div>
 
@@ -1886,8 +1888,13 @@ app.appendChild(section);
   }
 
   function setupAdventureCarousel(section) {
-    const carousel = section.querySelector(".adventure-carousel");
-    const card = section.querySelector(".adventure-carousel-card");
+    const carousel = section.querySelector(
+      ".adventure-carousel"
+    );
+
+    const card = section.querySelector(
+      ".adventure-carousel-card"
+    );
 
     if (!carousel || !card) return;
 
@@ -1897,21 +1904,20 @@ app.appendChild(section);
 
     if (originalSlides.length < 2) return;
 
-    /*
-      Build three identical sets:
+    const beforeFragment =
+      document.createDocumentFragment();
 
-      clone set | original set | clone set
-
-      We stay around the middle set and silently jump
-      by exactly one set when entering either outer set.
-    */
-
-    const beforeFragment = document.createDocumentFragment();
-    const afterFragment = document.createDocumentFragment();
+    const afterFragment =
+      document.createDocumentFragment();
 
     originalSlides.forEach(slide => {
-      beforeFragment.appendChild(slide.cloneNode(true));
-      afterFragment.appendChild(slide.cloneNode(true));
+      beforeFragment.appendChild(
+        slide.cloneNode(true)
+      );
+
+      afterFragment.appendChild(
+        slide.cloneNode(true)
+      );
     });
 
     carousel.prepend(beforeFragment);
@@ -1936,13 +1942,19 @@ app.appendChild(section);
     let middleSetPosition = 0;
     let thirdSetPosition = 0;
 
-    /*
-      Keep our own floating-point position so slow automatic
-      movement remains smooth on desktop.
-    */
     let autoScrollPosition = 0;
 
-    const speed = 24;
+    const isMobile = window.matchMedia(
+      "(max-width: 768px)"
+    ).matches;
+
+    const speed = isMobile
+      ? 16
+      : 24;
+
+    const activeUpdateInterval = isMobile
+      ? 220
+      : 120;
 
     const carouselObserver = new IntersectionObserver(
       entries => {
@@ -1962,6 +1974,16 @@ app.appendChild(section);
     );
 
     carouselObserver.observe(card);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        isPaused = true;
+        lastTime = null;
+      } else {
+        lastTime = null;
+        isPaused = false;
+      }
+    });
 
     function getCenteredPosition(slide) {
       return (
@@ -2089,12 +2111,11 @@ app.appendChild(section);
 
       if (
         isCarouselVisible &&
-        currentTime - lastActiveUpdate >= 120
+        currentTime - lastActiveUpdate >= activeUpdateInterval
       ) {
         updateActiveSlide();
         lastActiveUpdate = currentTime;
       }
-
       animationFrame = requestAnimationFrame(animate);
     }
 

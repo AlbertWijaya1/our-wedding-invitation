@@ -5641,3 +5641,91 @@ html[data-wedding-theme="chinese-luxury"]
   margin-top: 10px;
   margin-bottom: 24px;
 }
+
+/* =========================================
+   WEDDING CAROUSEL — MOBILE PERFORMANCE FIX
+========================================= */
+
+@media (max-width: 768px) {
+
+  .adventure-carousel {
+    --adventure-width: 72vw;
+
+    gap: 14px;
+
+    padding-top: 20px;
+    padding-bottom: 28px;
+  }
+
+  .adventure-slide {
+    contain: none;
+    will-change: auto;
+
+    opacity: 0.55;
+
+    transform: scale(0.92);
+
+    filter:
+      brightness(0.82)
+      saturate(0.88);
+
+    transition:
+      transform 0.45s ease,
+      opacity 0.45s ease,
+      filter 0.45s ease,
+      border-color 0.45s ease;
+  }
+
+  .adventure-slide.is-active {
+    opacity: 1;
+
+    transform: scale(0.98);
+
+    filter:
+      brightness(1)
+      saturate(1);
+  }
+
+  .adventure-slide img {
+    transform: none;
+    animation: none;
+    filter: none;
+    will-change: auto;
+  }
+
+  .adventure-edge {
+    width: 9%;
+  }
+
+  .adventure-reflection {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+}
+
+/* =========================================
+   TEMPORARY BUILD VERSION BADGE
+========================================= */
+
+.build-version {
+  position: fixed;
+
+  left: 8px;
+  bottom: 8px;
+
+  z-index: 999999;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  background: rgba(180, 35, 35, 0.92);
+  color: #fff;
+
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+
+  pointer-events: none;
+}
