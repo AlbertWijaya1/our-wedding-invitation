@@ -3,7 +3,7 @@
 ========================================= */
 
 const wedding = {
-  projectStatus: "concept",
+  projectStatus: "live",
   theme: "chinese-luxury",
   //"chinese-luxury"
   //"ivory-gold"
