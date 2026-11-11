@@ -5730,3 +5730,58 @@ html[data-wedding-theme="chinese-luxury"]
   pointer-events: none;
 }
   */
+
+/* WEDDING RSVP FORM */
+.wedding-rsvp-form {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 360px);
+  margin: 30px auto 0;
+  text-align: left;
+  gap: 9px;
+}
+.wedding-rsvp-form label {
+  margin-top: 9px;
+  color: var(--text, #762523);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.wedding-rsvp-form input,
+.wedding-rsvp-form select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(184, 137, 50, 0.42);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.72);
+  color: #572522;
+  font: inherit;
+  font-size: 0.9rem;
+}
+.wedding-rsvp-form input::placeholder { color: rgba(87,37,34,0.48); }
+.wedding-rsvp-form .rsvp-submit-button {
+  width: 100%;
+  margin-top: 15px;
+  background: #8f2928;
+  color: #fff8ed;
+}
+.wedding-rsvp-form .rsvp-submit-button:disabled { opacity: 0.65; cursor: wait; }
+.rsvp-form-status {
+  min-height: 1.5em;
+  margin: 8px 0 0;
+  color: #762523;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  text-align: center;
+}
+.rsvp-form-status.is-success { font-weight: 600; }
+.rsvp-form-status.is-error { color: #a12622; font-weight: 600; }
+.rsvp-hidden-frame, .rsvp-honeypot {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+}

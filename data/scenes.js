@@ -56,7 +56,8 @@ const wedding = {
   },
 
   rsvp: {
-    deadline: "To Be Announced",
+    deadline: "",
+    scriptUrl: "https://script.google.com/macros/s/AKfycbwhc_HlkI4a8GOtMUmirNQtDyi8tKLTkCqtTTOu2-HysIaV0SjLIoyMtL1Em_qq-vMUtg/exec",
 
     formLink: "",
     acceptLink: "",

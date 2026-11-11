@@ -696,79 +696,29 @@ preloadInvitationEnvelopeAssets();
                         : ""
                     }
 
-                    <div class="guest-rsvp-actions">
+                    <form class="wedding-rsvp-form" id="weddingRsvpForm" action="${scene.rsvp.scriptUrl}" method="POST" target="weddingRsvpFrame">
+                      <label for="rsvpGuestName">Your name</label>
+                      <input id="rsvpGuestName" name="guestName" type="text" maxlength="100" required autocomplete="name" value="${invitedGuestName}" placeholder="Enter your name">
 
-                      ${
-                        scene.rsvp.formLink
-                          ? `
-                            <a
-                              class="guest-action-button"
-                              href="${scene.rsvp.formLink}"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              RSVP
-                            </a>
-                          `
-                          : ""
-                      }
+                      <label for="rsvpMobileNumber">Mobile phone number</label>
+                      <input id="rsvpMobileNumber" name="mobileNumber" type="tel" maxlength="25" required autocomplete="tel" placeholder="e.g. 081234567890" pattern="[0-9+()\-\s]{7,25}">
 
-                      ${
-                        scene.rsvp.acceptLink
-                          ? `
-                            <a
-                              class="guest-action-button"
-                              href="${scene.rsvp.acceptLink}"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Joyfully Accept
-                            </a>
-                          `
-                          : ""
-                      }
+                      <label for="rsvpAttendance">Will you attend?</label>
+                      <select id="rsvpAttendance" name="attendance" required>
+                        <option value="" disabled selected>Please select</option>
+                        <option value="Attending">Joyfully accept</option>
+                        <option value="Unable to Attend">Regretfully decline</option>
+                      </select>
 
-                      ${
-                        scene.rsvp.declineLink
-                          ? `
-                            <a
-                              class="guest-action-button guest-action-secondary"
-                              href="${scene.rsvp.declineLink}"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Unable to Attend
-                            </a>
-                          `
-                          : ""
-                      }
+                      <div class="rsvp-honeypot" aria-hidden="true">
+                        <label for="rsvpWebsite">Leave this field empty</label>
+                        <input id="rsvpWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+                      </div>
 
-                      ${
-                        whatsappHref
-                          ? `
-                            <a
-                              class="guest-action-button"
-                              href="${whatsappHref}"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              RSVP via WhatsApp
-                            </a>
-                          `
-                          : ""
-                      }
-
-                      ${
-                        !hasRsvpLink
-                          ? `
-                            <p class="guest-detail-unavailable">
-                              RSVP information will be added soon.
-                            </p>
-                          `
-                          : ""
-                      }
-
-                    </div>
+                      <button class="guest-action-button rsvp-submit-button" type="submit">Submit RSVP</button>
+                      <p class="rsvp-form-status" id="rsvpFormStatus" role="status" aria-live="polite"></p>
+                    </form>
+                    <iframe name="weddingRsvpFrame" id="weddingRsvpFrame" title="RSVP submission" class="rsvp-hidden-frame"></iframe>
                   `
               }
             </article>
@@ -1110,6 +1060,92 @@ preloadInvitationEnvelopeAssets();
       }
 
 app.appendChild(section);
+
+  const rsvpForm = section.querySelector("#weddingRsvpForm");
+  const rsvpFrame = section.querySelector("#weddingRsvpFrame");
+  const rsvpStatus = section.querySelector("#rsvpFormStatus");
+  if (rsvpForm && rsvpFrame && rsvpStatus) {
+    let waitingForRsvpResponse = false;
+    let rsvpResponseTimeout = null;
+    let activeRsvpRequestId = "";
+    const submitButton = rsvpForm.querySelector('button[type="submit"]');
+
+    const finishRsvpSubmission = (isSuccess, message) => {
+      waitingForRsvpResponse = false;
+      if (rsvpResponseTimeout) {
+        window.clearTimeout(rsvpResponseTimeout);
+        rsvpResponseTimeout = null;
+      }
+      rsvpStatus.textContent = message;
+      rsvpStatus.classList.toggle("is-success", isSuccess);
+      rsvpStatus.classList.toggle("is-error", !isSuccess);
+      if (isSuccess) rsvpForm.reset();
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Submit RSVP";
+      }
+    };
+
+    const handleRsvpMessage = (event) => {
+      if (!waitingForRsvpResponse) return;
+      const result = event.data;
+      if (!result || result.type !== "wedding-rsvp-result") return;
+      if (result.requestId !== activeRsvpRequestId) return;
+      if (result.status === "success") {
+        finishRsvpSubmission(
+          true,
+          "Thank you! Your RSVP has been saved. We look forward to celebrating with you."
+        );
+      } else {
+        finishRsvpSubmission(
+          false,
+          result.message || "Sorry, your RSVP could not be saved. Please check your details and try again."
+        );
+      }
+      window.removeEventListener("message", handleRsvpMessage);
+    };
+
+    rsvpForm.addEventListener("invalid", (event) => {
+      const field = event.target;
+      if (field && field.id === "rsvpMobileNumber" && field.validity.patternMismatch) {
+        rsvpStatus.textContent = "Please enter a valid mobile number using 7–25 digits (you may include +, spaces, or brackets).";
+        rsvpStatus.classList.remove("is-success");
+        rsvpStatus.classList.add("is-error");
+      }
+    }, true);
+
+    rsvpForm.addEventListener("submit", () => {
+      if (waitingForRsvpResponse) return;
+      waitingForRsvpResponse = true;
+      activeRsvpRequestId = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : String(Date.now()) + "-" + Math.random().toString(36).slice(2);
+      let requestIdField = rsvpForm.querySelector('input[name="requestId"]');
+      if (!requestIdField) {
+        requestIdField = document.createElement("input");
+        requestIdField.type = "hidden";
+        requestIdField.name = "requestId";
+        rsvpForm.appendChild(requestIdField);
+      }
+      requestIdField.value = activeRsvpRequestId;
+      rsvpStatus.textContent = "Sending your RSVP… Please wait.";
+      rsvpStatus.classList.remove("is-success", "is-error");
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending…";
+      }
+
+      window.addEventListener("message", handleRsvpMessage);
+      rsvpResponseTimeout = window.setTimeout(() => {
+        finishRsvpSubmission(
+          false,
+          "We haven't received confirmation yet. Your RSVP may not have been saved. Please try again in a moment."
+        );
+        window.removeEventListener("message", handleRsvpMessage);
+      }, 20000);
+    });
+  }
+
   const copyAccountButton = section.querySelector("[data-copy-account]");
 
   if (copyAccountButton) {
