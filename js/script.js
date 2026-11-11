@@ -468,31 +468,34 @@ preloadInvitationEnvelopeAssets();
 
       section.innerHTML = `
         <div class="formal-invitation-card">
-
           <p class="formal-invitation-family reveal-child delay-1">
             ${scene.smallText}
           </p>
 
-          <div class="formal-invitation-ornament reveal-child delay-2">
-            <span></span>
-            <span class="formal-invitation-symbol">✦</span>
-            <span></span>
+          <div class="formal-invitation-composition reveal-child delay-2">
+            <div class="formal-invitation-person">
+              <h2 class="formal-invitation-name">${scene.groomName}</h2>
+              <p class="formal-invitation-parent-label">SON OF</p>
+              <p class="formal-invitation-parents">${scene.groomParents}</p>
+            </div>
+
+            <div class="formal-invitation-ampersand" aria-hidden="true">&amp;</div>
+
+            <div class="formal-invitation-person">
+              <h2 class="formal-invitation-name">${scene.brideName}</h2>
+              <p class="formal-invitation-parent-label">DAUGHTER OF</p>
+              <p class="formal-invitation-parents">${scene.brideParents}</p>
+            </div>
           </div>
 
-          <div class="formal-invitation-names reveal-child delay-2">
-            <span>${scene.groomName}</span>
-            <em>&amp;</em>
-            <span>${scene.brideName}</span>
+          <div class="formal-invitation-lower reveal-child delay-3">
+            <p class="formal-invitation-request">
+              ${scene.invitationLine}
+            </p>
+            <p class="formal-invitation-celebration">
+              ${scene.celebrationLine}
+            </p>
           </div>
-
-          <p class="formal-invitation-request reveal-child delay-3">
-            ${scene.invitationLine}
-          </p>
-
-          <p class="formal-invitation-celebration reveal-child delay-3">
-            ${scene.celebrationLine}
-          </p>
-
         </div>
       `;
 

@@ -86,11 +86,12 @@ html[data-wedding-theme="ivory-gold"] {
   opacity: 0;
   animation: dustFloat linear infinite;
   box-shadow: 0 0 8px rgba(255,255,255,0.55);
-  html[data-wedding-theme="chinese-luxury"] .dust-particle,
-  html[data-wedding-theme="ivory-gold"] .dust-particle {
+}
+
+html[data-wedding-theme="chinese-luxury"] .dust-particle,
+html[data-wedding-theme="ivory-gold"] .dust-particle {
   background: rgba(151, 105, 34, 0.52);
   box-shadow: 0 0 8px rgba(184, 134, 36, 0.22);
-  }
 }
 
 @keyframes dustFloat {
@@ -5776,7 +5777,6 @@ html[data-wedding-theme="chinese-luxury"]
   text-align: center;
 }
 .rsvp-form-status.is-success { font-weight: 600; }
-.rsvp-form-status.is-error { color: #a12622; font-weight: 600; }
 .rsvp-hidden-frame, .rsvp-honeypot {
   position: absolute !important;
   width: 1px !important;
@@ -5784,4 +5784,635 @@ html[data-wedding-theme="chinese-luxury"]
   overflow: hidden !important;
   clip: rect(0,0,0,0) !important;
   white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   ALBERT & NOVIA — EDITORIAL LUXURY INVITATION
+   Unified family composition; precise spacing for mobile/desktop.
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap');
+
+html[data-wedding-theme="chinese-luxury"] .story-section[data-scene="chapterIntro"] {
+  min-height: 100svh;
+  padding: clamp(28px, 5vh, 54px) 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+  box-sizing: border-box;
+  width: min(100%, 560px);
+  min-height: 0;
+  margin: 0 auto;
+  padding: clamp(42px, 6vw, 62px) clamp(25px, 6vw, 54px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(177, 137, 76, .58);
+  border-radius: 2px;
+  background:
+    linear-gradient(145deg, rgba(255,253,247,.97), rgba(246,237,222,.97));
+  box-shadow:
+    inset 0 0 0 7px rgba(185,145,83,.055),
+    0 18px 48px rgba(74,35,27,.09);
+  text-align: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(177,137,76,.25);
+  pointer-events: none;
+  font-size: 0;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-family {
+  margin: 0 0 clamp(28px, 5vh, 42px);
+  color: #927455;
+  font-family: "Montserrat", sans-serif;
+  font-size: .62rem;
+  font-weight: 400;
+  letter-spacing: .19em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-composition {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-person {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+  max-width: 100%;
+  margin: 0;
+  color: #702321;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.65rem, 8vw, 3.55rem);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: .012em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-parent-label {
+  margin: 12px 0 4px;
+  color: #9b805f;
+  font-family: "Montserrat", sans-serif;
+  font-size: .56rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  line-height: 1.6;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-parents {
+  max-width: 100%;
+  margin: 0;
+  color: #795747;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.05rem, 3.4vw, 1.28rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: .005em;
+  text-wrap: balance;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-ampersand {
+  margin: clamp(14px, 2.4vh, 22px) 0;
+  color: #b28a45;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.65rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: .85;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-lower {
+  width: 100%;
+  margin-top: clamp(30px, 5vh, 44px);
+  padding-top: clamp(23px, 3.5vh, 32px);
+  border-top: 1px solid rgba(177,137,76,.48);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-request {
+  max-width: 100%;
+  margin: 0 auto;
+  color: #702321;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.35rem, 4.2vw, 1.65rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-celebration {
+  max-width: 100%;
+  margin: 9px auto 0;
+  color: #94785b;
+  font-family: "Montserrat", sans-serif;
+  font-size: .57rem;
+  font-weight: 400;
+  letter-spacing: .12em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  html[data-wedding-theme="chinese-luxury"] .story-section[data-scene="chapterIntro"] {
+    padding: 22px 14px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+    width: min(100%, 430px);
+    padding: 44px 25px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-family {
+    margin-bottom: 30px;
+    font-size: .57rem;
+    letter-spacing: .16em;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+    font-size: clamp(2.35rem, 9.5vw, 3.05rem);
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-parents {
+    font-size: 1.12rem;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-ampersand {
+    margin: 15px 0;
+    font-size: 2.35rem;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-lower {
+    margin-top: 32px;
+    padding-top: 23px;
+  }
+}
+
+
+/* =========================================================
+   ALBERT & NOVIA — RESTORED EDITORIAL INVITATION
+   Keep the original HTML structure in script.js.
+   Large names, relaxed spacing, subtle Chinese watermark.
+========================================================= */
+
+html[data-wedding-theme="chinese-luxury"] .story-section[data-scene="chapterIntro"] {
+  min-height: 100svh;
+  padding: clamp(22px, 4vh, 42px) 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+  position: relative;
+  box-sizing: border-box;
+  width: min(90vw, 540px);
+  min-height: min(88svh, 740px);
+  margin: 0 auto;
+  padding: clamp(48px, 7vh, 70px) clamp(26px, 6vw, 54px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(177, 137, 76, .42);
+  border-radius: 3px;
+  background:
+    radial-gradient(ellipse at 50% 24%, rgba(255,255,255,.78), transparent 58%),
+    linear-gradient(145deg, rgba(255,253,247,.97), rgba(247,237,221,.96));
+  box-shadow:
+    inset 0 0 0 8px rgba(185,145,83,.045),
+    inset 0 0 0 9px rgba(185,145,83,.12),
+    0 16px 42px rgba(91, 51, 28, .07);
+  text-align: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  content: "囍";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(133, 36, 34, .045);
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  font-size: clamp(13rem, 34vw, 19rem);
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-family {
+  margin: 0 0 clamp(34px, 5vh, 48px);
+  color: #98795b;
+  font-family: "Montserrat", sans-serif;
+  font-size: .62rem;
+  font-weight: 400;
+  letter-spacing: .19em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-composition {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-person {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+  max-width: 100%;
+  margin: 0;
+  color: #762b29;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(3.25rem, 10.8vw, 4.9rem);
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: .88;
+  text-transform: none;
+  text-wrap: balance;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-parent-label {
+  margin: 13px 0 4px;
+  color: #a18465;
+  font-family: "Montserrat", sans-serif;
+  font-size: .54rem;
+  font-weight: 400;
+  letter-spacing: .19em;
+  line-height: 1.6;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-parents {
+  max-width: 100%;
+  margin: 0;
+  color: #80614f;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.15rem, 3.6vw, 1.42rem);
+  font-weight: 400;
+  letter-spacing: .005em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-ampersand {
+  margin: clamp(19px, 3vh, 28px) 0;
+  color: #b68e4e;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.9rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: .85;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-lower {
+  width: 100%;
+  margin-top: clamp(38px, 5.8vh, 54px);
+  padding-top: clamp(25px, 4vh, 34px);
+  border-top: 1px solid rgba(177,137,76,.38);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-request {
+  max-width: 100%;
+  margin: 0 auto;
+  color: #762b29;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.55rem, 4.8vw, 1.95rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-celebration {
+  max-width: 100%;
+  margin: 11px auto 0;
+  color: #987d60;
+  font-family: "Montserrat", sans-serif;
+  font-size: .57rem;
+  font-weight: 400;
+  letter-spacing: .13em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  html[data-wedding-theme="chinese-luxury"] .story-section[data-scene="chapterIntro"] {
+    padding: 18px 14px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+    width: min(92vw, 440px);
+    min-height: min(86svh, 700px);
+    padding: 48px 24px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-family {
+    margin-bottom: 34px;
+    font-size: .56rem;
+    letter-spacing: .16em;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+    font-size: clamp(2.85rem, 11.2vw, 3.8rem);
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-parents {
+    font-size: 1.18rem;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-ampersand {
+    margin: 19px 0;
+    font-size: 2.55rem;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-lower {
+    margin-top: 38px;
+    padding-top: 25px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-request {
+    font-size: clamp(1.45rem, 5.2vw, 1.72rem);
+  }
+}
+
+/* ALBERT & NOVIA — TARGETED CHINESE-LUXURY VISUAL FIXES
+   Add this at the VERY END of css/style.css.
+   It changes only the formal invitation, event details and gift text.
+   It does not replace or reset the rest of the website styles. */
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  /* Remove the oversized watermark that looked like hard vertical bars. */
+  content: none;
+  display: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+  border-radius: 10px;
+  border-color: rgba(177, 137, 76, .32);
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(255,255,255,.78), transparent 62%),
+    linear-gradient(145deg, rgba(255,253,247,.97), rgba(247,237,221,.96));
+  box-shadow:
+    inset 0 0 0 7px rgba(185,145,83,.035),
+    0 16px 42px rgba(91, 51, 28, .06);
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+  color: #762b29;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.55rem, 8.2vw, 3.55rem);
+  font-weight: 500;
+  letter-spacing: -.018em;
+  line-height: .98;
+  text-transform: none;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-parents {
+  color: #80614f;
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-card h2 {
+  color: #762b29;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-date {
+  color: #896f5a;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-time {
+  color: #762b29;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-venue {
+  color: #805e4a;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-event-address {
+  color: #896f5a;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-gift-panel h2 {
+  color: #762b29;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-gift-introduction {
+  color: #896f5a;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-bank-details span {
+  color: #a17b37;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-bank-details strong {
+  color: #762b29;
+}
+
+html[data-wedding-theme="chinese-luxury"] .wedding-bank-details p {
+  color: #80614f;
+}
+
+@media (max-width: 600px) {
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+    width: min(92vw, 440px);
+    min-height: 0;
+    padding: 48px 25px;
+    border-radius: 10px;
+  }
+
+  html[data-wedding-theme="chinese-luxury"] .formal-invitation-name {
+    font-size: clamp(2.45rem, 9vw, 3.15rem);
+    line-height: 1;
+  }
+}
+
+
+/* ALBERT & NOVIA — RESTORE ORIGINAL FOIL PAPER INVITATION
+   Based on the original paper-card rules in the CSS file you supplied.
+   Only restores the card material, frame and watermark.
+   Does not change text, fonts, names, wording or colour declarations. */
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card {
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(184, 137, 50, 0.5) !important;
+  border-radius: 3px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 253, 247, 0.76),
+      rgba(241, 222, 196, 0.52)
+    ),
+    repeating-linear-gradient(
+      12deg,
+      rgba(112, 65, 38, 0.018) 0,
+      rgba(112, 65, 38, 0.018) 1px,
+      transparent 1px,
+      transparent 8px
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 10px rgba(184, 137, 50, 0.035),
+    inset 0 0 0 11px rgba(184, 137, 50, 0.16),
+    0 16px 42px rgba(91, 51, 28, 0.07) !important;
+}
+
+/* Original subtle Chinese double-happiness watermark inside the paper */
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::before {
+  content: "囍" !important;
+  display: block !important;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  color: rgba(133, 36, 34, 0.045);
+
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  font-size: clamp(10rem, 30vw, 18rem);
+  font-weight: 700;
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+/* Keep the existing invitation content above the watermark */
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove unwanted inner square and extra divider */
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-composition {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-lower {
+  border-top: none !important;
+}
+
+/* Remove the unwanted inner square only */
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-composition::before,
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-composition::after,
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-person::before,
+html[data-wedding-theme="chinese-luxury"] .formal-invitation-person::after {
+  content: none !important;
+  display: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Wedding gift heading alignment fix */
+.wedding-gift-panel h2 {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto !important;
+  text-align: center;
+  line-height: 1.05;
+}
+
+/* Keep the entire gift section balanced */
+.wedding-gift-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.wedding-gift-introduction {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Elegant wedding gift paper card */
+.wedding-gift-panel {
+  position: relative;
+  box-sizing: border-box;
+
+  width: min(100%, 620px);
+  margin: 80px auto 0;
+  padding: 52px 34px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  border: 1px solid rgba(184, 137, 50, 0.34);
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 253, 247, 0.7),
+      rgba(240, 218, 189, 0.38)
+    ),
+    repeating-linear-gradient(
+      14deg,
+      rgba(100, 56, 30, 0.015) 0,
+      rgba(100, 56, 30, 0.015) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 12px 30px rgba(94, 50, 28, 0.055);
+}
+
+.wedding-gift-panel h2 {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto !important;
+  text-align: center;
 }

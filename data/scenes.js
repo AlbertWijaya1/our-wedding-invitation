@@ -10,49 +10,49 @@ const wedding = {
   //"dark-luxury"
   couple: {
     groomFirstName: "Albert",
-    groomFullName: "Albert",
+    groomFullName: "Albert Wijaya",
 
     brideFirstName: "Novia",
-    brideFullName: "Novia"
+    brideFullName: "Novia Victoria"
   },
 
   invitation: {
-    familyLine: "Together with our families",
+    familyLine: "Together with their families",
     invitationLine: "we invite you to celebrate",
     promiseLine: "the beginning of our forever."
   },
 
   ceremony: {
     label: "Holy Matrimony",
-    date: "To Be Announced",
-    day: "To Be Announced",
-    time: "To Be Announced",
+    date: "11 January 2027",
+    day: "Monday",
+    time: "9:00 AM (Tentative)",
 
-    venueName: "To Be Announced",
-    venueAddress: "To Be Announced",
+    venueName: "Venue to be announced",
+    venueAddress: "Tanjung Pinang, Kepulauan Riau, Indonesia",
 
     mapsLink: ""
   },
 
   reception: {
     label: "Wedding Reception",
-    date: "To Be Announced",
-    day: "To Be Announced",
-    time: "To Be Announced",
+    date: "11 January 2027",
+    day: "Monday",
+    time: "6:30 PM",
 
-    venueName: "To Be Announced",
-    venueAddress: "To Be Announced",
+    venueName: "Restaurant Seafood Kelong Shangrila",
+    venueAddress: "Jl. Sei Jang Laut No. 5, Tanjung Pinang, Kepulauan Riau, Indonesia",
 
-    mapsLink: ""
+    mapsLink: "https://maps.app.goo.gl/zJqJTG4etCHyL9vQA"
   },
 
 
   dressCode: {
     title: "Dress Code",
-    description: "To Be Announced",
+    description: "Come as you are",
 
     note:
-      "Dress-code guidance will be shared together with the confirmed wedding details."
+      "There is no specific dress code. We look forward to celebrating with you."
   },
 
   rsvp: {
@@ -69,14 +69,14 @@ const wedding = {
   },
 
   gift: {
-    enabled: false,
+    enabled: true,
 
     introduction:
-      "Your presence and prayers are already the greatest gift to us.",
+      "Your presence and prayers are already the greatest gift to us. For those who wish to send a gift, you may use the details below.",
 
-    bankName: "",
-    accountName: "",
-    accountNumber: "",
+    bankName: "Bank Central Asia (BCA)",
+    accountName: "Albert Wijaya",
+    accountNumber: "3801768189",
 
     qrisImage: ""
   },
@@ -113,10 +113,12 @@ const scenes = {
 
     smallText: wedding.invitation.familyLine,
 
-    groomName: wedding.couple.groomFirstName,
-    brideName: wedding.couple.brideFirstName,
+    groomName: wedding.couple.groomFullName,
+    brideName: wedding.couple.brideFullName,
+    groomParents: "Stefanus Antony & Dewi Sarawatie",
+    brideParents: "Bakar Tan & Melly",
 
-    invitationLine: "request the honour of your presence",
+    invitationLine: "Request the honour of your presence",
     celebrationLine: "at the celebration of their marriage.",
 
     next: "weddingDetails"
@@ -128,7 +130,7 @@ const scenes = {
     title: "Save the Moment",
 
     notice:
-      "Our date and venue are still being lovingly prepared. The confirmed details will appear here when the time is right.",
+      "We would be delighted to have you celebrate this special day with us. Please find the event details below.",
 
     ceremony: wedding.ceremony,
     reception: wedding.reception,
@@ -154,14 +156,26 @@ const scenes = {
     "images/adventures/05.jpg",
     "images/adventures/06.jpg",
     "images/adventures/07.jpg",
-    "images/adventures/08.jpg"
+    "images/adventures/08.jpg",
+    "images/adventures/09.jpg",
+    "images/adventures/10.jpg",
+    "images/adventures/11.jpg",
+    "images/adventures/12.jpg",
+    "images/adventures/13.jpg",
+    "images/adventures/14.jpg",
+    "images/adventures/15.jpg",
+    "images/adventures/16.jpg",
+    "images/adventures/17.jpg",
+    "images/adventures/18.jpg",
+    "images/adventures/19.jpg",
+    "images/adventures/20.jpg"
   ],
 
   reflection:
     "We did not arrive here through one perfect moment. We arrived through all the small moments in which we continued choosing each other.",
 
   finalText:
-    "And someday, we hope to take the next step surrounded by the people who have been part of our lives.",
+    "And now, we look forward to taking this next step surrounded by the people who have been part of our lives.",
 
   next: "guestDetails"
 },
@@ -189,7 +203,7 @@ const scenes = {
     title: "With Love",
 
     body:
-      "When the date is chosen and the place is ready, we hope this little glimpse of our future will become a real invitation to celebrate with us.",
+      "Thank you for being part of our story. We look forward to celebrating this meaningful day with you.",
 
     signature:
       `${wedding.couple.groomFirstName} & ${wedding.couple.brideFirstName}`,
@@ -202,10 +216,10 @@ const scenes = {
     type: "breath",
 
     lines: [
-      "The date is still unwritten.",
-      "The place is still waiting.",
-      "But the future...",
-      "already feels like ours."
+      "Two hearts,",
+      "one promise,",
+      "and a lifetime",
+      "to choose each other."
     ],
 
     next: "closingInvitation"
