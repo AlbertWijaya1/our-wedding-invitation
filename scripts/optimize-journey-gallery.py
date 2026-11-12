@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Create full-size WebP and lightweight preview copies for Our Journey.
+"""Build the Our Journey gallery list and optimized WebP images from numbered JPGs.
 
-The image list in data/scenes.js contains .webp output paths. For each one,
-this script finds the matching original JPG/JPEG/PNG in images/adventures.
-Original photos are never modified.
+Put original photos directly in images/adventures/ and name them 01.jpg,
+02.jpg, 03.jpg, etc. The numeric filename controls the gallery order.
+Original JPGs are never modified by this script.
 """
 
 from pathlib import Path
@@ -17,51 +17,67 @@ SCENES_FILE = ROOT / "data" / "scenes.js"
 IMAGE_DIR = ROOT / "images" / "adventures"
 
 
-def gallery_outputs():
+def discover_gallery_outputs():
+    """Use numbered JPGs in the folder as the complete Our Journey album."""
+    sources = []
+    for candidate in IMAGE_DIR.iterdir():
+        if candidate.is_file() and re.fullmatch(r"\d+\.jpg", candidate.name, re.IGNORECASE):
+            sources.append(candidate)
+
+    sources.sort(key=lambda path: (int(path.stem), path.name.lower()))
+
+    numbers = [int(path.stem) for path in sources]
+    if len(numbers) != len(set(numbers)):
+        raise RuntimeError(
+            "Two photo files use the same number (for example 1.jpg and 01.jpg). "
+            "Give every photo a unique number."
+        )
+    if not sources:
+        raise RuntimeError(
+            "No numbered JPG photos found in images/adventures/. "
+            "Add photos named 01.jpg, 02.jpg, etc."
+        )
+
+    return [
+        f"images/adventures/{source.stem}.webp"
+        for source in sources
+    ]
+
+
+def update_scene_gallery(paths):
+    """Rewrite only the Our Journey images array from the discovered photo order."""
     source = SCENES_FILE.read_text(encoding="utf-8")
-    match = re.search(
-        r"ourJourney\s*:\s*\{[\s\S]*?images\s*:\s*\[([\s\S]*?)\]",
-        source,
+    pattern = re.compile(
+        r"(ourJourney\s*:\s*\{[\s\S]*?\bimages\s*:\s*\[)([\s\S]*?)(\])"
     )
+    match = pattern.search(source)
     if not match:
         raise RuntimeError(
             "Could not find the Our Journey image array in data/scenes.js."
         )
 
-    # Ignore commented-out examples inside the array.
-    array_text = re.sub(r"//.*$", "", match.group(1), flags=re.MULTILINE)
-    paths = re.findall(
-        r"""["'](images/adventures/[^"']+\.webp)["']""",
-        array_text,
-        flags=re.IGNORECASE,
-    )
-    paths = list(dict.fromkeys(paths))
+    lines = "\n" + "\n".join(f'    "{path}",' for path in paths) + "\n    "
+    updated = source[:match.start()] + match.group(1) + lines + match.group(3) + source[match.end():]
 
-    for relative_path in paths:
-        output = Path(relative_path)
-        if output.parent != Path("images/adventures") or output.suffix.lower() != ".webp":
-            raise RuntimeError(f"Unsupported Our Journey image path: {relative_path}")
-
-    return paths
-
-
-def find_original(output_path):
-    # Use a case-insensitive extension fallback for photos from different cameras.
-    for extension in (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"):
-        candidate = output_path.with_suffix(extension)
-        if candidate.is_file():
-            return candidate
-    raise FileNotFoundError(
-        f"No matching original JPG/JPEG/PNG found for {output_path.relative_to(ROOT)}. "
-        "Keep the original photo beside its .webp entry using the same filename."
-    )
+    if updated != source:
+        SCENES_FILE.write_text(updated, encoding="utf-8")
+        print("Updated the Our Journey image list automatically in data/scenes.js.")
+    else:
+        print("Our Journey image list already matches the numbered JPG files.")
 
 
 def convert_one(webp_relative_path):
     output_path = ROOT / webp_relative_path
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     thumbnail_path = output_path.with_name(output_path.stem + ".thumb.webp")
-    source_path = find_original(output_path)
+    source_path = output_path.with_suffix(".jpg")
+
+    # Support uppercase .JPG filenames on case-sensitive build runners.
+    if not source_path.is_file():
+        source_path = output_path.with_suffix(".JPG")
+    if not source_path.is_file():
+        raise FileNotFoundError(
+            f"Could not find the original JPG for {webp_relative_path}."
+        )
 
     with Image.open(source_path) as original:
         original.load()
@@ -105,10 +121,10 @@ def convert_one(webp_relative_path):
 
 
 def remove_unused_numbered_outputs(active_paths):
-    """Remove stale numbered WebP outputs after a photo is removed from the list.
+    """Remove generated numbered WebPs and previews for photos no longer listed.
 
-    Original JPG/JPEG/PNG photos are deliberately kept as the archive.
-    Only generated numbered WebP files and their .thumb.webp previews are removed.
+    The original JPGs are never removed by the optimizer. If you want to keep a
+    photo outside the album, move it into a subfolder such as images/adventures/archive/.
     """
     keep_names = set()
     for relative_path in active_paths:
@@ -130,14 +146,16 @@ def remove_unused_numbered_outputs(active_paths):
 
 
 def main():
-    paths = gallery_outputs()
+    paths = discover_gallery_outputs()
     print(f"Preparing {len(paths)} Our Journey photo(s)...")
+
+    update_scene_gallery(paths)
 
     for path in paths:
         convert_one(path)
 
     remove_unused_numbered_outputs(paths)
-    print("Done. Original JPG/JPEG/PNG photos were not changed or deleted.")
+    print("Done. Original JPG photos were not changed or deleted.")
 
 
 if __name__ == "__main__":
