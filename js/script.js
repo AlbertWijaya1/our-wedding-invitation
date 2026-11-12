@@ -2822,7 +2822,7 @@ app.appendChild(section);
               photoChangeTimer = null;
             });
           });
-        }, 180);
+        }, window.matchMedia("(max-width: 600px)").matches ? 45 : 90);
       } else {
         viewerImage.classList.remove("is-changing");
         updateImage();
