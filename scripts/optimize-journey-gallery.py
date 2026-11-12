@@ -41,6 +41,9 @@ def gallery_outputs():
 
 def convert_one(webp_relative_path):
     output_path = ROOT / webp_relative_path
+    thumbnail_path = output_path.with_name(
+        output_path.stem + ".thumb.webp"
+    )
     source_path = output_path.with_suffix(".jpg")
 
     # Support a .jpeg original if a future gallery photo uses that extension.
@@ -64,7 +67,7 @@ def convert_one(webp_relative_path):
         else:
             image = image.convert("RGB")
 
-        # Preserve pixel dimensions. WebP quality 90 retains fine detail.
+        # Full-size lightbox image: preserve original pixel dimensions.
         image.save(
             output_path,
             format="WEBP",
@@ -74,11 +77,25 @@ def convert_one(webp_relative_path):
             icc_profile=icc_profile,
         )
 
+        # Small but crisp collage preview. The full-size image is only
+        # requested when a guest opens that photo in the lightbox.
+        preview = image.copy()
+        preview.thumbnail((1800, 1800), Image.Resampling.LANCZOS)
+        preview.save(
+            thumbnail_path,
+            format="WEBP",
+            quality=87,
+            method=6,
+            lossless=False,
+            icc_profile=icc_profile,
+        )
+
     source_mb = source_path.stat().st_size / (1024 * 1024)
-    output_mb = output_path.stat().st_size / (1024 * 1024)
+    full_mb = output_path.stat().st_size / (1024 * 1024)
+    thumb_mb = thumbnail_path.stat().st_size / (1024 * 1024)
     print(
         f"{source_path.relative_to(ROOT)}: {source_mb:.2f} MB -> "
-        f"{output_path.relative_to(ROOT)}: {output_mb:.2f} MB"
+        f"full {full_mb:.2f} MB; preview {thumb_mb:.2f} MB"
     )
 
 
