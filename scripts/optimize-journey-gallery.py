@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Create high-quality, full-resolution WebP copies of the Our Journey photos.
+"""Create full-size WebP and lightweight preview copies for Our Journey.
 
-The scene list contains .webp output paths. This script reads the original
-JPEG beside each one and writes a WebP copy. Original files are never changed.
+The image list in data/scenes.js contains .webp output paths. For each one,
+this script finds the matching original JPG/JPEG/PNG in images/adventures.
+Original photos are never modified.
 """
 
 from pathlib import Path
@@ -13,6 +14,7 @@ from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENES_FILE = ROOT / "data" / "scenes.js"
+IMAGE_DIR = ROOT / "images" / "adventures"
 
 
 def gallery_outputs():
@@ -22,7 +24,9 @@ def gallery_outputs():
         source,
     )
     if not match:
-        raise RuntimeError("Could not find the Our Journey image array in data/scenes.js.")
+        raise RuntimeError(
+            "Could not find the Our Journey image array in data/scenes.js."
+        )
 
     # Ignore commented-out examples inside the array.
     array_text = re.sub(r"//.*$", "", match.group(1), flags=re.MULTILINE)
@@ -32,30 +36,32 @@ def gallery_outputs():
         flags=re.IGNORECASE,
     )
     paths = list(dict.fromkeys(paths))
-    if len(paths) != 26:
-        raise RuntimeError(
-            f"Expected 26 active WebP gallery paths, but found {len(paths)}."
-        )
+
+    for relative_path in paths:
+        output = Path(relative_path)
+        if output.parent != Path("images/adventures") or output.suffix.lower() != ".webp":
+            raise RuntimeError(f"Unsupported Our Journey image path: {relative_path}")
+
     return paths
+
+
+def find_original(output_path):
+    # Use a case-insensitive extension fallback for photos from different cameras.
+    for extension in (".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"):
+        candidate = output_path.with_suffix(extension)
+        if candidate.is_file():
+            return candidate
+    raise FileNotFoundError(
+        f"No matching original JPG/JPEG/PNG found for {output_path.relative_to(ROOT)}. "
+        "Keep the original photo beside its .webp entry using the same filename."
+    )
 
 
 def convert_one(webp_relative_path):
     output_path = ROOT / webp_relative_path
-    thumbnail_path = output_path.with_name(
-        output_path.stem + ".thumb.webp"
-    )
-    source_path = output_path.with_suffix(".jpg")
-
-    # Support a .jpeg original if a future gallery photo uses that extension.
-    if not source_path.is_file():
-        jpeg_alternative = output_path.with_suffix(".jpeg")
-        if jpeg_alternative.is_file():
-            source_path = jpeg_alternative
-
-    if not source_path.is_file():
-        raise FileNotFoundError(
-            f"Could not find the original JPG/JPEG for {webp_relative_path}."
-        )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    thumbnail_path = output_path.with_name(output_path.stem + ".thumb.webp")
+    source_path = find_original(output_path)
 
     with Image.open(source_path) as original:
         original.load()
@@ -77,8 +83,7 @@ def convert_one(webp_relative_path):
             icc_profile=icc_profile,
         )
 
-        # Small but crisp collage preview. The full-size image is only
-        # requested when a guest opens that photo in the lightbox.
+        # Crisp collage preview; full-size image loads when a guest opens it.
         preview = image.copy()
         preview.thumbnail((1800, 1800), Image.Resampling.LANCZOS)
         preview.save(
@@ -99,12 +104,40 @@ def convert_one(webp_relative_path):
     )
 
 
+def remove_unused_numbered_outputs(active_paths):
+    """Remove stale numbered WebP outputs after a photo is removed from the list.
+
+    Original JPG/JPEG/PNG photos are deliberately kept as the archive.
+    Only generated numbered WebP files and their .thumb.webp previews are removed.
+    """
+    keep_names = set()
+    for relative_path in active_paths:
+        output = Path(relative_path)
+        keep_names.add(output.name)
+        keep_names.add(output.stem + ".thumb.webp")
+
+    removed = 0
+    for candidate in IMAGE_DIR.glob("*.webp"):
+        if not re.fullmatch(r"\d+(?:\.thumb)?\.webp", candidate.name, re.IGNORECASE):
+            continue
+        if candidate.name not in keep_names:
+            candidate.unlink()
+            print(f"Removed unused generated image: {candidate.relative_to(ROOT)}")
+            removed += 1
+
+    if removed == 0:
+        print("No unused numbered WebP files to remove.")
+
+
 def main():
     paths = gallery_outputs()
-    print(f"Preparing {len(paths)} active Our Journey photos...")
+    print(f"Preparing {len(paths)} Our Journey photo(s)...")
+
     for path in paths:
         convert_one(path)
-    print("Done. Original JPG/JPEG files were not changed.")
+
+    remove_unused_numbered_outputs(paths)
+    print("Done. Original JPG/JPEG/PNG photos were not changed or deleted.")
 
 
 if __name__ == "__main__":
