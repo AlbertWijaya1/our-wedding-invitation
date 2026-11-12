@@ -18,7 +18,7 @@ SCENES_FILE = ROOT / "data" / "scenes.js"
 def gallery_sources():
     source = SCENES_FILE.read_text(encoding="utf-8")
     match = re.search(
-        r"ourJourney\s*:\s*\{[\s\\S]*?images\s*:\s*\[([\s\\S]*?)\\]",
+        r"ourJourney\s*:\s*\{[\s\S]*?images\s*:\s*\[([\s\S]*?)\]",
         source,
     )
     if not match:
@@ -53,8 +53,8 @@ def convert_one(relative_path):
         else:
             image = image.convert("RGB")
 
-        # Preserve the original pixel dimensions; quality 90 keeps detail
-        # while WebP is considerably smaller than the photographer JPEGs.
+        # Keep the original pixel dimensions. WebP quality 90 preserves
+        # fine detail while substantially reducing the download size.
         image.save(
             output_path,
             format="WEBP",
