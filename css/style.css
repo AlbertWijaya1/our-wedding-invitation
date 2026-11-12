@@ -7337,3 +7337,54 @@ html[data-wedding-theme="chinese-luxury"] .formal-invitation-person::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ==========================================
+   MOBILE PERFORMANCE — JOURNEY GALLERY
+   Faster reveals and lightbox transitions on phones
+========================================== */
+
+@media (max-width: 600px) {
+  .journey-collage .journey-photo {
+    filter: blur(2px);
+    translate: 0 22px;
+    transition:
+      opacity 320ms ease,
+      translate 380ms cubic-bezier(0.2, 0.75, 0.25, 1),
+      filter 220ms ease,
+      box-shadow 320ms ease;
+  }
+
+  .journey-collage .journey-photo img {
+    transition: transform 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .journey-lightbox {
+    transition:
+      opacity 180ms ease,
+      visibility 180ms ease;
+  }
+
+  .journey-lightbox-image {
+    filter: blur(2px);
+    transition:
+      opacity 160ms ease,
+      transform 240ms cubic-bezier(0.2, 0.75, 0.25, 1),
+      filter 140ms ease;
+  }
+
+  .journey-lightbox-image.is-changing {
+    opacity: 0;
+    transform: scale(0.985);
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-collage .journey-photo,
+  .journey-collage .journey-photo img,
+  .journey-lightbox,
+  .journey-lightbox-image {
+    transition-duration: 0.01ms !important;
+  }
+}
