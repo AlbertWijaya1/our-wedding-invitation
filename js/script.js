@@ -591,6 +591,34 @@ preloadInvitationEnvelopeAssets();
           <p class="wedding-details-notice reveal-child delay-3">
             ${scene.notice}
           </p>
+   
+          <div class="wedding-countdown reveal-child delay-3">
+            <p class="countdown-eyebrow">
+              COUNTING DOWN TO FOREVER
+            </p>
+
+            <div class="countdown-grid" id="weddingCountdown">
+              <div class="countdown-unit">
+                <strong id="countdownDays">00</strong>
+                <span>DAYS</span>
+              </div>
+
+              <div class="countdown-unit">
+                <strong id="countdownHours">00</strong>
+                <span>HOURS</span>
+              </div>
+
+              <div class="countdown-unit">
+                <strong id="countdownMinutes">00</strong>
+                <span>MINUTES</span>
+              </div>
+
+              <div class="countdown-unit">
+                <strong id="countdownSeconds">00</strong>
+                <span>SECONDS</span>
+              </div>
+            </div>
+          </div>
 
           <div class="wedding-event-grid">
             ${renderWeddingEvent(ceremony)}
@@ -2698,32 +2726,35 @@ app.appendChild(section);
 
 
 /* ==========================================
-   ALBERT & NOVIA — JOURNEY PHOTO LIGHTBOX
-   Click to enlarge, arrows and mobile swipe
+   ALBERT & NOVIA — CINEMATIC JOURNEY LIGHTBOX
+   Click to enlarge, smooth photo transitions,
+   keyboard navigation and mobile swipe
    ========================================== */
 
 (function () {
   function setupJourneyLightbox() {
+    // Prevent duplicate viewers if this setup is ever called again.
     if (document.querySelector(".journey-lightbox")) return;
 
     const lightbox = document.createElement("div");
     lightbox.className = "journey-lightbox";
+    lightbox.setAttribute("role", "dialog");
+    lightbox.setAttribute("aria-modal", "true");
+    lightbox.setAttribute("aria-label", "Wedding photo gallery");
+    lightbox.setAttribute("aria-hidden", "true");
 
     lightbox.innerHTML = `
-      <button class="journey-lightbox-close" aria-label="Close photo viewer">&times;</button>
-
-      <button class="journey-lightbox-prev" aria-label="Previous photo">&#10094;</button>
+      <button class="journey-lightbox-close" type="button" aria-label="Close photo viewer">&times;</button>
+      <button class="journey-lightbox-prev" type="button" aria-label="Previous photo">&#10094;</button>
 
       <div class="journey-lightbox-content">
-        <div class="journey-lightbox-counter"></div>
-        <img class="journey-lightbox-image" src="" alt="">
+        <div class="journey-lightbox-counter" aria-live="polite"></div>
+        <img class="journey-lightbox-image" src="" alt="" draggable="false">
       </div>
 
-      <button class="journey-lightbox-next" aria-label="Next photo">&#10095;</button>
+      <button class="journey-lightbox-next" type="button" aria-label="Next photo">&#10095;</button>
 
-      <div class="journey-lightbox-hint">
-        Use arrows or swipe to explore
-      </div>
+      <div class="journey-lightbox-hint">Use arrows or swipe to explore</div>
     `;
 
     document.body.appendChild(lightbox);
@@ -2740,21 +2771,59 @@ app.appendChild(section);
     let touchStartX = 0;
     let touchStartY = 0;
     let previousOverflow = "";
+    let opener = null;
+    let photoChangeTimer = null;
 
-    function showPhoto(index) {
+    function updateCounter() {
+      const current = String(currentIndex + 1).padStart(2, "0");
+      const total = String(photos.length).padStart(2, "0");
+      counter.textContent = `${current} — ${total}`;
+    }
+
+    function updateNavigation() {
+      const disabled = photos.length < 2;
+      prevButton.disabled = disabled;
+      nextButton.disabled = disabled;
+    }
+
+    function showPhoto(index, animate = false) {
       if (!photos.length) return;
 
       currentIndex = (index + photos.length) % photos.length;
-
       const selectedPhoto = photos[currentIndex];
 
-      viewerImage.src = selectedPhoto.src;
-      viewerImage.alt = selectedPhoto.alt || "Albert and Novia wedding photo";
+      // Cancel an unfinished transition if the user navigates quickly.
+      if (photoChangeTimer !== null) {
+        window.clearTimeout(photoChangeTimer);
+        photoChangeTimer = null;
+      }
 
-      counter.textContent = `${currentIndex + 1} / ${photos.length}`;
+      updateCounter();
+      updateNavigation();
 
-      prevButton.disabled = photos.length < 2;
-      nextButton.disabled = photos.length < 2;
+      const updateImage = () => {
+        viewerImage.src = selectedPhoto.currentSrc || selectedPhoto.src;
+        viewerImage.alt = selectedPhoto.alt || "Albert and Novia wedding photo";
+      };
+
+      if (animate && lightbox.classList.contains("is-open")) {
+        viewerImage.classList.add("is-changing");
+
+        photoChangeTimer = window.setTimeout(() => {
+          updateImage();
+          // Two animation frames allow the new image source to be applied
+          // before the dissolve-in transition begins.
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              viewerImage.classList.remove("is-changing");
+              photoChangeTimer = null;
+            });
+          });
+        }, 180);
+      } else {
+        viewerImage.classList.remove("is-changing");
+        updateImage();
+      }
     }
 
     function openViewer(clickedImage) {
@@ -2763,78 +2832,100 @@ app.appendChild(section);
       );
 
       currentIndex = photos.indexOf(clickedImage);
-
       if (currentIndex < 0) return;
 
+      opener = clickedImage;
       previousOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
 
-      showPhoto(currentIndex);
+      showPhoto(currentIndex, false);
+      lightbox.setAttribute("aria-hidden", "false");
       lightbox.classList.add("is-open");
+      closeButton.focus({ preventScroll: true });
     }
 
     function closeViewer() {
+      if (!lightbox.classList.contains("is-open")) return;
+
       lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
       document.body.style.overflow = previousOverflow;
+
+      if (photoChangeTimer !== null) {
+        window.clearTimeout(photoChangeTimer);
+        photoChangeTimer = null;
+      }
+
+      viewerImage.classList.remove("is-changing");
       viewerImage.removeAttribute("src");
+
+      if (opener && document.contains(opener)) {
+        opener.focus({ preventScroll: true });
+      }
+      opener = null;
     }
 
     function previousPhoto() {
-      showPhoto(currentIndex - 1);
+      showPhoto(currentIndex - 1, true);
     }
 
     function nextPhoto() {
-      showPhoto(currentIndex + 1);
+      showPhoto(currentIndex + 1, true);
     }
 
-    // Open when a collage photo is clicked
+    // Open the viewer when any journey collage photo is clicked.
     document.addEventListener("click", function (event) {
-      const clickedImage = event.target.closest(
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const clickedImage = target.closest(
         ".journey-collage .journey-photo img"
       );
 
-      if (clickedImage) {
-        openViewer(clickedImage);
-      }
+      if (clickedImage) openViewer(clickedImage);
     });
 
     closeButton.addEventListener("click", closeViewer);
     prevButton.addEventListener("click", previousPhoto);
     nextButton.addEventListener("click", nextPhoto);
 
-    // Close when clicking the dark background
+    // Clicking the dark backdrop closes the viewer; clicks on the image do not.
     lightbox.addEventListener("click", function (event) {
-      if (event.target === lightbox) {
-        closeViewer();
-      }
+      if (event.target === lightbox) closeViewer();
     });
 
-    // Keyboard navigation
+    // Keyboard controls: Escape closes; left/right arrows change photos.
     document.addEventListener("keydown", function (event) {
       if (!lightbox.classList.contains("is-open")) return;
 
-      if (event.key === "Escape") closeViewer();
-      if (event.key === "ArrowLeft") previousPhoto();
-      if (event.key === "ArrowRight") nextPhoto();
+      if (event.key === "Escape") {
+        closeViewer();
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        previousPhoto();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        nextPhoto();
+      }
     });
 
-    // Mobile swipe navigation
+    // Mobile swipe navigation.
     content.addEventListener("touchstart", function (event) {
+      if (!event.changedTouches.length) return;
       touchStartX = event.changedTouches[0].screenX;
       touchStartY = event.changedTouches[0].screenY;
     }, { passive: true });
 
     content.addEventListener("touchend", function (event) {
+      if (!event.changedTouches.length) return;
+
       const differenceX = event.changedTouches[0].screenX - touchStartX;
       const differenceY = event.changedTouches[0].screenY - touchStartY;
 
       if (Math.abs(differenceX) > 45 &&
           Math.abs(differenceX) > Math.abs(differenceY)) {
-        if (differenceX < 0) {
-          nextPhoto();
-        } else {
-          previousPhoto();
-        }
+        if (differenceX < 0) nextPhoto();
+        else previousPhoto();
       }
     }, { passive: true });
   }
@@ -2913,4 +3004,143 @@ app.appendChild(section);
   } else {
     setupJourneyReveal();
   }
+})();
+
+
+
+/* ==================================================
+   VERSION 3 — CINEMATIC AMBIENT CONTROLLER
+   Subtle mouse-following light and scroll parallax
+================================================== */
+
+(function setupVersion3CinematicAmbient() {
+  const root = document.documentElement;
+  const dustLayer = document.getElementById("dustLayer");
+
+  if (!dustLayer || dustLayer.dataset.version3Ready === "true") {
+    return;
+  }
+
+  dustLayer.dataset.version3Ready = "true";
+
+  const desktopPointer = window.matchMedia(
+    "(hover: hover) and (pointer: fine)"
+  ).matches;
+
+  let pointerFrame = null;
+  let scrollFrame = null;
+
+  // Default warm light position
+  root.style.setProperty("--cinematic-x", "50%");
+  root.style.setProperty("--cinematic-y", "35%");
+  root.style.setProperty("--cinematic-shift", "0px");
+
+  // Gentle light follows the mouse on desktop
+  if (desktopPointer) {
+    window.addEventListener("pointermove", (event) => {
+      if (pointerFrame) {
+        cancelAnimationFrame(pointerFrame);
+      }
+
+      pointerFrame = requestAnimationFrame(() => {
+        const x = (event.clientX / window.innerWidth) * 100;
+        const y = (event.clientY / window.innerHeight) * 100;
+
+        root.style.setProperty(
+          "--cinematic-x",
+          `${x.toFixed(2)}%`
+        );
+
+        root.style.setProperty(
+          "--cinematic-y",
+          `${y.toFixed(2)}%`
+        );
+
+        pointerFrame = null;
+      });
+    }, { passive: true });
+  }
+
+  // Background glow moves slightly as guests scroll
+  function updateCinematicScroll() {
+    if (scrollFrame) return;
+
+    scrollFrame = requestAnimationFrame(() => {
+      const shift = Math.min(window.scrollY * 0.018, 22);
+
+      root.style.setProperty(
+        "--cinematic-shift",
+        `${-shift.toFixed(2)}px`
+      );
+
+      scrollFrame = null;
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    updateCinematicScroll,
+    { passive: true }
+  );
+
+  updateCinematicScroll();
+
+})();
+
+
+/* =========================================
+   VERSION 3.1 — WEDDING COUNTDOWN
+========================================= */
+
+(function setupWeddingCountdown() {
+  const weddingDate = new Date(
+    "2027-01-11T18:30:00+07:00"
+  ).getTime();
+
+  function updateCountdown() {
+    const countdown = document.getElementById(
+      "weddingCountdown"
+    );
+
+    if (!countdown) return;
+
+    const distance = Math.max(
+      0,
+      weddingDate - Date.now()
+    );
+
+    const days = Math.floor(
+      distance / (1000 * 60 * 60 * 24)
+    );
+
+    const hours = Math.floor(
+      (distance / (1000 * 60 * 60)) % 24
+    );
+
+    const minutes = Math.floor(
+      (distance / (1000 * 60)) % 60
+    );
+
+    const seconds = Math.floor(
+      (distance / 1000) % 60
+    );
+
+    const values = {
+      countdownDays: days,
+      countdownHours: hours,
+      countdownMinutes: minutes,
+      countdownSeconds: seconds
+    };
+
+    Object.entries(values).forEach(([id, value]) => {
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.textContent = String(value).padStart(2, "0");
+      }
+    });
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 })();
