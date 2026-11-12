@@ -943,10 +943,12 @@ preloadInvitationEnvelopeAssets();
                 ${scene.images.map((image, index) => `
                   <figure class="journey-photo journey-photo-${(index % 10) + 1}">
                     <img
-                      src="${image}"
+                      src="${image.replace(/\.webp$/i, ".thumb.webp")}"
+                      data-full-src="${image}"
                       alt="Albert and Novia pre-wedding photo ${index + 1}"
                       loading="${index < 2 ? "eager" : "lazy"}"
                       decoding="async"
+                      fetchpriority="${index === 0 ? "high" : "auto"}"
                     >
                   </figure>
                 `).join("")}
@@ -2802,7 +2804,7 @@ app.appendChild(section);
       updateNavigation();
 
       const updateImage = () => {
-        viewerImage.src = selectedPhoto.currentSrc || selectedPhoto.src;
+        viewerImage.src = selectedPhoto.dataset.fullSrc || selectedPhoto.currentSrc || selectedPhoto.src;
         viewerImage.alt = selectedPhoto.alt || "Albert and Novia wedding photo";
       };
 
@@ -2819,7 +2821,7 @@ app.appendChild(section);
               photoChangeTimer = null;
             });
           });
-        }, 180);
+        }, window.matchMedia("(max-width: 600px)").matches ? 45 : 90);
       } else {
         viewerImage.classList.remove("is-changing");
         updateImage();
