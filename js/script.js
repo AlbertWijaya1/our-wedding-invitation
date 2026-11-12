@@ -947,6 +947,9 @@ preloadInvitationEnvelopeAssets();
                       alt="Albert and Novia pre-wedding photo ${index + 1}"
                       loading="${index < 2 ? "eager" : "lazy"}"
                       decoding="async"
+                      fetchpriority="${index === 0 ? "high" : "auto"}"
+                      width="1200"
+                      height="1600"
                     >
                   </figure>
                 `).join("")}
