@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Create high-quality, full-resolution WebP copies of the Our Journey photos.
 
-Original JPEG files are intentionally left untouched. The gallery references
-the .webp copies after this script completes.
+The scene list contains .webp output paths. This script reads the original
+JPEG beside each one and writes a WebP copy. Original files are never changed.
 """
 
 from pathlib import Path
@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCENES_FILE = ROOT / "data" / "scenes.js"
 
 
-def gallery_sources():
+def gallery_outputs():
     source = SCENES_FILE.read_text(encoding="utf-8")
     match = re.search(
         r"ourJourney\s*:\s*\{[\s\S]*?images\s*:\s*\[([\s\S]*?)\]",
@@ -27,21 +27,32 @@ def gallery_sources():
     # Ignore commented-out examples inside the array.
     array_text = re.sub(r"//.*$", "", match.group(1), flags=re.MULTILINE)
     paths = re.findall(
-        r"""["'](images/adventures/[^"']+\.(?:jpg|jpeg))["']""",
+        r"""["'](images/adventures/[^"']+\.webp)["']""",
         array_text,
         flags=re.IGNORECASE,
     )
-    if not paths:
-        raise RuntimeError("No JPG/JPEG gallery photos were found.")
-    return list(dict.fromkeys(paths))
+    paths = list(dict.fromkeys(paths))
+    if len(paths) != 26:
+        raise RuntimeError(
+            f"Expected 26 active WebP gallery paths, but found {len(paths)}."
+        )
+    return paths
 
 
-def convert_one(relative_path):
-    source_path = ROOT / relative_path
-    output_path = source_path.with_suffix(".webp")
+def convert_one(webp_relative_path):
+    output_path = ROOT / webp_relative_path
+    source_path = output_path.with_suffix(".jpg")
+
+    # Support a .jpeg original if a future gallery photo uses that extension.
+    if not source_path.is_file():
+        jpeg_alternative = output_path.with_suffix(".jpeg")
+        if jpeg_alternative.is_file():
+            source_path = jpeg_alternative
 
     if not source_path.is_file():
-        raise FileNotFoundError(f"Missing original photo: {relative_path}")
+        raise FileNotFoundError(
+            f"Could not find the original JPG/JPEG for {webp_relative_path}."
+        )
 
     with Image.open(source_path) as original:
         original.load()
@@ -53,8 +64,7 @@ def convert_one(relative_path):
         else:
             image = image.convert("RGB")
 
-        # Keep the original pixel dimensions. WebP quality 90 preserves
-        # fine detail while substantially reducing the download size.
+        # Preserve pixel dimensions. WebP quality 90 retains fine detail.
         image.save(
             output_path,
             format="WEBP",
@@ -67,13 +77,13 @@ def convert_one(relative_path):
     source_mb = source_path.stat().st_size / (1024 * 1024)
     output_mb = output_path.stat().st_size / (1024 * 1024)
     print(
-        f"{relative_path}: {source_mb:.2f} MB -> "
+        f"{source_path.relative_to(ROOT)}: {source_mb:.2f} MB -> "
         f"{output_path.relative_to(ROOT)}: {output_mb:.2f} MB"
     )
 
 
 def main():
-    paths = gallery_sources()
+    paths = gallery_outputs()
     print(f"Preparing {len(paths)} active Our Journey photos...")
     for path in paths:
         convert_one(path)
