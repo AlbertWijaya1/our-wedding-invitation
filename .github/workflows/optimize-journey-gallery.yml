@@ -1,0 +1,50 @@
+name: Optimize Our Journey photos
+
+on:
+  push:
+    branches:
+      - mobile-gallery-performance
+    paths:
+      - ".github/workflows/optimize-journey-gallery.yml"
+      - "scripts/optimize-journey-gallery.py"
+      - "data/scenes.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: optimize-journey-gallery
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the working branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install image processing library
+        run: python -m pip install --upgrade Pillow
+
+      - name: Create high-quality WebP images
+        run: python scripts/optimize-journey-gallery.py
+
+      - name: Commit optimized photo copies
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/adventures/*.webp
+          if git diff --cached --quiet; then
+            echo "No optimized images to commit."
+          else
+            git commit -m "Add optimized high-quality WebP journey photos [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
