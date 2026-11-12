@@ -1,27 +1,29 @@
-name: Optimize Our Journey photos
+name: Prepare Our Journey photo updates
 
 on:
   push:
     branches:
-      - mobile-gallery-performance
+      - "photo-updates/**"
     paths:
       - ".github/workflows/optimize-journey-gallery.yml"
       - "scripts/optimize-journey-gallery.py"
       - "data/scenes.js"
-  workflow_dispatch:
+      - "images/adventures/*.jpg"
+      - "images/adventures/*.JPG"
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
-  group: optimize-journey-gallery
+  group: optimize-journey-gallery-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   optimize:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the working branch
+      - name: Check out the photo update branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
@@ -34,17 +36,32 @@ jobs:
       - name: Install image processing library
         run: python -m pip install --upgrade Pillow
 
-      - name: Create high-quality WebP images
+      - name: Build the gallery list and optimized photo copies
         run: python scripts/optimize-journey-gallery.py
 
-      - name: Commit optimized photo copies
+      - name: Commit generated images and gallery list back to this branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add images/adventures/*.webp
+          git add -A images/adventures/ data/scenes.js
           if git diff --cached --quiet; then
-            echo "No optimized images to commit."
+            echo "No generated image or gallery-list changes to commit."
           else
-            git commit -m "Add optimized high-quality WebP journey photos [skip ci]"
+            git commit -m "Generate optimized Our Journey photo images [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Open or update a pull request to main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing_pr=$(gh pr list --state open --base main --head "${GITHUB_REF_NAME}" --json url --jq '.[0].url')
+          if [ -n "$existing_pr" ]; then
+            echo "Pull request already exists: $existing_pr"
+          else
+            gh pr create \
+              --base main \
+              --head "${GITHUB_REF_NAME}" \
+              --title "Update Our Journey photos" \
+              --body "Photo update prepared automatically. Numbered JPG filenames determine the album order. Please test the updated album before merging. Original JPG photos are preserved."
           fi
