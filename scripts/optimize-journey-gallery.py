@@ -18,7 +18,7 @@ SCENES_FILE = ROOT / "data" / "scenes.js"
 def gallery_sources():
     source = SCENES_FILE.read_text(encoding="utf-8")
     match = re.search(
-        r"ourJourney\\s*:\\s*\\{[\\s\\S]*?images\\s*:\\s*\\[([\\s\\S]*?)\\]",
+        r"ourJourney\s*:\s*\{[\s\\S]*?images\s*:\s*\[([\s\\S]*?)\\]",
         source,
     )
     if not match:
@@ -27,7 +27,7 @@ def gallery_sources():
     # Ignore commented-out examples inside the array.
     array_text = re.sub(r"//.*$", "", match.group(1), flags=re.MULTILINE)
     paths = re.findall(
-        r"""["'](images/adventures/[^"']+\\.(?:jpg|jpeg))["']""",
+        r"""["'](images/adventures/[^"']+\.(?:jpg|jpeg))["']""",
         array_text,
         flags=re.IGNORECASE,
     )
