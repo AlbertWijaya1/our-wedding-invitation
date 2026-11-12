@@ -6416,3 +6416,590 @@ html[data-wedding-theme="chinese-luxury"] .formal-invitation-person::after {
   margin: 0 auto !important;
   text-align: center;
 }
+
+
+/* ==========================================
+   ALBERT & NOVIA — MODERN PHOTO COLLAGE
+   ========================================== */
+
+.journey-gallery-card {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 50px 22px 65px;
+  text-align: center;
+}
+
+.journey-gallery-card > h1 {
+  margin: 12px 0 18px;
+  color: #762b2a;
+}
+
+.journey-gallery-card > .intro-text {
+  max-width: 620px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+
+.journey-collage {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-flow: row dense;
+  grid-auto-rows: 85px;
+  gap: 12px;
+  width: 100%;
+  margin: 0 auto 48px;
+}
+
+.journey-photo {
+  grid-column: span 3;
+  grid-row: span 4;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #e9dfd1;
+  box-shadow: 0 5px 20px rgba(65, 35, 24, 0.07);
+}
+
+.journey-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s ease;
+}
+
+@media (hover: hover) {
+  .journey-photo:hover img {
+    transform: scale(1.035);
+  }
+}
+
+/* Varied photo sizes for an editorial layout */
+
+.journey-photo-1,
+.journey-photo-8 {
+  grid-column: span 6;
+  grid-row: span 6;
+}
+
+.journey-photo-2,
+.journey-photo-7 {
+  grid-column: span 2;
+  grid-row: span 4;
+}
+
+.journey-photo-3,
+.journey-photo-6 {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+
+.journey-photo-4,
+.journey-photo-9 {
+  grid-column: span 3;
+  grid-row: span 5;
+}
+
+.journey-photo-5,
+.journey-photo-10 {
+  grid-column: span 3;
+  grid-row: span 5;
+}
+
+.journey-gallery-card .adventure-reflection {
+  max-width: 650px;
+  margin: 35px auto 20px;
+}
+
+.journey-gallery-card .adventure-final-text {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .journey-gallery-card {
+    padding: 35px 18px 50px;
+  }
+
+  .journey-collage {
+    grid-auto-rows: 65px;
+    gap: 9px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .journey-gallery-card {
+    width: 100%;
+    padding: 28px 12px 45px;
+  }
+
+  .journey-gallery-card > .intro-text {
+    margin-bottom: 25px;
+  }
+
+  .journey-collage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 100px;
+    gap: 7px;
+  }
+
+  .journey-photo,
+  .journey-photo-2,
+  .journey-photo-3,
+  .journey-photo-4,
+  .journey-photo-5,
+  .journey-photo-6,
+  .journey-photo-7,
+  .journey-photo-9,
+  .journey-photo-10 {
+    grid-column: span 1;
+    grid-row: span 2;
+    border-radius: 6px;
+  }
+
+  .journey-photo-1,
+  .journey-photo-8 {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+
+  .journey-gallery-card .adventure-reflection {
+    margin-top: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-photo img {
+    transition: none;
+  }
+}
+
+
+/* ==========================================
+   JOURNEY GALLERY — NATURAL PHOTO PROPORTIONS
+   Preserve every photo without face cropping
+   ========================================== */
+
+.journey-collage {
+  display: block !important;
+  columns: 3;
+  column-gap: 13px;
+  width: 100%;
+  margin: 0 auto 48px;
+}
+
+.journey-photo {
+  display: inline-block;
+  width: 100%;
+  height: auto !important;
+  margin: 0 0 13px;
+  padding: 0;
+  break-inside: avoid;
+  overflow: hidden;
+  border-radius: 9px;
+  background: transparent;
+  box-shadow: 0 5px 20px rgba(65, 35, 24, 0.07);
+}
+
+.journey-photo img {
+  display: block;
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  border-radius: inherit;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .journey-collage {
+    columns: 2;
+    column-gap: 10px;
+  }
+
+  .journey-photo {
+    margin-bottom: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .journey-gallery-card {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .journey-collage {
+    columns: 2;
+    column-gap: 7px;
+  }
+
+  .journey-photo {
+    margin-bottom: 7px;
+    border-radius: 6px;
+  }
+}
+
+
+
+/* ==========================================
+   EDITORIAL IMPERFECT PHOTO COLLAGE
+   Albert & Novia
+   ========================================== */
+
+.journey-collage {
+  column-gap: 16px !important;
+  padding: 12px 5px 20px;
+}
+
+.journey-photo {
+  width: 96% !important;
+  margin-bottom: 19px !important;
+  border-radius: 8px !important;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: 0 9px 24px rgba(75, 42, 24, 0.10) !important;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+/* Organic width and positioning variations */
+
+.journey-photo:nth-child(8n + 1) {
+  width: 100% !important;
+  margin-left: 0 !important;
+  transform: rotate(-0.7deg);
+  margin-bottom: 25px !important;
+}
+
+.journey-photo:nth-child(8n + 2) {
+  width: 91% !important;
+  margin-left: 5% !important;
+  transform: rotate(0.9deg);
+  margin-bottom: 15px !important;
+}
+
+.journey-photo:nth-child(8n + 3) {
+  width: 96% !important;
+  margin-left: 2% !important;
+  transform: rotate(-0.4deg);
+  margin-bottom: 28px !important;
+}
+
+.journey-photo:nth-child(8n + 4) {
+  width: 92% !important;
+  margin-left: 7% !important;
+  transform: rotate(0.6deg);
+  margin-bottom: 17px !important;
+}
+
+.journey-photo:nth-child(8n + 5) {
+  width: 100% !important;
+  margin-left: 0 !important;
+  transform: rotate(0.5deg);
+  margin-bottom: 24px !important;
+}
+
+.journey-photo:nth-child(8n + 6) {
+  width: 93% !important;
+  margin-left: 3% !important;
+  transform: rotate(-0.9deg);
+  margin-bottom: 16px !important;
+}
+
+.journey-photo:nth-child(8n + 7) {
+  width: 97% !important;
+  margin-left: 1% !important;
+  transform: rotate(0.7deg);
+  margin-bottom: 27px !important;
+}
+
+.journey-photo:nth-child(8n) {
+  width: 90% !important;
+  margin-left: 8% !important;
+  transform: rotate(-0.5deg);
+  margin-bottom: 20px !important;
+}
+
+/* Natural photo proportions remain unchanged */
+
+.journey-photo img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 8px !important;
+}
+
+/* Gentle hover effect on desktop */
+
+@media (hover: hover) and (pointer: fine) {
+  .journey-photo:hover {
+    transform: rotate(0deg) scale(1.015) !important;
+    box-shadow: 0 15px 32px rgba(75, 42, 24, 0.16) !important;
+    z-index: 2;
+  }
+}
+
+/* Mobile: keep the irregular look subtle */
+
+@media (max-width: 600px) {
+  .journey-collage {
+    column-gap: 8px !important;
+    padding: 8px 2px 15px;
+  }
+
+  .journey-photo {
+    margin-bottom: 12px !important;
+    border-radius: 6px !important;
+  }
+
+  .journey-photo:nth-child(8n + 1) {
+    width: 100% !important;
+    margin-bottom: 17px !important;
+  }
+
+  .journey-photo:nth-child(8n + 2) {
+    width: 94% !important;
+    margin-left: 4% !important;
+  }
+
+  .journey-photo:nth-child(8n + 3) {
+    width: 96% !important;
+    margin-left: 1% !important;
+  }
+
+  .journey-photo:nth-child(8n + 4) {
+    width: 93% !important;
+    margin-left: 6% !important;
+  }
+}
+
+
+/* ==========================================
+   JOURNEY PHOTO LIGHTBOX DESIGN
+   ========================================== */
+
+.journey-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 12, 12, 0.96);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.journey-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.journey-lightbox-content {
+  position: relative;
+  width: min(82vw, 1100px);
+  height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journey-lightbox-image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.journey-lightbox-counter {
+  position: absolute;
+  top: -28px;
+  left: 0;
+  color: rgba(255,255,255,0.8);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.journey-lightbox-close,
+.journey-lightbox-prev,
+.journey-lightbox-next {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  color: white;
+  background: rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.journey-lightbox-close:hover,
+.journey-lightbox-prev:hover,
+.journey-lightbox-next:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.journey-lightbox-close {
+  top: 18px;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.journey-lightbox-prev,
+.journey-lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 64px;
+  border-radius: 5px;
+  font-size: 26px;
+}
+
+.journey-lightbox-prev {
+  left: 18px;
+}
+
+.journey-lightbox-next {
+  right: 18px;
+}
+
+.journey-lightbox-prev:disabled,
+.journey-lightbox-next:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.journey-lightbox-hint {
+  position: absolute;
+  bottom: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.55);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* Mobile viewer */
+
+@media (max-width: 600px) {
+  .journey-lightbox-content {
+    width: 100vw;
+    height: 82vh;
+    padding: 0 12px;
+  }
+
+  .journey-lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .journey-lightbox-close {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .journey-lightbox-prev,
+  .journey-lightbox-next {
+    width: 34px;
+    height: 48px;
+    font-size: 20px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .journey-lightbox-prev {
+    left: 5px;
+  }
+
+  .journey-lightbox-next {
+    right: 5px;
+  }
+
+  .journey-lightbox-counter {
+    top: -24px;
+    left: 14px;
+  }
+
+  .journey-lightbox-hint {
+    bottom: 12px;
+    font-size: 10px;
+  }
+}
+
+
+/* ==========================================
+   ALBERT & NOVIA — CINEMATIC SCROLL REVEAL
+   ========================================== */
+
+/* Hide the entire photo card before it enters view */
+.journey-collage .journey-photo {
+  opacity: 0;
+  translate: 0 65px;
+  filter: blur(7px);
+  box-shadow: none !important;
+
+  transition:
+    opacity 950ms ease,
+    translate 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1000ms ease,
+    box-shadow 1000ms ease;
+
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* The photograph itself starts slightly smaller */
+.journey-collage .journey-photo img {
+  opacity: 1 !important;
+  transform: scale(0.88);
+  transition:
+    transform 1300ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Reveal the complete photo card */
+.journey-collage .journey-photo.photo-visible {
+  opacity: 1;
+  translate: 0 0;
+  filter: blur(0);
+  box-shadow: 0 9px 24px rgba(75, 42, 24, 0.10) !important;
+}
+
+/* Bring the photo gently towards the viewer */
+.journey-collage .journey-photo.photo-visible img {
+  transform: scale(1);
+}
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  .journey-collage .journey-photo,
+  .journey-collage .journey-photo img {
+    opacity: 1 !important;
+    translate: none !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

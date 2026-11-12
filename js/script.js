@@ -893,10 +893,11 @@ preloadInvitationEnvelopeAssets();
               `).join("")}
             </div>
           `;
+        
         } else if (scene.type === "adventureCarousel") {
 
           section.innerHTML = `
-            <div class="adventure-carousel-card">
+            <div class="journey-gallery-card">
 
               <p class="small-text reveal-child delay-1">
                 ${scene.smallText}
@@ -910,36 +911,18 @@ preloadInvitationEnvelopeAssets();
                 ${scene.intro}
               </p>
 
-              <div class="adventure-carousel-shell">
-
-                <div
-                  class="adventure-carousel"
-                  aria-label="Our adventure memories"
-                >
-                  ${scene.images.map((image, index) => `
-                    <div
-                      class="adventure-slide"
-                      data-adventure-index="${index}"
+              <div class="journey-collage" aria-label="Our pre-wedding photo gallery">
+                ${scene.images.map((image, index) => `
+                  <figure class="journey-photo journey-photo-${(index % 10) + 1}">
+                    <img
+                      src="${image}"
+                      alt="Albert and Novia pre-wedding photo ${index + 1}"
+                      loading="${index < 2 ? "eager" : "lazy"}"
+                      decoding="async"
                     >
-                      <img
-                        src="${image}"
-                        alt="Journey memory ${index + 1}"
-                        loading="${index === 0 ? "eager" : "lazy"}"
-                        decoding="async"
-                        fetchpriority="${index === 0 ? "high" : "auto"}"
-                        draggable="false"
-                      >                    </div>
-                  `).join("")}
-                </div>
-
-                <div class="adventure-edge adventure-edge-left"></div>
-                <div class="adventure-edge adventure-edge-right"></div>
-
+                  </figure>
+                `).join("")}
               </div>
-
-              <p class="adventure-swipe-hint">
-                Swipe to explore.
-              </p>
 
               <p class="intro-text adventure-reflection reveal">
                 ${scene.reflection}
@@ -948,8 +931,10 @@ preloadInvitationEnvelopeAssets();
               <p class="adventure-final-text reveal">
                 ${scene.finalText}
               </p>
+
             </div>
           `;
+                
         } else if (scene.type === "mahjong") {
 
         section.innerHTML = `
@@ -1172,10 +1157,6 @@ app.appendChild(section);
   }
     if (scene.type === "mahjong") {
       setupMahjongGame(section);
-    }
-
-    if (scene.type === "adventureCarousel") {
-      setupAdventureCarousel(section);
     }
 
     if (scene.type === "holdHand") {
@@ -2714,3 +2695,222 @@ app.appendChild(section);
 
   setupDustEngine();
   renderScene(currentScene);
+
+
+/* ==========================================
+   ALBERT & NOVIA — JOURNEY PHOTO LIGHTBOX
+   Click to enlarge, arrows and mobile swipe
+   ========================================== */
+
+(function () {
+  function setupJourneyLightbox() {
+    if (document.querySelector(".journey-lightbox")) return;
+
+    const lightbox = document.createElement("div");
+    lightbox.className = "journey-lightbox";
+
+    lightbox.innerHTML = `
+      <button class="journey-lightbox-close" aria-label="Close photo viewer">&times;</button>
+
+      <button class="journey-lightbox-prev" aria-label="Previous photo">&#10094;</button>
+
+      <div class="journey-lightbox-content">
+        <div class="journey-lightbox-counter"></div>
+        <img class="journey-lightbox-image" src="" alt="">
+      </div>
+
+      <button class="journey-lightbox-next" aria-label="Next photo">&#10095;</button>
+
+      <div class="journey-lightbox-hint">
+        Use arrows or swipe to explore
+      </div>
+    `;
+
+    document.body.appendChild(lightbox);
+
+    const viewerImage = lightbox.querySelector(".journey-lightbox-image");
+    const counter = lightbox.querySelector(".journey-lightbox-counter");
+    const closeButton = lightbox.querySelector(".journey-lightbox-close");
+    const prevButton = lightbox.querySelector(".journey-lightbox-prev");
+    const nextButton = lightbox.querySelector(".journey-lightbox-next");
+    const content = lightbox.querySelector(".journey-lightbox-content");
+
+    let photos = [];
+    let currentIndex = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let previousOverflow = "";
+
+    function showPhoto(index) {
+      if (!photos.length) return;
+
+      currentIndex = (index + photos.length) % photos.length;
+
+      const selectedPhoto = photos[currentIndex];
+
+      viewerImage.src = selectedPhoto.src;
+      viewerImage.alt = selectedPhoto.alt || "Albert and Novia wedding photo";
+
+      counter.textContent = `${currentIndex + 1} / ${photos.length}`;
+
+      prevButton.disabled = photos.length < 2;
+      nextButton.disabled = photos.length < 2;
+    }
+
+    function openViewer(clickedImage) {
+      photos = Array.from(
+        document.querySelectorAll(".journey-collage .journey-photo img")
+      );
+
+      currentIndex = photos.indexOf(clickedImage);
+
+      if (currentIndex < 0) return;
+
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+
+      showPhoto(currentIndex);
+      lightbox.classList.add("is-open");
+    }
+
+    function closeViewer() {
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = previousOverflow;
+      viewerImage.removeAttribute("src");
+    }
+
+    function previousPhoto() {
+      showPhoto(currentIndex - 1);
+    }
+
+    function nextPhoto() {
+      showPhoto(currentIndex + 1);
+    }
+
+    // Open when a collage photo is clicked
+    document.addEventListener("click", function (event) {
+      const clickedImage = event.target.closest(
+        ".journey-collage .journey-photo img"
+      );
+
+      if (clickedImage) {
+        openViewer(clickedImage);
+      }
+    });
+
+    closeButton.addEventListener("click", closeViewer);
+    prevButton.addEventListener("click", previousPhoto);
+    nextButton.addEventListener("click", nextPhoto);
+
+    // Close when clicking the dark background
+    lightbox.addEventListener("click", function (event) {
+      if (event.target === lightbox) {
+        closeViewer();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener("keydown", function (event) {
+      if (!lightbox.classList.contains("is-open")) return;
+
+      if (event.key === "Escape") closeViewer();
+      if (event.key === "ArrowLeft") previousPhoto();
+      if (event.key === "ArrowRight") nextPhoto();
+    });
+
+    // Mobile swipe navigation
+    content.addEventListener("touchstart", function (event) {
+      touchStartX = event.changedTouches[0].screenX;
+      touchStartY = event.changedTouches[0].screenY;
+    }, { passive: true });
+
+    content.addEventListener("touchend", function (event) {
+      const differenceX = event.changedTouches[0].screenX - touchStartX;
+      const differenceY = event.changedTouches[0].screenY - touchStartY;
+
+      if (Math.abs(differenceX) > 45 &&
+          Math.abs(differenceX) > Math.abs(differenceY)) {
+        if (differenceX < 0) {
+          nextPhoto();
+        } else {
+          previousPhoto();
+        }
+      }
+    }, { passive: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupJourneyLightbox);
+  } else {
+    setupJourneyLightbox();
+  }
+})();
+
+
+/* ==========================================
+   SCROLL-REVEAL ANIMATION — JOURNEY GALLERY
+   ========================================== */
+
+(function () {
+  function setupJourneyReveal() {
+    const gallerySelector = ".journey-collage";
+    const photoSelector = ".journey-photo";
+
+    // Fallback for older browsers
+    if (!("IntersectionObserver" in window)) {
+      document.querySelectorAll(
+        `${gallerySelector} ${photoSelector}`
+      ).forEach(photo => photo.classList.add("photo-visible"));
+      return;
+    }
+
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Photo enters the screen
+          entry.target.classList.add("photo-visible");
+        } else {
+          // Photo leaves the screen
+          entry.target.classList.remove("photo-visible");
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -45px 0px"
+    });
+
+    function observePhotos() {
+      document.querySelectorAll(
+        `${gallerySelector} ${photoSelector}:not([data-reveal-ready])`
+      ).forEach((photo, index) => {
+        photo.dataset.revealReady = "true";
+
+        // Small stagger, capped so large galleries don't feel slow
+        photo.style.setProperty(
+          "--reveal-delay",
+          `${Math.min(index % 5, 4) * 65}ms`
+        );
+
+        observer.observe(photo);
+      });
+    }
+
+    // Initial gallery
+    observePhotos();
+
+    // Also detect gallery photos inserted later by the scene system
+    const mutationObserver = new MutationObserver(observePhotos);
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupJourneyReveal);
+  } else {
+    setupJourneyReveal();
+  }
+})();
